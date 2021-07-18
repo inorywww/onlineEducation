@@ -1,0 +1,63 @@
+<template>
+    <div class="nav-list">
+        <template  v-for="(item, index) in navList" >
+            <template v-if="item.subs">
+                <el-dropdown class="nav-item" :key="index">
+                    <span class="hv-font-green">
+                        {{ item.title }}
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                            v-for="(subItem, index1) in item.subs"
+                            :key="index1"
+                            class="hv-bg-green"
+                        >
+                            <router-link :to="subItem.path">
+                                {{ subItem.title  }}
+                            </router-link>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </template>
+            <template v-else>
+                <div class="nav-item" :key="index">
+                    <router-link :to="item.path" :class="index!==0?'hv-font-green':''">
+                        {{ item.title }}
+                    </router-link>
+                </div>
+            </template>
+        </template>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "navList",
+    computed: {
+        navList() {
+            return this.$store.state.navList;
+        },
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+@import "@/assets/style/global.scss";
+.nav-list {
+    @include left;
+    height: 100%;
+    .nav-item {
+        @include center;
+        height: 100%;
+        width: px2rem(180);
+        padding:0 px2rem(8);
+        color: $c-black;
+        cursor: pointer;
+        font-size: $text-small;
+    }
+    .nav-item:first-child {
+        background-color: $c-green;
+        color: $c-white;
+    }
+}
+</style>

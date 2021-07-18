@@ -1,0 +1,78 @@
+@import './mixin.scss';
+
+// 默认颜色
+$c-black:#000; 
+$c-gray:#919191; 
+$cs-gray:rgba(145, 145, 145, .5); 
+$c-green:#3bb149; 
+$c-red:#f01414; 
+$c-blue:#068bfb;
+$c-white:#fff; 
+$cs-black:#333;
+$bg-color:#eee; 
+
+// 默认字体大小
+$text-large: px2rem(65);
+$text-big: px2rem(55);
+$text-medium: px2rem(45);
+$text-small: px2rem(35);
+$text-tiny: px2rem(25);
+
+// 标题大小
+.title-big {
+    font-size: $text-big;
+    color: #fff;
+    font-weight: bold;
+    @include ellipsis2(3);
+}
+.title-medium {
+    font-size: $text-medium;
+    color: #fff;
+    font-weight: bold;
+    @include ellipsis2(3);
+}
+.title-small {
+    font-size: $text-small;
+    color: #fff;
+    font-weight: bold;
+    @include ellipsis2(2);
+}
+
+.sub-title-medium {
+    font-size: $text-medium;
+    color: #666;
+    @include ellipsis2(2);
+}
+.sub-title {
+    font-size: $text-small;
+    color: #666;
+    @include ellipsis2(1);
+}
+.sub-title-tiny {
+    font-size: $text-tiny;
+    color: #666;
+    @include ellipsis2(1);
+}
+.third-title {
+    font-size: $text-small;
+    color: #999;
+    @include ellipsis2(1);
+}
+.third-title-tiny {
+    font-size: $text-tiny;
+    color: #999;
+    @include ellipsis2(1);
+}
+.hv-font-green{
+    &:hover{
+        color: $c-green !important;
+    }
+}
+.hv-bg-green{
+    &:hover{
+        background-color: $c-green !important;
+    }
+    &:hover a{
+        color: $c-white !important;
+    }
+}
