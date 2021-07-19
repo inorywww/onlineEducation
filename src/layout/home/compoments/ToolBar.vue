@@ -64,9 +64,10 @@ export default {
     margin: 20px 0;
 }
 .toolbar{
+    border-radius: 4px;
     position: fixed;
     bottom: 12px;
-    right: 12px;
+    right: 4px;
     background-color: $c-white;
     @include columnCenter;
     .tool-item:first-child{

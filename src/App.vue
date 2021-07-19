@@ -11,6 +11,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+.el-form--label-top .el-form-item__label{
+    padding: 0 !important;
+}
 </style>

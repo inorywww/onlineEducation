@@ -2,13 +2,15 @@
 
 // 默认颜色
 $c-black:#000; 
+$cs-black:#333;
+$cs-black1:#333;
 $c-gray:#919191; 
 $cs-gray:rgba(145, 145, 145, .5); 
+$bd-gray:rgba(145, 145, 145, .2);
 $c-green:#3bb149; 
 $c-red:#f01414; 
 $c-blue:#068bfb;
 $c-white:#fff; 
-$cs-black:#333;
 $bg-color:#eee; 
 
 // 默认字体大小
@@ -18,6 +20,16 @@ $text-medium: px2rem(45);
 $text-small: px2rem(35);
 $text-tiny: px2rem(25);
 
+$max-w:1260px;
+
+.t-green{
+    font-size: $text-small;
+    color: $c-green;
+}
+.t-gray{
+    font-size: $text-small;
+    color: $c-gray;
+}
 // 标题大小
 .title-big {
     font-size: $text-big;
@@ -73,6 +85,24 @@ $text-tiny: px2rem(25);
         background-color: $c-green !important;
     }
     &:hover a{
+        color: $c-white !important;
+    }
+}
+.hv-font-red{
+    &:hover span{
+        color: $c-red !important;
+    }
+}
+.header-white{
+    border-bottom: 2px solid $c-green;
+    background-color: $c-white;
+    a,span:not(.slogan-b){
+        color: $c-black;
+    }
+}
+.header-black{
+    background-color: #282d30 !important;
+    a,span:not(.slogan-b){
         color: $c-white !important;
     }
 }

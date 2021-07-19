@@ -42,11 +42,18 @@ const store = new Vuex.Store({
             title:'名师面授班',
             path:'http://www.atguigu.com/'
         }
-      ],
+        ],
+        headerStyle:{
+            name:'header-black',
+            logo:'/images/logo-green.png'
+        }
     },
     mutations:{
         setNavList(state,newList){
             state.navList = newList;
+        },
+        setHeader(state,style){
+            state.headerStyle = style;
         }
     }
 });

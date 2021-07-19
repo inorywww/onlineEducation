@@ -1,10 +1,10 @@
 <template>
-    <header class="header">
+    <header :class="`header ${headerStyle.name}`">
         <div class="nav">
             <div class="nav-left">
                 <div class="logo">
                     <router-link to="/">
-                        <img src="/images/logo.png" alt="logo" />
+                        <img :src="headerStyle.logo" alt="logo" />
                     </router-link>
                 </div>
                 <div class="slogan">
@@ -25,9 +25,9 @@
                 <nav-list/>
                 <div class="nav-login">
                     <span class="iconfont icon-user"></span>
-                    <router-link to="/login" class="hv-font-green">登录</router-link>
+                    <router-link to="/login">登录</router-link>
                     <span>&emsp;/&emsp;</span>
-                    <router-link to="/login" class="hv-font-green">注册</router-link>
+                    <router-link to="/register">注册</router-link>
                 </div>
             </div>
         </div>
@@ -46,6 +46,9 @@ export default {
         navList() {
             return this.$store.state.navList;
         },
+        headerStyle(){
+            return this.$store.state.headerStyle;
+        }
     },
     data() {
         return {
@@ -57,13 +60,11 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/style/global.scss";
 .header {
-    background-color: $c-white;
     height: 60px;
-    border-bottom: 2px solid $c-green;
     .nav {
         @include left;
         justify-content: space-between;
-        max-width: 1260px;
+        max-width: $max-w;
         height: 100%;
         margin: 0 auto;
         .nav-left {
@@ -100,7 +101,10 @@ export default {
             height: 100%;
             .nav-login {
                 margin:0 px2rem(100);
-                color: $c-gray;
+                a{
+                    font-size:$text-small;
+                    color:#7d7f7f;
+                }
             }
         }
        

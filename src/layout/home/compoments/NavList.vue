@@ -21,7 +21,7 @@
             </template>
             <template v-else>
                 <div class="nav-item" :key="index">
-                    <router-link :to="item.path" :class="index!==0?'hv-font-green':''">
+                    <router-link :to="item.path">
                         {{ item.title }}
                     </router-link>
                 </div>
@@ -54,10 +54,14 @@ export default {
         color: $c-black;
         cursor: pointer;
         font-size: $text-small;
+        
     }
     .nav-item:first-child {
         background-color: $c-green;
         color: $c-white;
+        & > a:hover{
+            color: $c-black !important;
+        }
     }
 }
 </style>
