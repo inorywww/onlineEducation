@@ -37,7 +37,6 @@
             </el-button>
         </div>
         <el-table :data="teachersInfo.rows" style="width: 100%" border>
-            <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column label="序号" prop="id"></el-table-column>
             <el-table-column label="姓名" prop="name"> </el-table-column>
             <el-table-column label="头衔" prop="career"> </el-table-column>
@@ -167,6 +166,7 @@ export default {
                 .then(res => this.teachersInfo = res.data.data);
         },
         async conditionFilter(){
+            console.log(this.filterData);
             const data = {
                name:this.filterData.name || "",
                career:this.filterData.career || "",
@@ -177,6 +177,7 @@ export default {
                 data.begin = moment(this.filterData.time[0]).format('YYYY-MM-DD HH:mm:ss') 
                 data.end = moment(this.filterData.time[1]).format('YYYY-MM-DD HH:mm:ss') 
             }
+            console.log(data);
             await this.$api.teacher.pageTeacherCondition(data,this.currentPageIndex, this.pageSize)
                 .then(res => this.teachersInfo = res.data.data);
         },

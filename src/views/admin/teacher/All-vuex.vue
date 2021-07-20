@@ -7,9 +7,8 @@
                     placeholder="根据姓名查找"
                 ></el-input>
                 <el-select
-                    v-model="filterData.career"
+                    v-model="filterData.careers"
                     placeholder="根据头衔查找"
-                    clearable
                 >
                     <el-option
                         v-for="item in allCareer"
@@ -36,8 +35,7 @@
                 查询
             </el-button>
         </div>
-        <el-table :data="teachersInfo.rows" style="width: 100%" border>
-            <el-table-column type="selection" width="55"></el-table-column>
+        <el-table :data="showTeachers" style="width: 100%" border>
             <el-table-column label="序号" prop="id"></el-table-column>
             <el-table-column label="姓名" prop="name"> </el-table-column>
             <el-table-column label="头衔" prop="career"> </el-table-column>
@@ -71,7 +69,7 @@
             :page-size="pageSize"
             :page-sizes="[5, 10, 20, 30]"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="teachersInfo.total"
+            :total="totalPage"
             background
         >
         </el-pagination>
@@ -79,19 +77,19 @@
 </template>
 
 <script>
-import moment from 'moment';
+// import moment from 'moment';
 import { listMixin } from "@/utils/mixin";
 export default {
     name: "teacherAll",
     mixins: [listMixin],
     async created() {
-        await this.pagefilter();
+        console.log(this.allTeachers);
     },
     data() {
         return {
             filterData: {
                 name: "",
-                career: "",
+                careers: "",
                 time: [],
             },
             pageSize: 5,
@@ -144,15 +142,27 @@ export default {
                     },
                 ],
             },
-            teachersInfo:{
-                total:0,
-                items:[]
-            },
         };
     },
     computed: {
+        showTeachers: {
+            get(){
+                return this.allTeachers.slice(
+                (this.currentPageIndex - 1) * this.pageSize,
+                this.currentPageIndex * this.pageSize
+                );
+            }
+        },
         allCareer() {
             return [...new Set(this.allTeachers.map((item) => item.career))];
+        },
+        totalPage: {
+            get() {
+                return this.allTeachers.length;
+            },
+            set(newSize) {
+                this.totalPage = newSize;
+            },
         },
     },
     methods: {
@@ -162,39 +172,18 @@ export default {
         delTeacher(index, row) {
             console.log(index, row);
         },
-        async pagefilter(){
-           await this.$api.teacher.pageTeacher(this.currentPageIndex, this.pageSize)
-                .then(res => this.teachersInfo = res.data.data);
-        },
-        async conditionFilter(){
-            const data = {
-               name:this.filterData.name || "",
-               career:this.filterData.career || "",
-               begin: "",
-               end: "",
-            }
-            if(this.filterData.time.length === 2){
-                data.begin = moment(this.filterData.time[0]).format('YYYY-MM-DD HH:mm:ss') 
-                data.end = moment(this.filterData.time[1]).format('YYYY-MM-DD HH:mm:ss') 
-            }
-            await this.$api.teacher.pageTeacherCondition(data,this.currentPageIndex, this.pageSize)
-                .then(res => this.teachersInfo = res.data.data);
-        },
         filter(){
             for (const key in this.filterData) {
                 if(this.filterData[key].length !== 0){
                     console.log(this.filterData[key]);
                 }
             }
-            this.conditionFilter();
         },
         changeSize(val) {
             this.pageSize = val;
-            this.pagefilter();
         },
         changePage(index) {
             this.currentPageIndex = index;
-            this.pagefilter();
         },
     },
 };

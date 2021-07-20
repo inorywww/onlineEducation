@@ -8,6 +8,19 @@ const teacher = {
             url:`${baseUrl}/findAll`,
             method: 'get',
         })
+    },
+    pageTeacher(no,size){
+        return request({
+            url:`${baseUrl}/pageTeacher/${no}/${size}`,
+            method: 'get',
+        })
+    },
+    pageTeacherCondition(data,no,size){
+        return request({
+            url:`${baseUrl}/pageTeacherCondition/${no}/${size}`,
+            method: 'post',
+            data
+        })
     }
 }
 

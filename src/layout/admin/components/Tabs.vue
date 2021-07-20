@@ -39,7 +39,7 @@ export default {
             }
         },
         removeTab(targetName){
-            if(targetName === 'index'){
+            if(targetName === 'dashIndex'){
                 return ;
             }
             let tabs = this.allTabs;

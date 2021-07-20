@@ -8,12 +8,14 @@
                 <el-header>
                     <dash-header/>
                 </el-header>
-                <el-main>
-                    <tabs/>
-                    <keep-alive>
-                        <router-view/>
-                    </keep-alive>
-                </el-main>
+                <transition name="slide-up" mode="out-in">
+                    <el-main>
+                        <tabs/>
+                        <keep-alive>
+                            <router-view/>
+                        </keep-alive>
+                    </el-main>
+                </transition>
             </el-container>
         </el-container>
     </div>

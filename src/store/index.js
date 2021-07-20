@@ -61,7 +61,7 @@ const store = new Vuex.Store({
             const res = await Vue.prototype.$api.teacher.findAll();
             commit('setTeachers',res.data.data.items);
             return res.data.data.items;
-        }
+        },
     },
     plugins: [
         createPersistedState({
@@ -72,7 +72,7 @@ const store = new Vuex.Store({
                 }
               }
         })
-      ]
+    ]
 });
 
 export default store
