@@ -1,6 +1,6 @@
 <template>
     <div class="nav-list">
-        <template  v-for="(item, index) in navList" >
+        <template v-for="(item, index) in navList">
             <template v-if="item.subs">
                 <el-dropdown class="nav-item" :key="index">
                     <span class="hv-font-green">
@@ -13,7 +13,7 @@
                             class="hv-bg-green"
                         >
                             <router-link :to="subItem.path">
-                                {{ subItem.title  }}
+                                {{ subItem.title }}
                             </router-link>
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -33,10 +33,49 @@
 <script>
 export default {
     name: "navList",
-    computed: {
-        navList() {
-            return this.$store.state.navList;
-        },
+    data() {
+        return {
+            navList: [
+                {
+                    title: "首页",
+                    path: "/index",
+                },
+                {
+                    title: "全部课程",
+                    path: "/course/explore",
+                },
+                {
+                    title: "学习路线图",
+                    path: "",
+                    subs: [
+                        {
+                            title: "Java开发",
+                            path: "/path/java",
+                        },
+                        {
+                            title: "大数据",
+                            path: "/path/bigdata",
+                        },
+                        {
+                            title: "前端开发",
+                            path: "/path/front",
+                        },
+                        {
+                            title: "Linux运维",
+                            path: "/path/linux",
+                        },
+                        {
+                            title: "Android",
+                            path: "/path/android",
+                        },
+                    ],
+                },
+                {
+                    title: "名师面授班",
+                    path: "http://www.atguigu.com/",
+                },
+            ],
+        };
     },
 };
 </script>
@@ -50,16 +89,15 @@ export default {
         @include center;
         height: 100%;
         width: px2rem(180);
-        padding:0 px2rem(8);
+        padding: 0 px2rem(8);
         color: $c-black;
         cursor: pointer;
         font-size: $text-small;
-        
     }
     .nav-item:first-child {
         background-color: $c-green;
         color: $c-white;
-        & > a:hover{
+        & > a:hover {
             color: $c-black !important;
         }
     }

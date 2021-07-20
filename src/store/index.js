@@ -1,56 +1,20 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate'
+import createPersistedState from 'vuex-persistedstate';
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state:{
-        navList:[
-        {
-            title:'首页',
-            path:'/index'
-        },
-        {
-            title:'全部课程',
-            path:'/course/explore'
-        },
-        {
-            title:'学习路线图',
-            path:'',
-            subs:[
-                {
-                    title:'Java开发',
-                    path:'/path/java'
-                },
-                {
-                    title:'大数据',
-                    path:'/path/bigdata'
-                },
-                {
-                    title:'前端开发',
-                    path:'/path/front'
-                },
-                {
-                    title:'Linux运维',
-                    path:'/path/linux'
-                },
-                {
-                    title:'Android',
-                    path:'/path/android'
-                }
-            ]
-        },
-        {
-            title:'名师面授班',
-            path:'http://www.atguigu.com/'
-        }
-        ],
+        // 公共数据
+        allTeachers:[],
+        // 前台相关数据
         headerStyle:{
             name:'header-black',
             logo:'/images/logo-green.png'
         },
-        currentView:'index',
-        isCollapse:false,
-        allTabs:[
+        // 管理系统相关数据
+        currentView:'index',  //当前tab
+        isCollapse:false, //是否展开
+        allTabs:[ //所有tab
             {
                 name:"dashIndex",
                 path:"/dashboard/index",
@@ -59,12 +23,16 @@ const store = new Vuex.Store({
         ]
     },
     mutations:{
-        setNavList(state,newList){
-            state.navList = newList;
+        // 公共方法
+        setTeachers(state,list){
+            state.allTeachers = list;
         },
+        // 前台方法
         setHeader(state,style){
             state.headerStyle = style;
         },
+
+        // 管理系统方法
         setCurrentView(state,cv){
             state.currentView = cv;
         },
@@ -84,6 +52,16 @@ const store = new Vuex.Store({
                 return item.name !== name
             })
         }, 
+    },
+    getters:{
+        allTeachers: state => state.allTeachers,
+    },
+    actions:{
+        async getTeachers({commit}){
+            const res = await Vue.prototype.$api.teacher.findAll();
+            commit('setTeachers',res.data.data.items);
+            return res.data.data.items;
+        }
     },
     plugins: [
         createPersistedState({

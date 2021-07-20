@@ -29,5 +29,15 @@ export default {
 <style lang="scss">
 .home-container{
     @import '@/assets/style/element-green.scss';
+    width: 100vw;
+    height: 100vh;
+    background-color: $bg-color !important;
+    a{
+        text-decoration: none !important;
+        color:$c-black;
+        &:hover{
+            color: $c-green !important;
+        }
+    }
 }
 </style>

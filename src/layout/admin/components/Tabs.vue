@@ -62,7 +62,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tabs{
-    padding: 0 16px;
-}
 </style>

@@ -31,8 +31,6 @@ export default {
         Tabs,
     },
     created(){
-        // 初次进入时点击一下'首页'
-        // document.querySelector('.el-menu-item').click();
         this.$store.commit("setCurrentView", this.$route.name);
     },
     watch:{
@@ -48,13 +46,13 @@ export default {
     width: 100%;
     height: 100%;
     .el-aside {
-    width: auto !important;
-}
-.el-header {
-    padding: 0 !important;
-}
-.el-main {
-    padding: 4px 0 !important;
-}
+        width: auto !important;
+    }
+    .el-header {
+        padding: 0 !important;
+    }
+    .el-main {
+        padding: 4px 0 !important;
+    }
 }
 </style>

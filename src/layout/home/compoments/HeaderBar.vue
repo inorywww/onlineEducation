@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import NavList from './NavList.vue';
+import NavList from './NavList';
 export default {
     name: "headerBar",
     components:{
@@ -42,9 +42,6 @@ export default {
     },
     created() {},
     computed: {
-        navList() {
-            return this.$store.state.navList;
-        },
         headerStyle(){
             return this.$store.state.headerStyle;
         }
@@ -58,6 +55,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/style/global.scss";
+
 .header {
     height: 60px;
     .nav {
@@ -94,7 +92,6 @@ export default {
                 margin-left:px2rem(100);
             }
         }
-
         .nav-right {
             @include center;
             height: 100%;

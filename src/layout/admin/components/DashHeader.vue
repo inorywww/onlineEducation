@@ -6,10 +6,19 @@
             </div>
             <div class="breadNav">
                 <el-breadcrumb separator="/">
-                    <el-breadcrumb-item :to="{ path: '/dashboard/home' }"
-                        >首页
+                    <el-breadcrumb-item>
+                        <router-link to="/dashboard/index">
+                            首页
+                        </router-link>
                     </el-breadcrumb-item>
-                    <el-breadcrumb-item>主页</el-breadcrumb-item>
+                    <el-breadcrumb-item 
+                        v-for="(item, index) in breadTitles" 
+                        :key="index"
+                    >
+                        <router-link :to="item.path">
+                            {{item.title}}
+                        </router-link>
+                    </el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
         </div>
@@ -35,6 +44,22 @@ export default {
         return {
             sidebarIcon:'el-icon-s-fold'
         };
+    },
+    computed:{
+        breadTitles(){
+            const bs = this.$route.matched.filter(item => {
+                return item.meta.title;
+            });
+            let res = [];
+            bs.forEach(item => {
+                res.push({
+                    name:item.name,
+                    path:item.path,
+                    title:item.meta.title
+                })
+            })
+            return res;
+        }
     },
     methods: {
         changeShow() {

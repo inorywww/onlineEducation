@@ -9,6 +9,9 @@ import './assets/style/reset.scss';
 
 Vue.use(ElementUI);
 
+import api from './api'
+Vue.prototype.$api = api;
+
 Vue.config.productionTip = false
 
 new Vue({

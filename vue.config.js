@@ -5,11 +5,6 @@ module.exports = {
     devServer: {
         open: true,
         host: "localhost",
-        proxy: {
-            '/api': {
-                target: "http://localhost:8001/api/"
-            }
-        }
     },
     css: {
         loaderOptions: {

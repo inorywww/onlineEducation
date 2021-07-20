@@ -56,7 +56,6 @@ const routes = [
                 path:'index',
                 name:'dashIndex',
                 meta:{
-                    title:'仪表盘',
                     requireAuth:true,
                 },
                 component: () => import('@/views/admin/index'),
