@@ -1,9 +1,11 @@
 <template>
-    <div class="app-conatiner">
+    <div class="home-container">
         <header-bar/>
-        <keep-alive>
-            <router-view />
-        </keep-alive>
+        <div class="content-container">
+            <keep-alive>
+                <router-view />
+            </keep-alive>
+        </div>
         <footer-bar/>
         <tool-bar/>
     </div>
@@ -24,6 +26,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+.home-container{
+    @import '@/assets/style/element-green.scss';
+}
 </style>

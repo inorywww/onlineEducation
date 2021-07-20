@@ -20,7 +20,6 @@
                     </el-input>
                 </div>
             </div>
-
             <div class="nav-right">
                 <nav-list/>
                 <div class="nav-login">

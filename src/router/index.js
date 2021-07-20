@@ -1,10 +1,12 @@
 import Vue from "vue"
 import VueRouter from "vue-router";
 import layoutHome from '@/layout/home/index';
+import layoutAdmin from '@/layout/admin/index';
 import store from '../store';
 Vue.use(VueRouter);
 
-const routes = [{
+const routes = [
+    {
         path: '/',
         redirect: '/index',
         hidden: true,
@@ -36,14 +38,93 @@ const routes = [{
           
         ]
     },
+    {
+        path:'/adminLogin',
+        name:'adminLogin',
+        meta:{
+            title:'管理员登录'
+        },
+        component: () => import('@/views/admin/adminLogin'),
+    },
+    {
+        path:'/dashboard',
+        name:'dashboard',
+        redirect: '/dashboard/index',
+        component: layoutAdmin,
+        children:[
+            {
+                path:'index',
+                name:'dashIndex',
+                meta:{
+                    title:'仪表盘',
+                    requireAuth:true,
+                },
+                component: () => import('@/views/admin/index'),
+            },
+            {
+                path:'teacher',
+                name:'teacher',
+                redirect: 'teacher/all',
+                meta:{
+                    title:'讲师管理',
+                    requireAuth:true,
+                },
+                component: () => import('@/views/admin/teacher'),
+                children:[
+                    {
+                        path:'all',
+                        name:'teacher-all',
+                        meta:{
+                            title:'讲师列表',
+                            requireAuth:true,
+                        },
+                        component: () => import('@/views/admin/teacher/All'),
+                    },
+                    {
+                        path:'add',
+                        name:'teacher-add',
+                        meta:{
+                            title:'添加讲师',
+                            requireAuth:true,
+                        },
+                        component: () => import('@/views/admin/teacher/Add'),
+                    }
+                ]
+            },
+            {
+                path:'course',
+                name:'course',
+                redirect: 'course/all',
+                meta:{
+                    title:'课程管理',
+                    requireAuth:true,
+                },
+                component: () => import('@/views/admin/course'),
+                children:[
+                    {
+                        path:'all',
+                        name:'course-all',
+                        meta:{
+                            title:'课程列表',
+                            requireAuth:true,
+                        },
+                        component: () => import('@/views/admin/course/All'),
+                    },
+                    {
+                        path:'add',
+                        name:'course-add',
+                        meta:{
+                            title:'添加课程',
+                            requireAuth:true,
+                        },
+                        component: () => import('@/views/admin/course/Add'),
+                    },
+                ]
+            },
+        ]
+    },
    
-    // {
-    //     path: '/dashboard',
-    // },
-    
-    // {
-    //     path: '/404',
-    // },
+   
 ]
 
 const router = new VueRouter({
@@ -66,6 +147,7 @@ const router = new VueRouter({
 router.beforeEach( (to, from, next) => {
     if (to.meta.title === '首页') {
         store.commit('setHeader',{name:'header-white',logo:'/images/logo.png'})
+        document.title = `谷粒学苑 - Java培训|大数据培训|前端培训|HTML5培训|Linux运维培训_程序员一站式IT在线学习平台`;
     }
     else{
         store.commit('setHeader',{name:'header-black',logo:'/images/logo-green.png'})

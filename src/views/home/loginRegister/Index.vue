@@ -58,7 +58,7 @@ export default {
     background-color: $c-white;
     width: 460px;
     min-height: 400px;
-    margin: 50px auto;
+    margin: 80px auto 0;
     outline: 1px solid $bd-gray;
     padding-bottom: 28px;
     .active{
