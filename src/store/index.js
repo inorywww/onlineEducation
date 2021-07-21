@@ -20,7 +20,8 @@ const store = new Vuex.Store({
                 path:"/dashboard/index",
                 title:"首页"
             }
-        ]
+        ],
+        allCareer:[],
     },
     mutations:{
         // 公共方法
@@ -51,7 +52,18 @@ const store = new Vuex.Store({
             state.allTabs = state.allTabs.filter(item => {
                 return item.name !== name
             })
-        }, 
+        },
+        delAllTab(state){
+            state.allTabs = [{
+                    name:"dashIndex",
+                    path:"/dashboard/index",
+                    title:"首页"
+                }
+            ];
+        },
+        setCareers(state,careers){
+            state.allCareer = careers;
+        }
     },
     getters:{
         allTeachers: state => state.allTeachers,
@@ -62,6 +74,12 @@ const store = new Vuex.Store({
             commit('setTeachers',res.data.data.items);
             return res.data.data.items;
         },
+        async getCareer({commit}){
+            const res = await Vue.prototype.$api.teacher.getAllCareer();
+            const items = res.data.data.careers.map(item => item.career);
+            commit('setCareers',items);
+            return items;
+        }
     },
     plugins: [
         createPersistedState({

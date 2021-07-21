@@ -9,7 +9,8 @@ export default {
     name: "App",
     components: {},
     async mounted(){
-        await this.$store.dispatch('getTeachers');
+        // await this.$store.dispatch('getTeachers');
+        await this.$store.dispatch('getCareer');
     }
 };
 </script>
@@ -20,5 +21,11 @@ export default {
 }
 .el-tabs__nav-wrap{
     padding: 0 16px !important;
+}
+.upload-container > .el-form-item__content{
+    display: flex !important;
+    .input-box{
+        flex: 1;
+    }
 }
 </style>

@@ -56,6 +56,7 @@ const routes = [
                 path:'index',
                 name:'dashIndex',
                 meta:{
+                    title:'仪表盘',
                     requireAuth:true,
                 },
                 component: () => import('@/views/admin/index'),
@@ -144,14 +145,21 @@ const router = new VueRouter({
 
 // 路由发生变化修改页面title
 router.beforeEach( (to, from, next) => {
-    if (to.meta.title === '首页') {
-        store.commit('setHeader',{name:'header-white',logo:'/images/logo.png'})
-        document.title = `谷粒学苑 - Java培训|大数据培训|前端培训|HTML5培训|Linux运维培训_程序员一站式IT在线学习平台`;
+    if (!to.meta.requireAuth) {
+        store.commit('delAllTab');
+        if (to.meta.title === '首页') {
+            store.commit('setHeader',{name:'header-white',logo:'/images/logo.png'})
+            document.title = `谷粒学苑 - Java培训|大数据培训|前端培训|HTML5培训|Linux运维培训_程序员一站式IT在线学习平台`;
+        }
+        else{
+            store.commit('setHeader',{name:'header-black',logo:'/images/logo-green.png'})
+            document.title = `${to.meta.title} - 谷粒学苑 - Java培训|大数据培训|前端培训|HTML5培训|Linux运维培训_程序员一站式IT在线学习平台`;
+        }
     }
     else{
-        store.commit('setHeader',{name:'header-black',logo:'/images/logo-green.png'})
-        document.title = `${to.meta.title} - 谷粒学苑 - Java培训|大数据培训|前端培训|HTML5培训|Linux运维培训_程序员一站式IT在线学习平台`;
+        document.title = to.meta.title;
     }
+    
     next();
 });
 export default router;

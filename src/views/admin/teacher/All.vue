@@ -32,11 +32,11 @@
                 >
                 </el-date-picker>
             </div>
-            <el-button type="primary" class="filter" @click="filter">
+            <el-button type="primary" class="filter" @click="conditionFilter">
                 查询
             </el-button>
         </div>
-        <el-table :data="teachersInfo.rows" style="width: 100%" border>
+        <el-table :data="teachersInfo.rows" @selection-change="changeSelect" style="width: 100%" border>
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column label="序号" prop="id"></el-table-column>
             <el-table-column label="姓名" prop="name"> </el-table-column>
@@ -75,25 +75,40 @@
             background
         >
         </el-pagination>
+        <edit-dialog 
+        :originForm="originForm"
+        :editForm="editForm" 
+        :editIsShow="editIsShow"
+        v-on:childByValue="childByValue"
+        v-on:childRow="childRow"
+        />
     </div>
 </template>
 
 <script>
 import moment from 'moment';
-import { listMixin } from "@/utils/mixin";
+import { alert } from "@/utils/index";
+import EditDialog from "./EditDialog.vue"
+// import { listMixin } from "@/utils/mixin";
 export default {
     name: "teacherAll",
-    mixins: [listMixin],
+    components: { EditDialog },
+    // mixins: [listMixin],
     async created() {
         await this.pagefilter();
     },
     data() {
         return {
+            teachersInfo:{
+                total:0,
+                items:[]
+            },
             filterData: {
                 name: "",
                 career: "",
                 time: [],
             },
+            selects:[],
             pageSize: 5,
             currentPageIndex: 1,
             pickerOptions: {
@@ -144,29 +159,55 @@ export default {
                     },
                 ],
             },
-            teachersInfo:{
-                total:0,
-                items:[]
-            },
+            editIsShow:false,
+            originForm:{},
+            editForm:{},
         };
     },
     computed: {
-        allCareer() {
-            return [...new Set(this.allTeachers.map((item) => item.career))];
-        },
+        allCareer(){
+            return this.$store.state.allCareer;
+        }
     },
     methods: {
         editTeacher(index, row) {
-            console.log(index, row);
+            this.editForm = Object.assign({},row);
+            this.originForm = Object.assign({},row);
+            this.editIsShow = true;
         },
         delTeacher(index, row) {
-            console.log(index, row);
+            this.$confirm('此操作不可逆，要继续吗？','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$api.teacher.delTeacher(row.id).then(res => {
+                    if(res.data.code === 20000){
+                        alert('删除成功','success');
+                        this.pagefilter();
+                    }else{
+                        alert('删除失败，请稍后重试！','error');
+                    }
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            })
+            
         },
-        async pagefilter(){
-           await this.$api.teacher.pageTeacher(this.currentPageIndex, this.pageSize)
-                .then(res => this.teachersInfo = res.data.data);
+        pagefilter(){
+            this.$api.teacher.pageTeacher(this.currentPageIndex, this.pageSize)
+                .then(res => {
+                    if(res.data.code === 20000){
+                        this.teachersInfo = res.data.data;
+                    }else{
+                        alert('网络错误，请稍后重试！','error')
+                    }
+                });
         },
-        async conditionFilter(){
+        conditionFilter(){
             const data = {
                name:this.filterData.name || "",
                career:this.filterData.career || "",
@@ -177,16 +218,18 @@ export default {
                 data.begin = moment(this.filterData.time[0]).format('YYYY-MM-DD HH:mm:ss') 
                 data.end = moment(this.filterData.time[1]).format('YYYY-MM-DD HH:mm:ss') 
             }
-            await this.$api.teacher.pageTeacherCondition(data,this.currentPageIndex, this.pageSize)
-                .then(res => this.teachersInfo = res.data.data);
+            this.$api.teacher.pageTeacherCondition(data,this.currentPageIndex, this.pageSize)
+                .then(res => {
+                    if(res.data.code === 20000){
+                        this.teachersInfo = res.data.data;
+                        alert('查找成功！','success')
+                    }else{
+                        alert('网络错误，请稍后重试！','error')
+                    }
+                });
         },
-        filter(){
-            for (const key in this.filterData) {
-                if(this.filterData[key].length !== 0){
-                    console.log(this.filterData[key]);
-                }
-            }
-            this.conditionFilter();
+        changeSelect(val){
+            console.log(val);
         },
         changeSize(val) {
             this.pageSize = val;
@@ -196,6 +239,12 @@ export default {
             this.currentPageIndex = index;
             this.pagefilter();
         },
+        childByValue(childValue){
+            this.editIsShow = childValue;
+        },
+        childRow(){
+            this.pagefilter();
+        }
     },
 };
 </script>
