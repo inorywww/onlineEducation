@@ -140,8 +140,6 @@ export default {
             return this.$store.state.allCareer;
         }
     },
-    updated(){
-    },
     data() {
         return {
             formRules: {
@@ -188,7 +186,7 @@ export default {
         },
         editTeacher() {
             // 当改变了的时候才发请求
-            if (!equalObj(this.editForm, this.originForm)) {
+            if (!equalObj(this.editForm, this.originForm) || this.isUpload) {
                 this.$refs["editForm"].validate(async (valid) => {
                     if (valid) {
                         if (this.isUpload) {

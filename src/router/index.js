@@ -64,7 +64,7 @@ const routes = [
             {
                 path:'teacher',
                 name:'teacher',
-                redirect: 'teacher/all',
+                redirect: 'teacher/list',
                 meta:{
                     title:'讲师管理',
                     requireAuth:true,
@@ -72,8 +72,8 @@ const routes = [
                 component: () => import('@/views/admin/teacher'),
                 children:[
                     {
-                        path:'all',
-                        name:'teacher-all',
+                        path:'list',
+                        name:'teacher-list',
                         meta:{
                             title:'讲师列表',
                             requireAuth:true,
@@ -92,32 +92,32 @@ const routes = [
                 ]
             },
             {
-                path:'course',
-                name:'course',
-                redirect: 'course/all',
+                path:'subject',
+                name:'subject',
+                redirect: 'subject/list',
                 meta:{
-                    title:'课程管理',
+                    title:'课程分类管理',
                     requireAuth:true,
                 },
-                component: () => import('@/views/admin/course'),
+                component: () => import('@/views/admin/subject'),
                 children:[
                     {
-                        path:'all',
-                        name:'course-all',
+                        path:'list',
+                        name:'subject-list',
                         meta:{
-                            title:'课程列表',
+                            title:'课程分类列表',
                             requireAuth:true,
                         },
-                        component: () => import('@/views/admin/course/All'),
+                        component: () => import('@/views/admin/subject/All'),
                     },
                     {
                         path:'add',
-                        name:'course-add',
+                        name:'subject-add',
                         meta:{
-                            title:'添加课程',
+                            title:'添加课程分类',
                             requireAuth:true,
                         },
-                        component: () => import('@/views/admin/course/Add'),
+                        component: () => import('@/views/admin/subject/Add'),
                     },
                 ]
             },

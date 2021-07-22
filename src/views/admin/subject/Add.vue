@@ -1,8 +1,7 @@
 <template>
-  <div class="course">
-      course
-      <router-view/>
-  </div>
+    <div class="subject-add">
+        c-add
+    </div>
 </template>
 
 <script>

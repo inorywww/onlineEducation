@@ -1,12 +1,12 @@
 <template>
-    <div class="course-add">
-        c-add
-    </div>
+  <div class="subject">
+      <router-view/>
+  </div>
 </template>
 
 <script>
 export default {
-
+    name:'subject'
 }
 </script>
 

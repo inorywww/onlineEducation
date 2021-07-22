@@ -67,17 +67,15 @@ export default {
                     icon: "icon-jiaolian1",
                     title: "讲师管理",
                     name: "teacher",
-                    path: "/dashboard/teacher/all",
+                    path: "/dashboard/teacher/list",
                     subs: [
                         {
                             title: "讲师列表",
-                            fatherTitle:'讲师管理',
-                            name: "teacher-all",
-                            path: "/dashboard/teacher/all",
+                            name: "teacher-list",
+                            path: "/dashboard/teacher/list",
                         },
                         {
                             title: "添加讲师",
-                            fatherTitle:'讲师管理',
                             name: "teacher-add",
                             path: "/dashboard/teacher/add",
                         },
@@ -85,21 +83,19 @@ export default {
                 },
                 {
                     icon: "icon-kecheng",
-                    title: "课程管理",
-                    name: "course",
-                    path: "/dashboard/course/all",
+                    title: "课程分类管理",
+                    name: "subject",
+                    path: "/dashboard/subject/list",
                     subs: [
                         {
-                            title: "课程列表",
-                            fatherTitle:'课程管理',
-                            name: "course-all",
-                            path: "/dashboard/course/all",
+                            title: "课程分类列表",
+                            name: "subject-list",
+                            path: "/dashboard/subject/list",
                         },
                         {
-                            title: "添加课程",
-                            fatherTitle:'课程管理',
-                            name: "course-add",
-                            path: "/dashboard/course/add",
+                            title: "添加课程分类",
+                            name: "subject-add",
+                            path: "/dashboard/subject/add",
                         },
                     ],
                 }
