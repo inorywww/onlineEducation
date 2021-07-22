@@ -29,7 +29,7 @@
                                 :route="{path: sub.path}"
                                 class="submenu-item"
                             >
-                                <i :class="`iconfont ${item.icon}`"></i>
+                                <i :class="`iconfont ${sub.icon}`"></i>
                                 <span>&emsp;{{ sub.title }}</span>
                             </el-menu-item>
                         </template>
@@ -70,11 +70,13 @@ export default {
                     path: "/dashboard/teacher/list",
                     subs: [
                         {
+                            icon:'icon-liebiao',
                             title: "讲师列表",
                             name: "teacher-list",
                             path: "/dashboard/teacher/list",
                         },
                         {
+                            icon:'icon-icon-test',
                             title: "添加讲师",
                             name: "teacher-add",
                             path: "/dashboard/teacher/add",
@@ -82,22 +84,30 @@ export default {
                     ],
                 },
                 {
-                    icon: "icon-kecheng",
+                    icon: "icon-kechengfenlei",
                     title: "课程分类管理",
                     name: "subject",
-                    path: "/dashboard/subject/list",
-                    subs: [
+                    path: "/dashboard/subject",
+                },
+                {
+                    icon:'icon-kecheng',
+                    title:'课程管理',
+                    name:'course',
+                    path:'/dashboard/course/list',
+                    subs:[
                         {
-                            title: "课程分类列表",
-                            name: "subject-list",
-                            path: "/dashboard/subject/list",
+                            icon:'icon-liebiao',
+                            title:'课程列表',
+                            name:'course-list',
+                            path:'/dashboard/course/list',
                         },
                         {
-                            title: "添加课程分类",
-                            name: "subject-add",
-                            path: "/dashboard/subject/add",
-                        },
-                    ],
+                            icon:'icon-icon-test',
+                            title:'添加课程',
+                            name:'course-add',
+                            path:'/dashboard/course/add',
+                        }
+                    ]
                 }
             ],
         }

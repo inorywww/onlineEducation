@@ -94,30 +94,39 @@ const routes = [
             {
                 path:'subject',
                 name:'subject',
-                redirect: 'subject/list',
                 meta:{
                     title:'课程分类管理',
                     requireAuth:true,
                 },
                 component: () => import('@/views/admin/subject'),
+            },
+            {
+                path:'course',
+                name:'course',
+                redirect: 'course/list',
+                meta:{
+                    title:'课程管理',
+                    requireAuth:true,
+                },
+                component: () => import('@/views/admin/course'),
                 children:[
                     {
                         path:'list',
-                        name:'subject-list',
+                        name:'course-list',
                         meta:{
-                            title:'课程分类列表',
+                            title:'课程列表',
                             requireAuth:true,
                         },
-                        component: () => import('@/views/admin/subject/All'),
+                        component: () => import('@/views/admin/course/All'),
                     },
                     {
                         path:'add',
-                        name:'subject-add',
+                        name:'course-add',
                         meta:{
-                            title:'添加课程分类',
+                            title:'添加课程',
                             requireAuth:true,
                         },
-                        component: () => import('@/views/admin/subject/Add'),
+                        component: () => import('@/views/admin/course/Add'),
                     },
                 ]
             },

@@ -22,6 +22,10 @@ const store = new Vuex.Store({
             }
         ],
         allCareer:[],
+        addCourseInfo:{
+            lessonNum: 1,
+            price: 0,
+        }
     },
     mutations:{
         // 公共方法
@@ -63,7 +67,8 @@ const store = new Vuex.Store({
         },
         setCareers(state,careers){
             state.allCareer = careers;
-        }
+        },
+
     },
     getters:{
         allTeachers: state => state.allTeachers,

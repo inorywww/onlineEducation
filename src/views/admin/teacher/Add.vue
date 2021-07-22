@@ -125,20 +125,18 @@ export default {
                         alert("添加失败，请选择头衔！","error");
                         return;
                     }
-                    if(this.isUpload){
-                        await this.$api.oss.upload(this.uploadData).then((res) => {
-                            this.addForm.avatar = res.data.data.url;
-                            console.log(res);
-                        });
-                    }
+                    
                     this.$confirm("确定要添加吗？", "提示", {
                         confirmButtonText: "确定",
                         cancelButtonText: "取消",
                         type: "success",
-                    }).then(() => {
-                        console.log(this.addForm);
-                        this.$api.teacher.addTeacher(this.addForm).then((res) => {
-                            console.log(res);
+                    }).then(async () => {
+                        if(this.isUpload){
+                        await this.$api.oss.upload(this.uploadData).then((res) => {
+                            this.addForm.avatar = res.data.data.url;
+                        });
+                        }
+                        this.$api.teacher.addTeacher(this.addForm).then((res) => { 
                             if (res.data.code === 20000) {
                                 alert("添加成功", "success");
                                 this.addForm = {};

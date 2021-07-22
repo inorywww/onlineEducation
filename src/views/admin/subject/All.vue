@@ -1,5 +1,6 @@
 <template>
-    <div class="subject-all">
+    <div class="container">
+        <h1>课程分类列表</h1>
         <div class="filter-input">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText">
             </el-input>
@@ -51,12 +52,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.subject-all{
-    width: 50%;
-    margin:12px auto;
-    .filter-input{
-        // width: 50%;
-        margin-bottom: 12px;
+.container{
+    // @include columnCenter;
+    text-align: center;
+    h1{
+        font-size: $text-big;
+        margin: 12px 0;
+    }
+    .tree{
+        margin: 0 auto;
+        text-align: center;
     }
 }
 </style>
