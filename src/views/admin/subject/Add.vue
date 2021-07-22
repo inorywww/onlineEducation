@@ -33,7 +33,6 @@ export default {
     },
     methods:{
          beforeUpload(file) {
-            console.log(file);
             const isXlsx = file.name.split('.')[1] === 'xlsx';
             if (!isXlsx) {
                 alert("图片只能是xlsx格式!", "error");
@@ -48,6 +47,7 @@ export default {
                 this.$api.subject.addSubject(this.uploadData).then(() => {
                     alert('上传成功！','success')
                     this.$refs.upload.clearFiles();
+                    this.$store.dispatch('getSubject');
                     setTimeout(() => {
                         location.reload();
                     },500)

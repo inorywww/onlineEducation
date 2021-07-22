@@ -20,22 +20,29 @@
 </template>
 
 <script>
+import { listMixin } from "@/utils/mixin";
 export default {
     name: "subjectAll",
     async created() {
-        await this.$api.subject.getAllSubject().then(res => {
-            this.list = JSON.parse(JSON.stringify(res.data.data.list).replace(/title/g,'label'))
-        });
+        // await this.$api.subject.getAllSubject().then(res => {
+        //     this.list = JSON.parse(JSON.stringify(res.data.data.list).replace(/title/g,'label'))
+        // });
     },
+    mixins: [listMixin],
     data() {
         return {
             filterText: "",
-            list: [],
+            // list: [],
             defaultProps: {
                 children: "children",
                 label: "label",
             },
         };
+    },
+    computed:{
+        list(){
+            return this.allSubject
+        }
     },
     watch: {
         filterText(val) {

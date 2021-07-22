@@ -64,13 +64,13 @@
 
                     <div class="upload-box">
                         <el-upload
-                            class="upload-demo"
+                            :class="{hide:isUpload}"
                             action=""
                             :multiple="true"
                             :on-change="beforeUpload"
                             :auto-upload="false"
                             :on-remove="removeFile"
-                            ref="avatar"
+                            ref="upload"
                         >
                             <el-button type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">
@@ -115,6 +115,7 @@
 
 <script>
 import { alert, equalObj } from "@/utils/index";
+
 export default {
     name: "editDialog",
     props: {
@@ -131,7 +132,7 @@ export default {
             set(val) {
                 // 给父组件传值，更改显示状态
                 this.file = '';
-                this.$refs.avatar.clearFiles();
+                this.$refs.upload.clearFiles();
                 this.uploadData = new FormData();
                 this.$emit("childByValue", val);
             },
@@ -152,7 +153,6 @@ export default {
             },
             uploadData: new FormData(),
             isUpload: false,
-            file:''
         };
     },
     methods: {
@@ -163,20 +163,18 @@ export default {
             
             if (!isJPG) {
                 alert("图片只能是jpg/png格式!", "error");
-                this.$refs.avatar.clearFiles();
+                this.$refs.upload.clearFiles();
                 return isJPG;
             }
             if (!isLt2M) {
                 alert("上传头像图片大小不能超过 2MB!", "error");
-                this.$refs.avatar.clearFiles();
+                this.$refs.upload.clearFiles();
                 return isLt2M;
             }
-            if(this.file !== ''){
+            if(this.isUpload){
                 alert('只允许上传一张！','warning');
                 return false;
             }
-            
-            this.file = file;
             this.uploadData.append("file", file.raw);
             this.isUpload = true;
         },
@@ -199,6 +197,9 @@ export default {
                             .then((res) => {
                                 if (res.status === 200) {
                                     alert("修改成功", "success");
+                                    this.uploadData = new FormData();
+                                    this.isUpload = false;
+                                    this.$refs.upload.clearFiles();
                                     this.$emit("childByValue", false);//关闭dialog
                                     this.$emit("childRow"); //给父组件传递已经修改的消息，刷新
                                 } else {

@@ -9,8 +9,9 @@ export default {
     name: "App",
     components: {},
     async mounted(){
-        // await this.$store.dispatch('getTeachers');
+        await this.$store.dispatch('getTeacher');
         await this.$store.dispatch('getCareer');
+        await this.$store.dispatch('getSubject');
     }
 };
 </script>
@@ -27,5 +28,8 @@ export default {
     .input-box{
         flex: 1;
     }
+}
+.hideUpload .el-upload--picture-card {
+    display: none;
 }
 </style>

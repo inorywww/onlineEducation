@@ -92,11 +92,12 @@ import EditDialog from "./EditDialog.vue"
 // import { listMixin } from "@/utils/mixin";
 export default {
     name: "teacherAll",
-    components: { EditDialog },
+    components: { EditDialog},
     // mixins: [listMixin],
     async created() {
         await this.pagefilter();
     },
+    
     data() {
         return {
             teachersInfo:{

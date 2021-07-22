@@ -5,7 +5,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state:{
         // 公共数据
-        allTeachers:[],
+        allTeacher:[],
         // 前台相关数据
         headerStyle:{
             name:'header-black',
@@ -22,6 +22,7 @@ const store = new Vuex.Store({
             }
         ],
         allCareer:[],
+        allSubject:[],
         addCourseInfo:{
             lessonNum: 1,
             price: 0,
@@ -30,7 +31,7 @@ const store = new Vuex.Store({
     mutations:{
         // 公共方法
         setTeachers(state,list){
-            state.allTeachers = list;
+            state.allTeacher = list;
         },
         // 前台方法
         setHeader(state,style){
@@ -68,13 +69,16 @@ const store = new Vuex.Store({
         setCareers(state,careers){
             state.allCareer = careers;
         },
-
+        setSubjects(state,subjects){
+            state.allSubject = subjects;
+        }
     },
     getters:{
-        allTeachers: state => state.allTeachers,
+        allTeacher: state => state.allTeacher,
+        allSubject: state => state.allSubject,
     },
     actions:{
-        async getTeachers({commit}){
+        async getTeacher({commit}){
             const res = await Vue.prototype.$api.teacher.findAll();
             commit('setTeachers',res.data.data.items);
             return res.data.data.items;
@@ -83,6 +87,12 @@ const store = new Vuex.Store({
             const res = await Vue.prototype.$api.teacher.getAllCareer();
             const items = res.data.data.careers.map(item => item.career);
             commit('setCareers',items);
+            return items;
+        },
+        async getSubject({commit}){
+            const res = await Vue.prototype.$api.subject.getAllSubject();
+            const items = JSON.parse(JSON.stringify(res.data.data.list).replace(/title/g,'label'));
+            commit('setSubjects',items);
             return items;
         }
     },

@@ -1,7 +1,7 @@
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import {mapGetters} from 'vuex';
 export const listMixin = {
     computed: {
-      ...mapGetters(['allTeachers'])
+      ...mapGetters(['allTeacher', 'allSubject'])
     }
-  }
+}
   

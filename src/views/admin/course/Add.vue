@@ -16,11 +16,14 @@
                 ></el-step>
             </el-steps>
         </div>
-        <div class="conatiner">
-            <add-info v-if="0 === active" @infoValid="getInfoValid"/>
-            <add-chapter v-if="1 === active"/>
-            <add-submit v-if="2 === active"/>
-        </div>
+        <keep-alive>
+            <div class="conatiner">
+                <add-info v-if="0 === active" @infoValid="getInfoValid" @uploadData="getUploadData"/>
+                <add-chapter v-if="1 === active"/>
+                <add-submit v-if="2 === active"/>
+            </div>
+        </keep-alive>
+        
         <div class="actions">
             <template v-if="0 === active">
                 <el-button style="margin-top: 12px" type="primary" @click="next">保存并下一步</el-button>
@@ -49,7 +52,18 @@ export default {
         return {
             active: 0,
             infoVaild:false,
+            uploadData: new FormData(),
         };
+    },
+    computed: {
+        courseInfo: {
+            get() {
+                return this.$store.state.addCourseInfo
+            },
+            set(val) {
+                return val
+            },
+        },
     },
     methods: {
         pre() {
@@ -57,11 +71,16 @@ export default {
                 this.active --;
             }
         },
-        next() {
+        async next() {
             if (this.active < 2) {
                 if(this.active === 0 ){
                     if(this.infoVaild){
                         alert('填写课程信息成功','success');
+                        await this.$api.oss.upload(this.uploadData).then((res) => {
+                            this.courseInfo.cover = res.data.data.url;
+                            console.log(res);
+                        });
+                        console.log(this.courseInfo);
                         this.active ++;
                     }
                     else{
@@ -76,6 +95,10 @@ export default {
         getInfoValid(valid){
             this.infoVaild = valid;
         },
+        // 从myupload组件传递回来的文件
+        getUploadData(data){
+            this.uploadData = data;
+        }
     },
     updated(){
     }
