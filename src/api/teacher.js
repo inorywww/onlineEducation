@@ -1,3 +1,6 @@
+/**
+ * 讲师管理
+ */
 import request from './request';
 import base from './base';
 const baseUrl = base.teacher;

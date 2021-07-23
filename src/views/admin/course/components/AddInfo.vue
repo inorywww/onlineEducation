@@ -85,7 +85,7 @@ export default {
                     {
                         required: true,
                         message: "请输入课程名称！",
-                        trigger: "change",
+                        trigger: "blur",
                     },
                 ],
                 lessonNum: [
@@ -93,14 +93,14 @@ export default {
                         required: true,
                         type: "number",
                         message: "请输入课时！",
-                        trigger: "change",
+                        trigger: "blur",
                     },
                 ],
                 description: [
                     {
                         required: true,
                         message: "请输入课程简介！",
-                        trigger: "change",
+                        trigger: "blur",
                     },
                 ],
                 price: [
@@ -108,21 +108,21 @@ export default {
                         required: true,
                         type: "number",
                         message: "请输入课程价格！",
-                        trigger: "change",
+                        trigger: "blur",
                     },
                 ],
                 subject: [
                     {
                         required: true,
                         message: "请选择课程分类！",
-                        trigger: "change",
+                        trigger: "blur",
                     },
                 ],
                 teacherId: [
                     {
                         required: true,
                         message: "请选择讲师！",
-                        trigger: "change",
+                        trigger: "blur",
                     },
                 ],
             },

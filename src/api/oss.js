@@ -1,3 +1,6 @@
+/**
+ * 文件上传管理
+ */
 import request from './request';
 import base from './base';
 const baseUrl = base.oss;
@@ -14,6 +17,4 @@ const oss = {
         })
     }
 }
-// http://localhost:8002/eduoss
-// const ossSrc = baseUrl +'/fileoss'
 export default oss

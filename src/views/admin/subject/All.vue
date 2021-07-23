@@ -23,16 +23,10 @@
 import { listMixin } from "@/utils/mixin";
 export default {
     name: "subjectAll",
-    async created() {
-        // await this.$api.subject.getAllSubject().then(res => {
-        //     this.list = JSON.parse(JSON.stringify(res.data.data.list).replace(/title/g,'label'))
-        // });
-    },
     mixins: [listMixin],
     data() {
         return {
             filterText: "",
-            // list: [],
             defaultProps: {
                 children: "children",
                 label: "label",
@@ -60,7 +54,6 @@ export default {
 
 <style lang="scss" scoped>
 .container{
-    // @include columnCenter;
     text-align: center;
     h1{
         font-size: $text-big;

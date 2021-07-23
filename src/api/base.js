@@ -7,7 +7,10 @@ const base = {
     teacher: baseHttp + 'teacher',    
     subject: baseHttp + 'subject',
     course: baseHttp + 'course',
+    chapter:baseHttp + 'chapter',
+    video:baseHttp + 'video',
     oss: 'http://localhost:8002/eduoss',
+
 }
 
 export default base;

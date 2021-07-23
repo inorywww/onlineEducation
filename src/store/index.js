@@ -23,9 +23,17 @@ const store = new Vuex.Store({
         ],
         allCareer:[],
         allSubject:[],
+        courseActive:0,
         addCourseInfo:{
             lessonNum: 1,
             price: 0,
+        },
+        tableData:[],
+        addChapterInfo:{
+            
+        },
+        addVideoInfo:{
+
         }
     },
     mutations:{
@@ -71,6 +79,12 @@ const store = new Vuex.Store({
         },
         setSubjects(state,subjects){
             state.allSubject = subjects;
+        },
+        setActive(state,val){
+            state.courseActive = val;
+        },
+        setTableData(state,data){
+            state.tableData = data;
         }
     },
     getters:{

@@ -50,20 +50,33 @@ export default {
     name: "courseAdd",
     data() {
         return {
-            active: 0,
             infoVaild:false,
             uploadData: new FormData(),
         };
     },
     computed: {
+        // 课程信息
         courseInfo: {
             get() {
                 return this.$store.state.addCourseInfo
             },
             set(val) {
-                return val
+                return val;
             },
         },
+        // 章节信息
+        tableData(){
+            return this.$store.state.tableData
+        },
+        // 当前进度
+        active:{
+            get(){
+                return this.$store.state.courseActive;
+            },
+            set(val){
+                this.$store.commit('setActive',val);
+            }
+        }
     },
     methods: {
         pre() {
@@ -77,15 +90,17 @@ export default {
                     if(this.infoVaild){
                         alert('填写课程信息成功','success');
                         await this.$api.oss.upload(this.uploadData).then((res) => {
-                            this.courseInfo.cover = res.data.data.url;
-                            console.log(res);
+                            this.courseInfo.cover = res.data.data.url || '';
                         });
-                        console.log(this.courseInfo);
+                        // console.log(this.courseInfo);
                         this.active ++;
                     }
                     else{
                         alert('请正确填写字段！','error')
                     }
+                }
+                else if(this.active === 1){
+                    console.log('tableData',this.tableData);
                 }
             }
         },
