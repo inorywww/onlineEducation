@@ -70,6 +70,7 @@ export default {
     },
     updated() {
         this.$refs["courseInfo"].validate((valid) => {
+            
             this.$emit("infoValid", valid);
             if(this.isUpload){
                 this.$emit("uploadData", this.uploadData);

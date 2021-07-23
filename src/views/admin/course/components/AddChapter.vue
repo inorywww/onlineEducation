@@ -17,14 +17,13 @@
                 row-key="value"
                 stripe
                 size="medium"
-                
                 :tree-props="{ children: 'children' }"
             >
-                <el-table-column prop="label" label="标签名称">
+                <el-table-column prop="label" label="名称">
                 </el-table-column>
-                <el-table-column prop="location" label="层级">
+                <el-table-column prop="sort" label="序号">
                 </el-table-column>
-                <el-table-column label="操作" :align="alignDir" width="180">
+                <el-table-column label="操作" align="center" width="180">
                     <template slot-scope="scope">
                         <el-button
                             type="primary"
@@ -46,7 +45,7 @@
             <el-dialog
                 :title="textMap[dialogStatus]"
                 :visible.sync="dialogFormVisible"
-                width="30%"
+                width="50%"
             >
                 <el-form
                     ref="dataForm"
@@ -75,31 +74,46 @@
                             />
                         </el-select>
                     </el-form-item>
+
                     <el-form-item
                         v-if="sonStatus && dialogStatus !== 'update'"
                         label="章节："
-                        prop="children"
+                        prop="parent"
                     >
-                        <el-cascader
-                            size="small"
-                            :key="isResouceShow"
-                            v-model="temp.children"
-                            placeholder="请选择章节"
-                            :label="'label'"
-                            :value="'value'"
-                            :options="tableData"
-                            :props="{ checkStrictly: true }"
-                            clearable
-                            @change="getCasVal"
-                        ></el-cascader>
+                        <el-select 
+                        v-model="temp.parent"
+                        @change="chapterChange"
+                        placeholder="请选择">
+                            <el-option
+                            v-for="item in tableData"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-form-item>
+
                     <el-form-item label="标签名称：" prop="label">
                         <el-input
                             v-model="temp.label"
                             size="small"
                             autocomplete="off"
-                            placeholder="请输入标签名称"
+                            placeholder="请输入名称"
                         ></el-input>
+                    </el-form-item>
+                    
+                     <el-form-item
+                        v-if="sonStatus"
+                        label="是否免费："
+                        prop="isFree"
+                    >
+                        <el-radio v-model="temp.isFree" :label="true">免费</el-radio>
+                        <el-radio v-model="temp.isFree" :label="false">默认</el-radio>
+                    </el-form-item>
+
+                    <el-form-item label="序号：" prop="sort">
+                        <el-input-number :min="1" v-model="temp.sort" label="描述文字"></el-input-number>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -109,10 +123,7 @@
                     <el-button
                         type="primary"
                         size="small"
-                        @click=" dialogStatus === 'create'
-                                ? createData()
-                                : updateData()
-                        "
+                        @click=" dialogStatus === 'create' ? createData() : updateData()"
                     >
                         确认
                     </el-button>
@@ -123,12 +134,13 @@
 </template>
 
 <script>
-// import { alert } from "@/utils/index";
+import { alert } from "@/utils/index";
 export default {
     name: "courseChapter",
+    mounted(){
+    },
     data() {
         return {
-            alignDir: "center",
             textMap: {
                 update: "编辑",
                 create: "添加",
@@ -136,29 +148,14 @@ export default {
             dialogStatus: "",
             dialogFormVisible: false,
             temp: {},
-            isResouceShow: 1,
             sonStatus: false,
-            casArr: [],
             idx: "",
-            childKey: [],
+            parentIndex: 0,
             rules: {
-                location: [
-                    {
-                        required: true,
-                        message: "请选择章节",
-                        trigger: "blur",
-                    },
-                ],
-                label: [
-                    { required: true, message: "请输入名称", trigger: "blur" },
-                ],
-                children: [
-                    {
-                        required: true,
-                        message: "请选择章节",
-                        trigger: "blur",
-                    },
-                ],
+                location: [{required: true,message: "请选择章节",trigger: "blur"}],
+                label: [{ required: true, message: "请输入名称", trigger: "blur" },],
+                parent: [{required: true,message: "请选择章节",trigger: "blur"},],
+                isFree:[{required: true,message: "请选择是否免费",trigger: "blur"}]
             },
             locationData: [
                 {
@@ -170,136 +167,28 @@ export default {
                     name: "小节",
                 },
             ],
-            // tableData: [
-            //     {
-            //         tagId: "1", // 标签id
-            //         label: "第0", // 标签名称
-            //         parent: "", // 父级名称
-            //         location: "1", // 层级
-            //         value: "0", // 标识位
-            //         children: [
-            //             {
-            //                 tagId: "1", // 子标签id
-            //                 childKey: ["0", "0"], // 子标识位
-            //                 label: "第0-0",
-            //                 parent: "第0",
-            //                 location: "2",
-            //                 value: "0-0",
-            //                 children: [],
-            //             },
-            //             {
-            //                 tagId: "2", // 子标签id
-            //                 childKey: ["0", "1"],
-            //                 label: "第0-1",
-            //                 parent: "第0",
-            //                 location: "2",
-            //                 value: "0-1",
-            //                 children: [],
-            //             },
-            //         ],
-            //     },
-            // ],
         };
     },
     computed:{
         tableData(){
             return this.$store.state.tableData
+        },
+        sortTemp(){
+            return 0
         }
     },
     methods: {
-        // 递归寻找同级
-        findSameTable(arr, i, casArr) {
-            if (i == casArr.length - 1) {
-                return arr;
-            } else {
-                return this.findTable(
-                    arr[casArr[i].substr(casArr[i].length - 1, 1)].children,
-                    (i += 1),
-                    casArr
-                );
-            }
-        },
-        // 寻找父级
-        findTable(arr, i, casArr) {
-            if (i == casArr.length - 1) {
-                let index = casArr[i].substr(casArr[i].length - 1, 1);
-                return arr[index];
-            } else {
-                return this.findTable(
-                    arr[casArr[i].substr(casArr[i].length - 1, 1)].children,
-                    (i += 1),
-                    casArr
-                );
-            }
-        },
-        // 递归表格数据(添加)
-        find(arr, i) {
-            if (i == this.casArr.length - 1) {
-                return arr[this.casArr[i].substr(this.casArr[i].length - 1, 1)]
-                    .children;
-            } else {
-                return this.find(
-                    arr[this.casArr[i].substr(this.casArr[i].length - 1, 1)]
-                        .children,
-                    (i += 1)
-                );
-            }
-        },
-        // 递归表格数据(编辑)
-        findSd(arr, i, casArr) {
-            if (i == casArr.length - 1) {
-                let index = casArr[i].substr(casArr[i].length - 1, 1);
-                return arr.splice(index, 1, this.temp);
-            } else {
-                return this.findSd(
-                    arr[casArr[i].substr(casArr[i].length - 1, 1)].children,
-                    (i += 1),
-                    casArr
-                );
-            }
-        },
-        // 递归寻找同步名称
-        findLable(arr, i, casArr) {
-            if (i == casArr.length - 1) {
-                let index = casArr[i].substr(casArr[i].length - 1, 1);
-                return arr[index];
-            } else {
-                return this.findLable(
-                    arr[casArr[i].substr(casArr[i].length - 1, 1)].children,
-                    (i += 1),
-                    casArr
-                );
-            }
-        },
         // 同步子名称
         useChildLable(arr) {
-            if (arr !== []) {
-                arr.forEach((item) => {
-                    item.parent = this.temp.label;
-                });
-            }
-        },
-        // 递归表格数据(删除)
-        findDel(arr, i, item) {
-            let casArr = item.childKey;
-            if (i == casArr.length - 2) {
-                let index = casArr[i].substr(casArr[i].length - 1, 1);
-                arr[index].children.forEach((it, ix, arrs) => {
-                    if (it == item) {
-                        return arrs.splice(ix, 1);
-                    }
-                });
-            } else {
-                return this.findDel(
-                    arr[casArr[i].substr(casArr[i].length - 1, 1)].children,
-                    (i += 1),
-                    item
-                );
+            if (arr.length !== 0) {
+                arr.forEach(item => item.parent = this.temp.value);
             }
         },
         // 置空
         resetTemp() {
-            this.temp = {};
+            this.temp = {
+                sort: 1,
+            };
         },
         // 打开添加
         handleCreate() {
@@ -315,59 +204,62 @@ export default {
             this.$refs["dataForm"].validate((valid) => {
                 if (valid) {
                     if (this.sonStatus == false) {
+                        if(this.hasSort(this.tableData)){
+                            alert('添加失败，sort不能重复！','warning')
+                            return false;
+                        }
                         this.temp.value = String(this.tableData.length);
                         const obj = Object.assign({}, this.temp);
                         obj.children = [];
                         obj.parent = "";
                         this.tableData.push(obj);
+                        this.resetSort();
                         this.$store.commit('setTableData',this.tableData);
-                        this.$message({
-                            type: "success",
-                            message: "添加成功",
-                        });
+                        alert('添加成功','success');
                         this.dialogFormVisible = false;
                     } else {
-                        let arr = this.find(this.tableData, 0);
-                        this.temp.value =
-                            String(this.casArr[this.casArr.length - 1]) +
-                            "-" +
-                            String(arr.length);
+                        let arr = [];//childrens
+                        this.tableData.forEach((item,index) => {
+                            if(item.value === this.temp.parent){
+                                arr = item.children;
+                                this.parentIndex = index;
+                            }
+                        });
+                        if(this.hasSort(arr)){
+                            alert('添加失败，sort不能重复！','warning')
+                            return false;
+                        }
                         delete this.temp.children;
                         const obj = Object.assign({}, this.temp);
-                        obj.children = [];
-                        obj.childKey = [...this.casArr, String(arr.length)];
-                        obj.parent = this.findTable(this.tableData,0,this.casArr).label;
-                        if (this.temp.location === "2") {
-                            obj.location = String([...this.casArr, String(arr.length)].length);
-                        }
+                        obj.value = String(this.parentIndex) + '-' + String(arr.length);
+                        obj.childKey = [this.parentIndex, arr.length];
                         arr.push(obj);
+                        this.resetSort();
                         this.$store.commit('setTableData',this.tableData);
-                        this.$message({
-                            type: "success",
-                            message: "添加成功",
-                        });
+                        alert('添加成功','success');
                         this.dialogFormVisible = false;
                     }
                 } else {
                     return false;
                 }
             });
-            // console.log(this.tableData);
-            // this.updateAddInfo()
         },
         // 打开更新
         handleUpdate(row) {
-            row.value.length != 1
-                ? (this.sonStatus = true)
-                : (this.sonStatus = false);
+            console.log(this.tableData);
+            row.value.length !== 1 ? (this.sonStatus = true) : (this.sonStatus = false);
             this.temp = Object.assign({}, row); // copy obj
-            if (row.childKey) {
-                this.childKey = row.childKey;
-                this.idx = row.childKey[row.childKey.length - 1];
+            if (this.sonStatus) {
+                this.tableData.forEach((item,index) => {
+                    if(item.value === this.temp.parent){
+                        this.parentIndex = index;
+                    }
+                });
+                this.idx = this.tableData[this.parentIndex].children.findIndex(item => item.value === row.value)
             } else {
-                this.idx = row.value;
+                this.idx = this.tableData.findIndex(item => item.value === row.value);
             }
-
+            // return
             this.dialogStatus = "update";
             this.dialogFormVisible = true;
             this.$nextTick(() => {
@@ -379,22 +271,25 @@ export default {
             this.$refs["dataForm"].validate((valid) => {
                 if (valid) {
                     if (this.temp.location === "1") {
+                        if(this.hasSort(this.tableData)){
+                            alert('编辑失败，sort不能重复！','warning')
+                            return false;
+                        }
                         this.tableData.splice(this.idx, 1, this.temp);
                         this.useChildLable(this.tableData[this.idx].children);
+                        this.resetSort();
                         this.$store.commit('setTableData',this.tableData);
-                        this.$message({
-                            type: "success",
-                            message: "编辑成功",
-                        });
+                        alert('编辑成功','success');
                         this.dialogFormVisible = false;
                     } else {
-                        this.findSd(this.tableData, 0, this.childKey);
-                        this.useChildLable(this.findLable(this.tableData, 0, this.childKey).children);
+                        if(this.hasSort(this.tableData[this.parentIndex].children)){
+                            alert('编辑失败，sort不能重复！','warning')
+                            return false;
+                        }
+                        this.tableData[this.parentIndex].children.splice(this.idx, 1, this.temp);
+                        this.resetSort();
                         this.$store.commit('setTableData',this.tableData);
-                        this.$message({
-                            type: "success",
-                            message: "编辑成功",
-                        });
+                        alert('编辑成功','success');
                         this.dialogFormVisible = false;
                     }
                 } else {
@@ -402,63 +297,73 @@ export default {
                 }
             });
         },
-        // 删除父级节点
-        deleteParent(item) {
-            this.tableData.forEach((it, ix, arrs) => {
-                if (it == item) {
-                    return arrs.splice(ix, 1);
-                }
-            });
-        },
         // 删除
-        deleteClick(item) {
+        deleteClick(row) {
+            row.value.length !== 1 ? (this.sonStatus = true) : (this.sonStatus = false);
             this.$confirm(`此操作将删除该标签, 是否继续?`, "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning",
             }).then(() => {
-                if (item.children.length != 0) {
-                    this.$message.warning({
-                        message: "请删除子节点",
-                        duration: 1000,
-                    });
+                if (row.location === '1' && row.children.length !== 0) {
+                    alert('请先删除子节点','warning');
                 } else {
-                    ++this.isResouceShow;
-                    if (item.value.length == 1) {
-                        this.deleteParent(item);
-                        this.$store.commit('setTableData',this.tableData);
-                        this.$message({
-                            type: "success",
-                            message: "删除成功",
-                        });
-                    } else {
-                        this.findDel(this.tableData, 0, item);
-                        this.$store.commit('setTableData',this.tableData);
-                        this.$message({
-                            type: "success",
-                            message: "删除成功",
-                        });
+                    if(row.location === '1'){
+                        const index = this.tableData.findIndex(table => table.value === row.value)
+                        this.tableData.splice(index, 1);
                     }
+                    else{
+                        this.tableData.forEach(table => {
+                            if(table.value === row.parent){
+                                const index = table.children.findIndex(child => child.value === row.value)
+                                table.children.splice(index, 1);
+                            }
+                        })
+                    }
+                    this.resetSort();
+                    this.$store.commit('setTableData',this.tableData);
+                    alert('删除成功','success')
                 }
             }).catch(() => {
-                this.$message({
-                    type: "info",
-                    message: "已取消删除",
-                });
+               alert('已取消删除','info')
             });
         },
         // 是否显示次位置
         locationChange(v) {
             if (v == 2) {
                 this.sonStatus = true;
+                this.temp.sort = 1
             } else {
                 this.sonStatus = false;
+                this.temp.sort = this.tableData.length + 1
             }
         },
-        // 获取次位置
-        getCasVal(v) {
-            this.casArr = v;
+        //改变父章节时，动态改变sort
+        chapterChange(v){
+            this.temp.sort = this.tableData[v].children.length + 1;
         },
+        // 根据sort重新排序
+        resetSort(){
+            this.tableData.sort(compare('sort'));
+            this.tableData.forEach(item => {
+                item.children.sort(compare('sort'));
+            })
+            function compare(property){
+                return function(a,b){
+                    const value1 = a[property];
+                    const value2 = b[property];
+                    return value1 - value2;
+                }
+            }
+        },
+        // 判断是否有当前sort
+        hasSort(arr){
+            if(arr.length === 0){
+                return false;
+            }
+            const tempArr = arr.filter(item => item.value !== this.temp.value)
+            return tempArr.findIndex(item => item.sort === this.temp.sort) !== -1;
+        }
         // updateAddInfo(){
         //     const chapterInfo = this.tableData.map(item => {
         //         return {

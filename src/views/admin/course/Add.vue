@@ -12,12 +12,12 @@
                 ></el-step>
                 <el-step
                     title="步骤3"
-                    description="提交审核"
+                    description="发布课程"
                 ></el-step>
             </el-steps>
         </div>
         <keep-alive>
-            <div class="conatiner">
+            <div :class="`conatiner ${2===active?'isSubmit':''}`" >
                 <add-info v-if="0 === active" @infoValid="getInfoValid" @uploadData="getUploadData"/>
                 <add-chapter v-if="1 === active"/>
                 <add-submit v-if="2 === active"/>
@@ -45,6 +45,7 @@ import { alert } from "@/utils/index";
 import AddChapter from './components/AddChapter';
 import AddInfo from './components/AddInfo';
 import AddSubmit from './components/AddSubmit';
+import { listMixin } from "@/utils/mixin";
 export default {
     components: { AddInfo, AddChapter, AddSubmit },
     name: "courseAdd",
@@ -54,6 +55,7 @@ export default {
             uploadData: new FormData(),
         };
     },
+    mixins: [listMixin],
     computed: {
         // 课程信息
         courseInfo: {
@@ -85,14 +87,19 @@ export default {
             }
         },
         async next() {
-            if (this.active < 2) {
+            if (this.active < 3) {
                 if(this.active === 0 ){
                     if(this.infoVaild){
                         alert('填写课程信息成功','success');
                         await this.$api.oss.upload(this.uploadData).then((res) => {
                             this.courseInfo.cover = res.data.data.url || '';
                         });
-                        // console.log(this.courseInfo);
+                        this.allTeacher.forEach(item => {
+                            if (item.id === this.courseInfo.teacherId){
+                                this.$store.state.addCourseInfo.teacherName = item.name;
+                            }
+                        });
+                        console.log(this.courseInfo);
                         this.active ++;
                     }
                     else{
@@ -101,11 +108,55 @@ export default {
                 }
                 else if(this.active === 1){
                     console.log('tableData',this.tableData);
+                    this.active ++;
                 }
             }
         },
-        submit(){
-            console.log('submit');
+        async submit(){
+            const subjectParent = this.allSubject.find(item => item.value === this.courseInfo.subject[0]);
+            const subject = subjectParent.children.find(item => item.value === this.courseInfo.subject[1]);
+            const courseInfo = {
+                cover: this.courseInfo.cover,
+                description: this.courseInfo.description,
+                lessonNum: this.courseInfo.lessonNum,
+                price: this.courseInfo.price,
+                subjectId: subject.id,
+                subjectParentId: subjectParent.id,
+                teacherId: this.courseInfo.teacherId,
+                title: this.courseInfo.title,
+            }
+            console.log('course',courseInfo);
+            let courseId =  '';
+            await this.$api.course.addCourse(courseInfo).then(res => {
+                courseId = res.data.data.id
+            })
+            const chapters = this.tableData.map(item => {
+                return{
+                    title: item.label,
+                    sort: item.sort,
+                    courseId
+                }
+            });
+            let chapterIds = []
+            chapters.forEach(chapter => {
+                this.$api.chapter.addChapter(chapter).then(res => {
+                    console.log(res.data);
+                    chapterIds.push(res.data.data.id)
+                })
+            })
+            console.log(chapterIds);
+            console.log('chapters',chapters);
+            const videos = []
+            this.tableData.forEach(table => {
+                videos.push(table.children.map(item => {
+                    return {
+                        isFree: item.isFree,
+                        title: item.label,
+                        sort: item.sort,
+                    }
+                }))
+            });
+            console.log(videos);
         },
         getInfoValid(valid){
             this.infoVaild = valid;
@@ -130,5 +181,8 @@ export default {
         text-align: center;
         margin: 12px auto;
     }
+}
+.isSubmit{
+    width: 90% !important;
 }
 </style>

@@ -6,6 +6,8 @@ const store = new Vuex.Store({
     state:{
         // 公共数据
         allTeacher:[],
+        allCareer:[], //所有头衔
+        allSubject:[], //所有课程分类
         // 前台相关数据
         headerStyle:{
             name:'header-black',
@@ -21,19 +23,15 @@ const store = new Vuex.Store({
                 title:"首页"
             }
         ],
-        allCareer:[],
-        allSubject:[],
-        courseActive:0,
-        addCourseInfo:{
+        courseActive:0, //添加课程中当前进度
+        addCourseInfo:{//添加课程 课程基本信息
             lessonNum: 1,
             price: 0,
         },
-        tableData:[],
-        addChapterInfo:{
-            
+        tableData:[], //添加课程 添加大纲的表格信息
+        addChapterInfo:{ //添加课程 大纲里面的章节信息   
         },
-        addVideoInfo:{
-
+        addVideoInfo:{ //添加课程 大纲里面的小节信息
         }
     },
     mutations:{
@@ -82,6 +80,9 @@ const store = new Vuex.Store({
         },
         setActive(state,val){
             state.courseActive = val;
+        },
+        setAddCourseInfo(state,info){
+            state.addCourseInfo = info;
         },
         setTableData(state,data){
             state.tableData = data;
