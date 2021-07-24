@@ -28,11 +28,8 @@ const store = new Vuex.Store({
             lessonNum: 1,
             price: 0,
         },
+        showVideoPath:'', //播放视频
         tableData:[], //添加课程 添加大纲的表格信息
-        addChapterInfo:{ //添加课程 大纲里面的章节信息   
-        },
-        addVideoInfo:{ //添加课程 大纲里面的小节信息
-        }
     },
     mutations:{
         // 公共方法
@@ -86,6 +83,18 @@ const store = new Vuex.Store({
         },
         setTableData(state,data){
             state.tableData = data;
+        },
+        initAddInfo(state){
+            state.addCourseInfo = {
+                lessonNum: 1,
+                price: 0,
+            }
+            state.tableData = [];
+            state.courseActive = 0;
+            state.showVideoPath = '';
+        },
+        setShowVideoPath(state,val){
+            state.showVideoPath = val;
         }
     },
     getters:{

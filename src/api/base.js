@@ -10,7 +10,7 @@ const base = {
     chapter:baseHttp + 'chapter',
     video:baseHttp + 'video',
     oss: 'http://localhost:8002/eduoss',
-
+    vod: 'http://localhost:8003/eduvod/video',
 }
 
 export default base;

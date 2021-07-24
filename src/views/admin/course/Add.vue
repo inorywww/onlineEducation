@@ -99,7 +99,6 @@ export default {
                                 this.$store.state.addCourseInfo.teacherName = item.name;
                             }
                         });
-                        console.log(this.courseInfo);
                         this.active ++;
                     }
                     else{
@@ -107,7 +106,6 @@ export default {
                     }
                 }
                 else if(this.active === 1){
-                    console.log('tableData',this.tableData);
                     this.active ++;
                 }
             }
@@ -125,38 +123,56 @@ export default {
                 teacherId: this.courseInfo.teacherId,
                 title: this.courseInfo.title,
             }
-            console.log('course',courseInfo);
             let courseId =  '';
             await this.$api.course.addCourse(courseInfo).then(res => {
                 courseId = res.data.data.id
             })
             const chapters = this.tableData.map(item => {
-                return{
+                return {
                     title: item.label,
                     sort: item.sort,
                     courseId
                 }
             });
-            let chapterIds = []
-            chapters.forEach(chapter => {
-                this.$api.chapter.addChapter(chapter).then(res => {
-                    console.log(res.data);
-                    chapterIds.push(res.data.data.id)
-                })
-            })
-            console.log(chapterIds);
-            console.log('chapters',chapters);
+            let chapterIds = [];
+            chapters.forEach(chapter => this.$api.chapter.addChapter(chapter));
+            setTimeout(async () =>{
+                    await this.$api.chapter.getChapterVideo(courseId).then(res => {
+                    chapterIds = res.data.data.allChapterVideo;
+                    this.addVideoInfo(courseId,chapterIds)
+                });
+            },500)
+        },
+        addVideoInfo(courseId,chapterIds){
             const videos = []
             this.tableData.forEach(table => {
                 videos.push(table.children.map(item => {
                     return {
+                        courseId,
                         isFree: item.isFree,
                         title: item.label,
                         sort: item.sort,
+                        size: item.size,
+                        videoOriginalName: item.videoOriginalName,
+                        videoSourceId: item.videoSourceId
                     }
                 }))
             });
-            console.log(videos);
+            videos.forEach((item, index) => {
+                item.forEach(video => {
+                    video.chapterId =  chapterIds[index].id
+                });
+            })
+            videos.forEach(item => {
+                item.forEach(video => {
+                    this.$api.video.addVideo(video).catch(err => alert(err,'error'))
+                })
+            })
+            alert('发布成功！','success');
+            setTimeout(() => {
+                this.$store.commit('initAddInfo')
+                this.$router.push("/dashboard/course/list");
+            },500)
         },
         getInfoValid(valid){
             this.infoVaild = valid;

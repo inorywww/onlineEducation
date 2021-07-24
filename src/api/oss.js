@@ -15,6 +15,7 @@ const oss = {
                 'Content-Type': 'multipart/form-data'
             },
         })
-    }
+    },
+   
 }
 export default oss

@@ -21,8 +21,8 @@ const course = {
             data
         })
     },
-    //根据章节id查询章节信息
-    getChapterInfo(courseId) {
+    //根据课程id查询信息
+    getCourseInfo(courseId) {
         return request({
             url: `${baseUrl}/getCourseInfo/${courseId}`,
             method: 'get',

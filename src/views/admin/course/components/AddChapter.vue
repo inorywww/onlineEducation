@@ -115,6 +115,14 @@
                     <el-form-item label="序号：" prop="sort">
                         <el-input-number :min="1" v-model="temp.sort" label="描述文字"></el-input-number>
                     </el-form-item>
+
+                    <el-form-item
+                        v-if="sonStatus"
+                        label="上传视频："
+                        prop="video"
+                    >
+                        <video-upload @videoData="getVideoData"/>
+                    </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false" size="small">
@@ -135,7 +143,9 @@
 
 <script>
 import { alert } from "@/utils/index";
+import VideoUpload from '../../../../components/VideoUpload.vue';
 export default {
+    components: { VideoUpload },
     name: "courseChapter",
     mounted(){
     },
@@ -238,6 +248,7 @@ export default {
                         this.$store.commit('setTableData',this.tableData);
                         alert('添加成功','success');
                         this.dialogFormVisible = false;
+                        this.$store.commit('setShowVideoPath','');
                     }
                 } else {
                     return false;
@@ -313,9 +324,10 @@ export default {
                         this.tableData.splice(index, 1);
                     }
                     else{
-                        this.tableData.forEach(table => {
+                        this.tableData.forEach(async table => {
                             if(table.value === row.parent){
                                 const index = table.children.findIndex(child => child.value === row.value)
+                                await this.$api.vod.delVideo(table.children[index].videoSourceId);
                                 table.children.splice(index, 1);
                             }
                         })
@@ -363,6 +375,11 @@ export default {
             }
             const tempArr = arr.filter(item => item.value !== this.temp.value)
             return tempArr.findIndex(item => item.sort === this.temp.sort) !== -1;
+        },
+        getVideoData(val){
+            this.temp.size = val.size;
+            this.temp.videoOriginalName = val.videoOriginalName;
+            this.temp.videoSourceId = val.videoSourceId;
         }
         // updateAddInfo(){
         //     const chapterInfo = this.tableData.map(item => {

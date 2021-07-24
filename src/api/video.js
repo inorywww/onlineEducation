@@ -14,7 +14,7 @@ const video = {
         })
     },
     //添加课程小节
-    addSubject(data){
+    addVideo(data){
         return request({
             url:`${baseUrl}/addVideo`,
             method: 'post',
