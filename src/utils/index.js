@@ -1,6 +1,4 @@
-import {
-    Message
-} from 'element-ui';
+import {Message} from 'element-ui';
 export function authPassword(rule, value, callback) {
     if (value === '') {
         callback(new Error('请输入密码'));
@@ -62,3 +60,4 @@ export function equalObj(a, b) {
         }
     }
 }
+

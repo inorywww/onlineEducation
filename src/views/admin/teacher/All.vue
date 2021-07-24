@@ -52,15 +52,15 @@
                 <template slot-scope="scope">
                     <el-button
                         size="medium"
-                        @click="editTeacher(scope.$index, scope.row)"
+                        @click="editTeacher(scope.row)"
                         class="iconfont"
                         >修改</el-button
                     >
                     <el-button
                         size="medium"
                         type="danger"
-                        @click="delTeacher(scope.$index, scope.row)"
-                        >Delete</el-button
+                        @click="delTeacher(scope.row)"
+                        >删除</el-button
                     >
                 </template>
             </el-table-column>
@@ -88,7 +88,7 @@
 <script>
 import moment from 'moment';
 import { alert } from "@/utils/index";
-import EditDialog from "./EditDialog.vue"
+import EditDialog from "./components/EditDialog.vue"
 // import { listMixin } from "@/utils/mixin";
 export default {
     name: "teacherAll",
@@ -171,12 +171,12 @@ export default {
         }
     },
     methods: {
-        editTeacher(index, row) {
+        editTeacher(row) {
             this.editForm = Object.assign({},row);
             this.originForm = Object.assign({},row);
             this.editIsShow = true;
         },
-        delTeacher(index, row) {
+        delTeacher(row) {
             this.$confirm('此操作不可逆，要继续吗？','提示',{
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -194,9 +194,8 @@ export default {
                 this.$message({
                     type: 'info',
                     message: '已取消删除'
-                });
+                }); 
             })
-            
         },
         pagefilter(){
             this.$api.teacher.pageTeacher(this.currentPageIndex, this.pageSize)
@@ -215,7 +214,7 @@ export default {
                begin: "",
                end: "",
             }
-            if(this.filterData.time.length === 2){
+            if(this.filterData.time && this.filterData.time.length === 2){
                 data.begin = moment(this.filterData.time[0]).format('YYYY-MM-DD HH:mm:ss') 
                 data.end = moment(this.filterData.time[1]).format('YYYY-MM-DD HH:mm:ss') 
             }

@@ -33,8 +33,16 @@
                 <el-button style="margin-top: 12px" type="primary" @click="next">下一步</el-button>
             </template>
             <template v-if="2 === active">
-                <el-button style="margin-top: 12px" type="primary" @click="pre">上一步</el-button>
+                <span style="font-size:16px">是否同时发布课程</span>
+                <el-switch
+                v-model="isSubmit"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                >
+                </el-switch>
+                <el-button style="margin: 12px 0 0 12px" type="primary" @click="pre">上一步</el-button>
                 <el-button style="margin-top: 12px" type="success" @click="submit">提交</el-button>
+                
             </template>
         </div>
     </div>
@@ -78,6 +86,14 @@ export default {
             set(val){
                 this.$store.commit('setActive',val);
             }
+        },
+        isSubmit:{
+            get(){
+                return this.$store.state.isSubmit;
+            },
+            set(val){
+                this.$store.commit('setIsSubmit',val);
+            }
         }
     },
     methods: {
@@ -111,39 +127,47 @@ export default {
             }
         },
         async submit(){
-            const subjectParent = this.allSubject.find(item => item.value === this.courseInfo.subject[0]);
-            const subject = subjectParent.children.find(item => item.value === this.courseInfo.subject[1]);
-            const courseInfo = {
-                cover: this.courseInfo.cover,
-                description: this.courseInfo.description,
-                lessonNum: this.courseInfo.lessonNum,
-                price: this.courseInfo.price,
-                subjectId: subject.id,
-                subjectParentId: subjectParent.id,
-                teacherId: this.courseInfo.teacherId,
-                title: this.courseInfo.title,
-            }
-            let courseId =  '';
-            await this.$api.course.addCourse(courseInfo).then(res => {
-                courseId = res.data.data.id
-            })
-            const chapters = this.tableData.map(item => {
-                return {
-                    title: item.label,
-                    sort: item.sort,
-                    courseId
+            this.$confirm(this.isSubmit?'是否添加并发布？':'是否仅添加？', "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+            }).then(async ()=>{
+                const subjectParent = this.allSubject.find(item => item.value === this.courseInfo.subject[0]);
+                const subject = subjectParent.children.find(item => item.value === this.courseInfo.subject[1]);
+                const courseInfo = {
+                    cover: this.courseInfo.cover,
+                    description: this.courseInfo.description,
+                    lessonNum: this.courseInfo.lessonNum,
+                    price: this.courseInfo.price,
+                    subjectId: subject.id,
+                    subjectParentId: subjectParent.id,
+                    teacherId: this.courseInfo.teacherId,
+                    title: this.courseInfo.title,
                 }
-            });
-            let chapterIds = [];
-            chapters.forEach(chapter => this.$api.chapter.addChapter(chapter));
-            setTimeout(async () =>{
-                    await this.$api.chapter.getChapterVideo(courseId).then(res => {
-                    chapterIds = res.data.data.allChapterVideo;
-                    this.addVideoInfo(courseId,chapterIds)
+                let courseId =  '';
+                await this.$api.course.addCourse(courseInfo).then(res => {
+                    courseId = res.data.data.id
+                })
+                const chapters = this.tableData.map(item => {
+                    return {
+                        title: item.label,
+                        sort: item.sort,
+                        courseId
+                    }
                 });
-            },500)
+                let chapterIds = [];
+                chapters.forEach(chapter => this.$api.chapter.addChapter(chapter));
+                setTimeout(async () =>{
+                        await this.$api.chapter.getChapterVideo(courseId).then(res => {
+                        chapterIds = res.data.data.allChapterVideo;
+                        this.addVideoInfo(courseId,chapterIds)
+                    });
+                },500)
+            }).catch(() => {
+               alert('已取消','info');
+            });
         },
-        addVideoInfo(courseId,chapterIds){
+        async addVideoInfo(courseId,chapterIds){
             const videos = []
             this.tableData.forEach(table => {
                 videos.push(table.children.map(item => {
@@ -167,10 +191,23 @@ export default {
                 item.forEach(video => {
                     this.$api.video.addVideo(video).catch(err => alert(err,'error'))
                 })
-            })
-            alert('发布成功！','success');
+            });
+            // 修改发布信息 draft -> normal
+            if(this.$store.state.isSubmit){
+                await this.$api.course.publishCourse(courseId).then(res => {
+                    if(res.data.code === 20000){
+                        alert('发布成功！','success');
+                    }
+                    else{
+                        alert('发布失败，网络错误！','error');
+                    }
+                });
+            }
+            else{
+                alert('添加成功！','success')
+            }
             setTimeout(() => {
-                this.$store.commit('initAddInfo')
+                this.$store.commit('initAddInfo');
                 this.$router.push("/dashboard/course/list");
             },500)
         },

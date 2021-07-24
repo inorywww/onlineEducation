@@ -55,6 +55,7 @@ export default {
         tableData(){
             return this.$store.state.tableData
         },
+       
     },
     mixins: [listMixin],
 }

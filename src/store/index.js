@@ -29,7 +29,9 @@ const store = new Vuex.Store({
             price: 0,
         },
         showVideoPath:'', //播放视频
-        tableData:[], //添加课程 添加大纲的表格信息
+        tableData:[], //添加课程 添加大纲的表格信息,
+        isSubmit: false,//添加课程的时候是否同时发布课程
+        courseEditVisible:false,
     },
     mutations:{
         // 公共方法
@@ -92,9 +94,16 @@ const store = new Vuex.Store({
             state.tableData = [];
             state.courseActive = 0;
             state.showVideoPath = '';
+            state.isSubmit = false;
         },
         setShowVideoPath(state,val){
             state.showVideoPath = val;
+        },
+        setIsSubmit(state,val){
+            state.isSubmit = val;
+        },
+        setCourseEditVisible(state,val){
+            state.courseEditVisible = val;
         }
     },
     getters:{
