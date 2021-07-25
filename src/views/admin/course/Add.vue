@@ -14,11 +14,11 @@
                     title="步骤3"
                     description="发布课程"
                 ></el-step>
-            </el-steps>
+            </el-steps> 
         </div>
         <keep-alive>
             <div :class="`conatiner ${2===active?'isSubmit':''}`" >
-                <add-info v-if="0 === active" @infoValid="getInfoValid" @uploadData="getUploadData"/>
+                <add-info ref="addCourseForm" v-if="0 === active" @uploadData="getUploadData"/>
                 <add-chapter v-if="1 === active"/>
                 <add-submit v-if="2 === active"/>
             </div>
@@ -59,7 +59,7 @@ export default {
     name: "courseAdd",
     data() {
         return {
-            infoVaild:false,
+            infoVaild:false, 
             uploadData: new FormData(),
         };
     },
@@ -105,7 +105,8 @@ export default {
         async next() {
             if (this.active < 3) {
                 if(this.active === 0 ){
-                    if(this.infoVaild){
+                    const valid = this.$refs['addCourseForm'].validateForm();
+                    if(valid){
                         alert('填写课程信息成功','success');
                         await this.$api.oss.upload(this.uploadData).then((res) => {
                             this.courseInfo.cover = res.data.data.url || '';
@@ -164,7 +165,7 @@ export default {
                     });
                 },500)
             }).catch(() => {
-               alert('已取消','info');
+                alert('已取消','info');
             });
         },
         async addVideoInfo(courseId,chapterIds){
@@ -210,9 +211,6 @@ export default {
                 this.$store.commit('initAddInfo');
                 this.$router.push("/dashboard/course/list");
             },500)
-        },
-        getInfoValid(valid){
-            this.infoVaild = valid;
         },
         // 从myupload组件传递回来的文件
         getUploadData(data){

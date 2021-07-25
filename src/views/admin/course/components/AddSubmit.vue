@@ -67,9 +67,12 @@ export default {
     font-size: $text-medium;
     @include left;
     .cover{
+        margin: 0 12px 0 0;
         max-width: 33%;
+        max-height: 500px;
         img{
             width: 100%;
+            height: 100%;
         }
     }
     & > div{

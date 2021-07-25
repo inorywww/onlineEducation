@@ -32,6 +32,8 @@ const store = new Vuex.Store({
         tableData:[], //添加课程 添加大纲的表格信息,
         isSubmit: false,//添加课程的时候是否同时发布课程
         courseEditVisible:false,
+        courseEditForm:{},
+        chapterEditForm:{}
     },
     mutations:{
         // 公共方法
@@ -104,6 +106,9 @@ const store = new Vuex.Store({
         },
         setCourseEditVisible(state,val){
             state.courseEditVisible = val;
+        },
+        setEditCourseForm(state,form){
+            state.courseEditForm = Object.assign({},form);
         }
     },
     getters:{
@@ -135,6 +140,9 @@ const store = new Vuex.Store({
                 return {
                   headerStyle: val.headerStyle,
                   allTabs: val.allTabs,
+                  allCareer:val.allCareer,
+                  allSubject:val.allSubject,
+                  allTeacher:val.allTeacher,
                 }
               }
         })

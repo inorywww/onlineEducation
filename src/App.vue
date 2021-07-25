@@ -32,4 +32,7 @@ export default {
 .hideUpload .el-upload--picture-card {
     display: none;
 }
+.el-upload-list__item {
+    transition: none !important;
+}
 </style>

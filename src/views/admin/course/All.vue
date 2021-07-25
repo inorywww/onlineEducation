@@ -100,7 +100,7 @@
         <template>
             <edit-dialog
             :info="info"
-            @editInfo="getEditInfo"
+            @courseUpdate="getcourseUpdate"
             />
         </template>
     </div>
@@ -198,7 +198,7 @@ export default {
     },
     methods:{
         filter(){
-            if(this.filterData.status!=='' || this.filterData.title !== ''){
+            if(this.filterData.status!=='' || this.filterData.title !== '' || this.filterData.time.length !== 0){
                 this.conditionFilter();
             }else{
                 this.pagefilter();
@@ -240,14 +240,11 @@ export default {
             this.info = row;
             this.$store.commit('setCourseEditVisible', true)
         },
-        getEditInfo(index, data){
-            if(index === 0){
-                alert('更新课程信息成功！','success')
-            }else{
-                alert('更新大纲信息成功！','success')
+        // 获取更新后的数据
+        getcourseUpdate(val){
+            if(val){
+                this.filter()
             }
-            this.$store.commit('setCourseEditVisible', false)
-            console.log(data);
         },
         delCourse(row){
             this.$confirm('此操作不可逆，要继续吗？','提示',{
@@ -282,18 +279,34 @@ export default {
                 item.statusName = item.status==='Normal'?'已发布':'未发布';
                 item.teacherName = this.allTeacher.find(t => item.teacherId === t.id)
                     ? this.allTeacher.find(t => item.teacherId === t.id).name:'null';
-                const subjectParent =  this.allSubject.find(t => item.subjectParentId === t.id)
+                const subjectParent =  this.allSubject.find(t => item.subjectParentId === t.id);
                 item.subjectParentName = subjectParent?subjectParent.label:'null';
                 const subject = subjectParent?subjectParent.children.find(t => item.subjectId === t.id):'';
                 item.subjectName = subject?subject.label:'null';
             })
-            console.log(this.coursesInfo);
+            // console.log(this.coursesInfo);
+        },
+        setUpdateCourseData(data){
+            let subjectParent = null;
+            let subject = null;
+            // 判断是否更新了课程分类
+            if(data.subject && data.subject.length !== 0){
+                subjectParent = this.allSubject.find(item => item.value === data.subject[0]);
+                subject = subjectParent.children.find(item => item.value === data.subject[1]);
+                data.subjectParentName = subjectParent?subjectParent.label:'null';
+                data.subjectName = subject?subject.label:'null';
+            }
+            data.statusName = data.status==='Normal'?'已发布':'未发布';
+            data.teacherName = this.allTeacher.find(t => data.teacherId === t.id)
+                ? this.allTeacher.find(t => data.teacherId === t.id).name:'null';
+           
         },
         changeSelect(rows){
             this.selectItems = rows;
         },
         changeSize(val) {
             this.pageSize = val;
+            this.filter()
         },
         changePage(index) {
             this.currentPageIndex = index;

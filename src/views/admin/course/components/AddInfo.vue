@@ -3,7 +3,7 @@
         <el-form
             label-position="left"
             label-width="80px"
-            ref="courseInfo"
+            ref="addCourseForm"
             :model="courseInfo"
             :rules="rules"
         >
@@ -14,7 +14,7 @@
                 <el-input-number
                     v-model="courseInfo.lessonNum"
                     controls-position="right"
-                    :min="1"
+                    :min="1" 
                 ></el-input-number>
             </el-form-item>
             <el-form-item label="课程简介" prop="description">
@@ -28,7 +28,7 @@
                 ></el-input-number>
                 <span>元</span>
             </el-form-item>
-             <el-form-item label="课程分类" prop="subject">
+            <el-form-item label="课程分类" prop="subject">
                 <el-cascader
                     v-model="courseInfo.subject"
                     placeholder="试试搜索：vue"
@@ -61,71 +61,22 @@
 
 <script>
 import { listMixin } from "@/utils/mixin";
-// import { alert } from "@/utils/index";
 import MyUpload from '@/components/MyUpload';
 export default {
     name: "courseInfo",
     components:{
         MyUpload
     },
-    updated() {
-        this.$refs["courseInfo"].validate((valid) => {
-            
-            this.$emit("infoValid", valid);
-            if(this.isUpload){
-                this.$emit("uploadData", this.uploadData);
-                this.isUpload = false;
-            }
-        });
-    },
     mixins: [listMixin],
     data() {
         return {
             rules: {
-                title: [
-                    {
-                        required: true,
-                        message: "请输入课程名称！",
-                        trigger: "blur",
-                    },
-                ],
-                lessonNum: [
-                    {
-                        required: true,
-                        type: "number",
-                        message: "请输入课时！",
-                        trigger: "blur",
-                    },
-                ],
-                description: [
-                    {
-                        required: true,
-                        message: "请输入课程简介！",
-                        trigger: "blur",
-                    },
-                ],
-                price: [
-                    {
-                        required: true,
-                        type: "number",
-                        message: "请输入课程价格！",
-                        trigger: "blur",
-                    },
-                ],
-                subject: [
-                    {
-                        required: true,
-                        message: "请选择课程分类！",
-                        trigger: "blur",
-                    },
-                ],
-                teacherId: [
-                    {
-                        required: true,
-                        message: "请选择讲师！",
-                        trigger: "blur",
-                    },
-                ],
+                title: [{ required: true, message: "请输入课程名称！",trigger: "blur",}],
+                lessonNum: [{required: true,type: "number",message: "请输入课时！",trigger: "blur",}],
+                description: [{required: true,message: "请输入课程简介！",trigger: "blur"}],
+                price: [{required: true,type: "number",message: "请输入课程价格！",trigger: "blur",}],
+                subject: [{required: true,message: "请选择课程分类！",trigger: "blur",}],
+                teacherId: [{required: true,message: "请选择讲师！",trigger: "blur",}],
             },
             uploadData: new FormData(),
             isUpload:false,
@@ -166,14 +117,18 @@ export default {
         getUploadData(file){
             this.uploadData.append("file", file.raw);
             this.isUpload = true;
-            // 当最后才上传封面的时候
-            this.$refs["courseInfo"].validate((valid) => {
-                this.$emit("infoValid", valid);
+        },
+         // 验证表单
+        validateForm(){
+            let flag = false;
+            this.$refs["addCourseForm"].validate((valid) => {
+               flag = valid;
                 if(this.isUpload){
                     this.$emit("uploadData", this.uploadData);
                     this.isUpload = false;
                 }
             });
+            return flag
         }
     }
 };

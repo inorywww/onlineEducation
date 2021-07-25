@@ -50,14 +50,20 @@ const course = {
             data
         })
     },
-    // 发布课程，改变status draft -> normal
+    //改变status draft -> normal
     publishCourse(courseId) {
         return request({
             url: `${baseUrl}/publishCourse/${courseId}`,
             method: 'post',
         })
     },
-    
+    // 改变status  normal -> draft
+    unpublishCourse(courseId) {
+        return request({
+            url: `${baseUrl}/unpublishCourse/${courseId}`,
+            method: 'post',
+        })
+    },
     updateCourseInfo(data) {
         return request({
             url: `${baseUrl}/updateCourseInfo`,
