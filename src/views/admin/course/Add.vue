@@ -64,7 +64,7 @@ export default {
         };
     },
     mixins: [listMixin],
-    computed: {
+    computed: { 
         // 课程信息
         courseInfo: {
             get() {

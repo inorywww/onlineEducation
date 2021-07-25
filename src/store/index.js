@@ -31,9 +31,26 @@ const store = new Vuex.Store({
         showVideoPath:'', //播放视频
         tableData:[], //添加课程 添加大纲的表格信息,
         isSubmit: false,//添加课程的时候是否同时发布课程
-        courseEditVisible:false,
-        courseEditForm:{},
-        chapterEditForm:{}
+        courseEditVisible:false, // 课程列表中编辑视频是否显示
+        courseEditForm:{}, // 编辑课程信息
+        chapterEditForm:[], // 编辑章节信息
+        changeChapters:{
+            editChapters:[],
+            newChapters:[],
+            delChapters:[],
+        },
+        changeVideos:{
+            editVideos:[],
+            newVideos:[],
+            delVideos:[],
+        },
+        delChapters:[], // 存放删除了的章节
+        delVideos:[], // 存放删除了的小节
+        newVideos:[],// 新增加的小节
+        editOriginData:{
+            course:'',
+            chapter:''
+        }
     },
     mutations:{
         // 公共方法
@@ -108,7 +125,18 @@ const store = new Vuex.Store({
             state.courseEditVisible = val;
         },
         setEditCourseForm(state,form){
-            state.courseEditForm = Object.assign({},form);
+            state.courseEditForm = Object.assign({}, form);
+        },
+        setChapterCourseForm(state,form){
+            state.chapterEditForm = form.concat();
+        },
+        initDelArr(state){
+            state.changeChapters.editChapters = [];
+            state.changeChapters.newChapters = [];
+            state.changeChapters.delChapters = [];
+            state.changeVideos.editVideos = [];
+            state.changeVideos.newVideos = [];
+            state.changeVideos.delVideos = [];
         }
     },
     getters:{

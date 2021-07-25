@@ -1,0 +1,30 @@
+[{
+    "sort": 1,
+    "location": "1",
+    "label": "1111111111111",
+    "value": "0",
+    "children": [{
+        "sort": 1,
+        "location": "2",
+        "parent": "0",
+        "label": "11111111111111111",
+        "isFree": true,
+        "value": "0-0",
+        "childKey": [0, 0]
+    }],
+    "parent": ""
+}, {
+    "sort": 2,
+    "location": "1",
+    "label": "222222222222222",
+    "value": "1",
+    "children": [],
+    "parent": ""
+}, {
+    "sort": 3,
+    "location": "1",
+    "label": "333333333333333",
+    "value": "2",
+    "children": [],
+    "parent": ""
+}]

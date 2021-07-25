@@ -57,7 +57,7 @@
                 </el-form-item>
             </div>
             <el-form-item label="课程分类" prop="subject">
-                <el-cascader
+                <el-cascader 
                     v-model="editInfo.subject"
                     placeholder="试试搜索：vue"
                     :options="subjects"
