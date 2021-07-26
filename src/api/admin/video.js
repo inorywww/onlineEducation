@@ -1,8 +1,8 @@
 /**
  * 课程小节管理
  */
-import request from './request';
-import base from './base';
+import request from '../request';
+import base from '../base';
 const baseUrl = base.video;
 
 const video = {

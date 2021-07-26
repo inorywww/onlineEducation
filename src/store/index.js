@@ -34,19 +34,8 @@ const store = new Vuex.Store({
         courseEditVisible:false, // 课程列表中编辑视频是否显示
         courseEditForm:{}, // 编辑课程信息
         chapterEditForm:[], // 编辑章节信息
-        changeChapters:{
-            editChapters:[],
-            newChapters:[],
-            delChapters:[],
-        },
-        changeVideos:{
-            editVideos:[],
-            newVideos:[],
-            delVideos:[],
-        },
         delChapters:[], // 存放删除了的章节
         delVideos:[], // 存放删除了的小节
-        newVideos:[],// 新增加的小节
         editOriginData:{
             course:'',
             chapter:''
@@ -130,13 +119,40 @@ const store = new Vuex.Store({
         setChapterCourseForm(state,form){
             state.chapterEditForm = form.concat();
         },
+        addDelChapter(state,val){
+            // 判断一开始有没有，有的话才加入已删除列表
+            const originChapter = [];
+            JSON.parse(state.editOriginData.chapter).forEach(item => {
+                if(item.id === val.id){
+                    originChapter.push(val);
+                }
+            });
+            if(originChapter.length !== 0){
+                console.log('new del chapter');
+                state.delChapters.push(val);
+            }
+        },
+        addDelVideo(state,val){
+            const originVideo = [];
+            JSON.parse(state.editOriginData.chapter).forEach(item => {
+                item.children.forEach(child =>{
+                    if(child.id === val.id){
+                        originVideo.push(val);
+                    }
+                })
+            });
+            if(originVideo.length !== 0){
+                console.log('new del video');
+                state.delVideos.push(val);
+            }
+        },
         initDelArr(state){
-            state.changeChapters.editChapters = [];
-            state.changeChapters.newChapters = [];
-            state.changeChapters.delChapters = [];
-            state.changeVideos.editVideos = [];
-            state.changeVideos.newVideos = [];
-            state.changeVideos.delVideos = [];
+            state.delChapters = [];
+            state.delVideos = [];
+            state.editOriginData = {
+                course:'',
+                chapter:''
+            };
         }
     },
     getters:{

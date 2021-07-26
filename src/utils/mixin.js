@@ -66,7 +66,6 @@ export const chapterMixin = {
                         this.tableData.push(obj);
                         this.resetSort();
                         this.$store.commit('setTableData',this.tableData);
-                        this.$store.state.changeChapters.newChapters.push(obj); //加入已添加的章节数组
                         alert('添加成功','success');
                         this.dialogFormVisible = false;
                     } else {
@@ -89,7 +88,6 @@ export const chapterMixin = {
                         this.resetSort();
                         this.$store.commit('setTableData',this.tableData);
                         alert('添加成功','success');
-                        this.$store.state.changeVideos.newVideos.push(obj); //加入已添加的小节数组
                         this.dialogFormVisible = false;
                         this.$store.commit('setShowVideoPath','');
                     }
@@ -137,7 +135,6 @@ export const chapterMixin = {
                         this.resetSort();
                         this.$store.commit('setTableData',this.tableData);
                         alert('编辑成功','success');
-                        this.$store.state.changeChapters.editChapters.push(this.temp); //加入已编辑的章节数组
                         this.dialogFormVisible = false;
                     } else {
                         if(this.hasSort(this.tableData[this.parentIndex].children)){
@@ -148,7 +145,6 @@ export const chapterMixin = {
                         this.resetSort();
                         this.$store.commit('setTableData',this.tableData);
                         alert('编辑成功','success');
-                        this.$store.state.changeVideos.editVideos.push(this.temp); //加入已编辑的小节数组
                         this.dialogFormVisible = false;
                     }
                 } else {
@@ -167,19 +163,25 @@ export const chapterMixin = {
                 if (row.location === '1' && row.children.length !== 0) {
                     alert('请先删除子节点','warning');
                 } else {
-                    if(row.location === '1'){
+                    if(row.location === '1'){//一级节点 章节
                         const index = this.tableData.findIndex(table => table.value === row.value);
-                        this.$store.state.delChapters.push(this.tableData[index]); //加入已删除的章节数组
-                        // this.$store.state.changeChapters.delChapters.push(this.tableData[index]); //加入已删除的章节数组
+                        // this.$store.state.delChapters.push(this.tableData[index]); //加入已删除的章节数组
+                        if(this.$route.name === 'course-list'){
+                            this.$store.commit('addDelChapter',this.tableData[index])
+                        }
                         this.tableData.splice(index, 1);
                     }
-                    else{
+                    else{//二级节点 小节
                         this.tableData.forEach(async table => {
                             if(table.value === row.parent){
-                                const index = table.children.findIndex(child => child.value === row.value)
+                                const index = table.children.findIndex(child => child.value === row.value);//小节的index
                                 await this.$api.vod.delVideo(table.children[index].videoSourceId);
-                                // this.$store.state.changeVideos.delVideos.push(this.tableData[index]); //加入已删除的章节数组
-                                this.$store.state.delVideos.push(this.tableData[index]); //加入已删除的章节数组
+                                if(this.$route.name === 'course-list'){
+                                    const data = table.children[index];
+                                    data['chapterId'] = table.id; // 获取章节的id
+                                    // this.$store.state.delVideos.push(this.tableData[index]); //加入已删除的章节数组
+                                    this.$store.commit('addDelVideo',data)
+                                }
                                 table.children.splice(index, 1);
                             }
                         })

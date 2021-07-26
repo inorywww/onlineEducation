@@ -2,17 +2,17 @@
   <div class="register">
        <el-form label-position="top" :rules="rules" ref="registerForm" :model="registerForm">
             <el-form-item label="手机号码" prop="tel">
-                <el-input v-model="registerForm.tel" placeholder="填写常用手机号作为登录账号"></el-input>
+                <el-input v-model="registerForm.mobile" placeholder="填写常用手机号作为登录账号"></el-input>
             </el-form-item>
             <el-form-item label="用户名" prop="username">
-                <el-input v-model="registerForm.username" placeholder="中英文均可，最长18个英文或者9个汉字"></el-input>
+                <el-input v-model="registerForm.nickname" placeholder="中英文均可，最长18个英文或者9个汉字"></el-input>
             </el-form-item>
              <el-form-item label="密码" prop="password">
                 <el-input v-model="registerForm.password" placeholder="8-20位英文、数字、符号，至少包含两种，区分大小写"></el-input>
             </el-form-item>
              <el-form-item label="短信验证码" prop="smsAuth">
                 <div class="authBox">
-                    <el-input v-model="registerForm.smsAuth" placeholder="填写短信验证码"></el-input>
+                    <el-input v-model="registerForm.code" placeholder="填写短信验证码"></el-input>
                     <el-button type="info" class="auth" :disabled="isAuth">获取验证码</el-button>
                 </div>
             </el-form-item>
@@ -37,10 +37,10 @@ export default {
     data(){
         return {
             registerForm:{
-                tel:'',
-                username:'',
+                nickname:'',
+                mobile:'',
                 password:'',
-                smsAuth:'',
+                code:'',
             },
             isAuth:true,
             isRead:false,
@@ -79,7 +79,7 @@ export default {
                 if (valid) {
                     alert('submit!','success');
                 } else {
-                    alert('error submit!!','error');
+                    alert('请正确输入字段！','error');
                     return false;
                 }
             });

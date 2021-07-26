@@ -135,7 +135,6 @@ export default {
     mixins:[chapterMixin],
     data() {
         return {
-            // tableData: [],
         };
     },
     computed:{
@@ -167,6 +166,7 @@ export default {
                 })
                 this.tableData.push(item);
             });
+            console.log(this.tableData);
         },
           // 验证表单
         validateForm(){

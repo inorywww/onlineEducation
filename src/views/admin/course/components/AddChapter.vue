@@ -126,7 +126,7 @@ export default {
     mixins:[chapterMixin],
     computed:{ 
         tableData(){
-            return this.$store.state.tableData
+            return this.$store.state.tableData;
         },
     },
 };

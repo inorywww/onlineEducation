@@ -1,30 +1,39 @@
 [{
     "sort": 1,
     "location": "1",
-    "label": "1111111111111",
+    "label": "第一章",
     "value": "0",
     "children": [{
         "sort": 1,
-        "location": "2",
         "parent": "0",
-        "label": "11111111111111111",
+        "location": "2",
+        "label": "1-1",
         "isFree": true,
         "value": "0-0",
         "childKey": [0, 0]
+    }, {
+        "sort": 2,
+        "parent": "0",
+        "location": "2",
+        "label": "1-2",
+        "isFree": true,
+        "value": "0-1",
+        "childKey": [0, 1]
     }],
     "parent": ""
 }, {
     "sort": 2,
     "location": "1",
-    "label": "222222222222222",
+    "label": "第二章",
     "value": "1",
-    "children": [],
-    "parent": ""
-}, {
-    "sort": 3,
-    "location": "1",
-    "label": "333333333333333",
-    "value": "2",
-    "children": [],
+    "children": [{
+        "sort": 1,
+        "parent": "1",
+        "location": "2",
+        "label": "2-1",
+        "isFree": true,
+        "value": "1-0",
+        "childKey": [1, 0]
+    }],
     "parent": ""
 }]

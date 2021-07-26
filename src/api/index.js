@@ -2,13 +2,13 @@
  * api接口的统一出口
  */
 
-import teacher from './teacher';
-import oss from './oss';
-import vod from './vod';
-import subject from  './subject';
-import course from  './course';
-import chapter from  './chapter';
-import video from  './video';
+import teacher from './admin/teacher';
+import oss from './admin/oss';
+import vod from './admin/vod';
+import subject from  './admin/subject';
+import course from  './admin/course';
+import chapter from  './admin/chapter'; 
+import video from  './admin/video';
 export default{
     teacher,
     oss,

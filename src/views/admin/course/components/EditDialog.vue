@@ -34,8 +34,8 @@ export default {
             chapterInfo:{},
             uploadData: new FormData(),
             sonKey:'',
-            originCourse:'',
-            originChapter:'',
+            newChapters:[],
+            newChapterInfo:[]
         }
     },
     mixins: [listMixin],
@@ -50,6 +50,9 @@ export default {
             set(val){
                 this.$store.commit('setCourseEditVisible',val)
             }
+        },
+        courseId(){
+            return this.$store.state.courseEditForm.id;
         }
     },
     watch:{
@@ -61,7 +64,7 @@ export default {
                 this.$store.state.editOriginData.course = JSON.stringify(data); //存储原始数据，后面判断是否做了更改
                 this.sonKey = Date.now(); // 刷新数据
             }else{//每次关闭dialog时，清空chapterInfo，清空删除信息
-                this.$store.commit('setChapterCourseForm',[])
+                this.$store.commit('setChapterCourseForm',[])    
                 this.$store.commit('initDelArr');
             }
         },
@@ -71,7 +74,6 @@ export default {
             this.activeIndex = Number(tab.index);
         },
         update(){
-            console.log(this.$store.state.chapterEditForm);
             try{
                 var {valid, coverIsChange} = this.$refs['editCourseInfo'].validateForm();
                 // 如果课程信息改变了，就更新课程信息
@@ -79,14 +81,13 @@ export default {
             }catch(err){
                 valid = true;
             }
+            // 判断现在的json字符串是不是和之前相等，如果不相等才进行修改
             const flag1 = this.$store.state.editOriginData.course !== JSON.stringify(this.$store.state.courseEditForm) || coverIsChange
             if(flag1  && this.activeIndex === 0){
-                console.log('updateCourse');
                 this.updateCourse(valid, coverIsChange);
             }
             const flag2 = this.$store.state.editOriginData.chapter !== JSON.stringify(this.$store.state.chapterEditForm)
             if(flag2  && this.activeIndex === 1){
-                console.log('updateChapter');
                 this.updateChapter();
             }
             if(!flag1 && !flag2){
@@ -111,10 +112,10 @@ export default {
                         }
                         // 根据更改后的状态调用对应的接口
                         if(this.$store.state.courseEditForm.status === 'Normal'){
-                            await this.$api.course.publishCourse(this.$store.state.courseEditForm.id)
+                            await this.$api.course.publishCourse(this.courseId)
                         }
                         else if(this.$store.state.courseEditForm.status === 'Draft'){
-                            await this.$api.course.unpublishCourse(this.$store.state.courseEditForm.id);
+                            await this.$api.course.unpublishCourse(this.courseId);
                         }
                         const resData = this.setCourseUpdate(this.$store.state.courseEditForm);
                         await this.$api.course.updateCourseInfo(resData).then(res => {
@@ -162,10 +163,29 @@ export default {
                     cancelButtonText: "取消",
                     type: "warning",
                 }).then(async () => {
-                   await this.setChapterUpdate(this.$store.state.chapterEditForm);
-                   await this.setVideoUpdate(this.$store.state.chapterEditForm);
-                   this.dialogVisible = false;
-                }).catch(()=>{
+                    await this.setChapterUpdate(this.$store.state.chapterEditForm);
+                    if(this.newChapters.length!==0){
+                        // 如果有新加的章节，就重新获取新章节的id
+                        await setTimeout(() => {
+                        this.$api.chapter.getChapterVideo(this.$store.state.courseEditForm.id)
+                            .then(res => {
+                                const originData = JSON.parse(this.$store.state.editOriginData.chapter);
+                                res.data.data.allChapterVideo.forEach(item => {
+                                    if(!originData.find(j => j.id  === item.id)){
+                                        this.newChapterInfo.push(item)
+                                    }   
+                                })
+                                this.setVideoUpdate(this.$store.state.chapterEditForm);
+                                this.dialogVisible = false;
+                            })
+                    }, 500);
+                    }
+                    else{
+                        this.setVideoUpdate(this.$store.state.chapterEditForm);
+                        this.dialogVisible = false;
+                    }
+                })
+                .catch(()=>{
                     alert('已取消修改','info')
                 })
             }
@@ -173,7 +193,8 @@ export default {
         //更新章节信息
         async setChapterUpdate(arr){
             // 获取所有的chapter
-            const chapters = arr.map(item => {
+            const newArr = arr.concat();
+            const chapters = newArr.map(item => {
                 return {
                     title: item.label,
                     sort: item.sort,
@@ -181,44 +202,161 @@ export default {
                     courseId:this.info.id,
                 }
             });
-             // 获取修改的chapter
+             // 获取提交表单后的chapter
             const oldChapters = chapters.filter(item => item.id);
-            this.updateOld(oldChapters);
-            //获取新增的chapter
+            //获取原始的所有chapter
+            const originData = JSON.parse(this.$store.state.editOriginData.chapter);
+            const originChapters = [];// 存放打开编辑前原来所有video
+            const needEdit = [];
+            
+            originData.forEach(item => {
+                // 判断是否已经删除了，如果已经删了就不要加入needEdit
+                if(this.$store.state.delChapters.find(j=>j.id !== item.id)){
+                    originChapters.push(item);
+                }
+                if(this.$store.state.delChapters.length === 0){
+                    originChapters.push(item);
+                }
+            })
+            // console.log('oldChapters',oldChapters);
+            // console.log('originChapters',originChapters);
+            // 找出不同的，然后对不同的chapter进行修改
+            oldChapters.forEach((item,index) => {
+                    if(oldChapters[index].title !== originChapters[index].title || 
+                    oldChapters[index].sort !== originChapters[index].sort){
+                        needEdit.push(item)
+                    }
+            })
+            console.log('needEdit',needEdit);
+            this.updateOld(needEdit);
+
+            //获取新增的chapter并增加
             const newChapters = chapters.filter(item => !item.id);
             newChapters.forEach(item => delete item.id);
-            if(newChapters.length !== 0){
-                this.addNewChapter(newChapters);
-            }
-            
+            this.newChapters = newChapters;
+            this.addNewChapter(newChapters);
+            console.log('newChapters',newChapters);
             //删除chapter
             const delChapters = this.$store.state.delChapters;
+            console.log('delChapters',delChapters);
             if(delChapters.length!==0){
-                delChapters.forEach(item => {
-                    this.$api.chapter.delChapter(item.id).catch(() => alert('网络错误！','error'))
+                delChapters.forEach(async item => {
+                    await this.$api.chapter.delChapter(item.id)
+                    // .then(res =>console.log(res.data))
+                    .catch(() => alert('网络错误！','error'))
                 });
-                //清空已删除的列表
-                this.$store.commit('initDelArr')
             }
-            alert('更改章节信息成功！','success')
+            alert('更改章节信息成功！','success');
         },
         // 如果有新加的 就新建
         addNewChapter(chapters){
-            chapters.forEach(chapter => this.$api.chapter.addChapter(chapter).catch(() => {
-                alert('网络错误！','error');
-            }));
+            if(chapters.length!==0){
+                chapters.forEach(chapter => this.$api.chapter.addChapter(chapter)
+                .catch(() => {
+                    alert('网络错误！','error');
+                }));
+            }
         },
         // 修改
         updateOld(chapters){
-            chapters.forEach(chapter => this.$api.chapter.updateChapter(chapter).catch(() => {
-                alert('网络错误！','error');
-            }));
+            if(chapters.length!==0){
+                chapters.forEach(chapter => this.$api.chapter.updateChapter(chapter).catch(() => {
+                    alert('网络错误！','error');
+                }));
+            }
         },
         // 更新小节信息
         async setVideoUpdate(arr){
-            const originChapter = JSON.parse(this.$store.state.editOriginData.chapter);
-            console.log('old',originChapter);
-            console.log('now',arr);
+            const newArr = arr.concat();
+            const videos = []
+            console.log('newArr',newArr);
+            newArr.forEach(chapter => {
+                chapter.children.forEach(item => {
+                    videos.push({
+                        courseId: this.courseId,
+                        chapterId:chapter.id,
+                        // duration:item.duration,
+                        id:item.id,
+                        isFree: item.isFree,
+                        // size: item.size,
+                        sort: item.sort,
+                        title: item.label,
+                        videoOriginalName: item.videoOriginalName,
+                        videoSourceId: item.videoSourceId,
+                        parent:chapter.label,
+                    })
+                })
+            });
+              // 获取提交表单后的所有video （不包含新增的和删除的
+            const oldVideos = videos.filter(item => item.id);
+            // 获取原始的所有chapter
+            const originData = JSON.parse(this.$store.state.editOriginData.chapter);
+            const originVideos = []; // 存放打开编辑前原来所有video
+            //修改video
+            originData.forEach(chapter => {
+                chapter.children.forEach(item => {
+                    // 判断是否已经删除了，如果已经删了就不要加入needEdit
+                    if(this.$store.state.delVideos.find(j => j.id !== item.id)){
+                        originVideos.push(item);
+                    }
+                    if(this.$store.state.delVideos.length===0){
+                        originVideos.push(item);
+                    }
+                })
+            });
+            // 找出不同的，然后对不同的chapter进行修改
+            const needEdit = [];
+            // console.log('oldVideos',oldVideos);
+            // console.log('originVideos',originVideos);
+            oldVideos.forEach((i,index) => {
+                if(oldVideos[index].title !== originVideos[index].title || 
+                oldVideos[index].sort !== originVideos[index].sort || 
+                oldVideos[index].isFree !== originVideos[index].isFree
+                // oldVideos[index].videoSourceId !== originVideos[index].videoSourceId || 
+                ){
+                    needEdit.push(i);
+                }
+            })
+            this.updateOldVideo(needEdit);
+            console.log('needEdit',needEdit);
+            // 添加新的video
+            const newVideos = videos.filter(item => !item.id);
+            console.log('newVideos',newVideos);
+            newVideos.forEach(item => {
+                delete item.id;
+                delete item.videoOriginalName;
+                delete item.videoSourceId;
+                if(!item.chapterId){
+                    item.chapterId = this.newChapterInfo.find(j => j.title === item.parent).id
+                }
+                // delete item.duration;
+                // delete item.size;
+            })
+            this.addNewVideo(newVideos)
+            //删除chapter
+            const delVideos = this.$store.state.delVideos;
+            console.log('delVideos',delVideos);
+            if(delVideos.length!==0){
+                delVideos.forEach(item => {
+                    this.$api.video.delVideo(item.id).catch(() => alert('网络错误！','error'))
+                });
+            }
+            alert('更改小节信息成功！','success')
+        },
+        updateOldVideo(videos){
+            if(videos.length!==0){
+                videos.forEach(video => this.$api.video.updateVideo(video).catch(() => {
+                    alert('网络错误！','error');
+                }));
+            }
+        },
+        // 如果有新加的 就新建
+        addNewVideo(videos){
+            if(videos.length!==0){
+                videos.forEach(video => this.$api.video.addVideo(video).catch(() => {
+                    alert('网络错误！','error');
+                }));
+            }
         },
         // 从myupload组件传递回来的文件
         getUploadData(file){
