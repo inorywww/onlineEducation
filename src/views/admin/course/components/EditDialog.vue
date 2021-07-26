@@ -66,6 +66,7 @@ export default {
             }else{//每次关闭dialog时，清空chapterInfo，清空删除信息
                 this.$store.commit('setChapterCourseForm',[])    
                 this.$store.commit('initDelArr');
+                
             }
         },
     },

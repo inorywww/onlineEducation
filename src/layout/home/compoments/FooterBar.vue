@@ -153,7 +153,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/style/global.scss";
 .footer {
-    position: absolute;
     bottom: 64px;
     width: 100%;
     height: 320px;

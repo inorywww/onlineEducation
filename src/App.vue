@@ -12,6 +12,7 @@ export default {
         await this.$store.dispatch('getTeacher');
         await this.$store.dispatch('getCareer');
         await this.$store.dispatch('getSubject');
+        // await this.$store.dispatch('getIndexData');
     }
 };
 </script>

@@ -31,21 +31,27 @@ $max-w:1260px;
     color: $c-gray;
 }
 // 标题大小
+.title-large {
+    font-size: $text-large;
+    color: #000;
+    font-weight: bold;
+    @include ellipsis2(3);
+}
 .title-big {
     font-size: $text-big;
-    color: #fff;
+    color: #000;
     font-weight: bold;
     @include ellipsis2(3);
 }
 .title-medium {
     font-size: $text-medium;
-    color: #fff;
+    color: #000;
     font-weight: bold;
     @include ellipsis2(3);
 }
 .title-small {
     font-size: $text-small;
-    color: #fff;
+    color: #000;
     font-weight: bold;
     @include ellipsis2(2);
 }

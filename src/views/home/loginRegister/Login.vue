@@ -5,7 +5,7 @@
                 <el-input v-model="loginForm.account" placeholder="邮箱/手机/用户名"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input v-model="loginForm.password" placeholder="密码"></el-input>
+                <el-input v-model="loginForm.password" placeholder="密码" type="password"></el-input>
             </el-form-item>
             <el-checkbox v-model="loginForm.remember">记住密码</el-checkbox>
         </el-form>
@@ -50,9 +50,10 @@ export default {
         login(){
             this.$refs['loginForm'].validate((valid) => {
                 if (valid) {
+                    console.log(this.loginForm);
                     alert('submit!','success');
                 } else {
-                    alert('error submit!!','error');
+                    alert('请正确填写字段！','error');
                     return false;
                 }
             });

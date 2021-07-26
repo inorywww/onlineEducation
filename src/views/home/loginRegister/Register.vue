@@ -1,16 +1,16 @@
 <template>
   <div class="register">
        <el-form label-position="top" :rules="rules" ref="registerForm" :model="registerForm">
-            <el-form-item label="手机号码" prop="tel">
+            <el-form-item label="手机号码" prop="mobile">
                 <el-input v-model="registerForm.mobile" placeholder="填写常用手机号作为登录账号"></el-input>
             </el-form-item>
-            <el-form-item label="用户名" prop="username">
+            <el-form-item label="用户名" prop="nickname">
                 <el-input v-model="registerForm.nickname" placeholder="中英文均可，最长18个英文或者9个汉字"></el-input>
             </el-form-item>
              <el-form-item label="密码" prop="password">
-                <el-input v-model="registerForm.password" placeholder="8-20位英文、数字、符号，至少包含两种，区分大小写"></el-input>
+                <el-input v-model="registerForm.password" type="password" placeholder="8-20位英文、数字、符号，至少包含两种，区分大小写"></el-input>
             </el-form-item>
-             <el-form-item label="短信验证码" prop="smsAuth">
+             <el-form-item label="短信验证码" prop="code">
                 <div class="authBox">
                     <el-input v-model="registerForm.code" placeholder="填写短信验证码"></el-input>
                     <el-button type="info" class="auth" :disabled="isAuth">获取验证码</el-button>
@@ -45,17 +45,17 @@ export default {
             isAuth:true,
             isRead:false,
             rules: {
-                tel: [
-                    { required: true, validator:authTel, trigger: 'blur' },
-                ],
-                username: [
+                nickname: [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
                     { max: 18, message: '字符长度必须小于等于18', trigger: 'blur' }
+                ],
+                mobile: [
+                    { required: true, validator:authTel, trigger: 'blur' },
                 ],
                 password: [
                     { required: true, validator: authPassword, trigger: 'blur' },
                 ],
-                smsAuth: [
+                code: [
                     { required: true, message: '请填写短信验证码', trigger: 'blur' },
                     {min: 6, max: 6, message: '请正确填写短信验证码', trigger: 'blur' },
                 ],

@@ -9,6 +9,7 @@ import subject from  './admin/subject';
 import course from  './admin/course';
 import chapter from  './admin/chapter'; 
 import video from  './admin/video';
+import indexFront from './home/indexFront';
 export default{
     teacher,
     oss,
@@ -17,4 +18,5 @@ export default{
     course,
     chapter,
     video,
+    indexFront,
 }

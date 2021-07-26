@@ -239,3 +239,8 @@ export const chapterMixin = {
         }
     },
 }
+export const indexMixin = {
+    computed:{
+        ...mapGetters(['indexData'])
+    }
+}

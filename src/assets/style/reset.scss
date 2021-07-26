@@ -49,9 +49,7 @@ table {
 html, body {
   height: 100%;
   width: 100%;
-//   background-color: $bg-color;
-  user-select: none;
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: 微软雅黑, "Microsoft YaHei";;
   -webkit-overflow-scrolling: touch;
 }

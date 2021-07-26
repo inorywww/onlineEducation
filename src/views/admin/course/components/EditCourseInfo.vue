@@ -134,7 +134,7 @@ export default {
     },
     watch:{
         dialogVisible(val){
-            if(!val){
+            if(val){
                 this.showCoverSrc = this.editInfo.cover;
             }
         },

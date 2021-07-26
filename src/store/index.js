@@ -13,6 +13,7 @@ const store = new Vuex.Store({
             name:'header-black',
             logo:'/images/logo-green.png'
         },
+        indexData:{}, //热门课程和4位老师
         // 管理系统相关数据
         currentView:'index',  //当前tab
         isCollapse:false, //是否展开
@@ -50,7 +51,9 @@ const store = new Vuex.Store({
         setHeader(state,style){
             state.headerStyle = style;
         },
-
+        setIndexData(state,list){
+            state.indexData = list;
+        },
         // 管理系统方法
         setCurrentView(state,cv){
             state.currentView = cv;
@@ -158,6 +161,7 @@ const store = new Vuex.Store({
     getters:{
         allTeacher: state => state.allTeacher,
         allSubject: state => state.allSubject,
+        indexData: state => state.indexData,
     },
     actions:{
         async getTeacher({commit}){
@@ -176,6 +180,11 @@ const store = new Vuex.Store({
             const items = JSON.parse(JSON.stringify(res.data.data.list).replace(/title/g,'label'));
             commit('setSubjects',items);
             return items;
+        },
+        async getIndexData({commit}){
+            const res = await Vue.prototype.$api.indexFront.index();
+            commit('setIndexData',res.data.data);
+            return res.data.data;
         }
     },
     plugins: [
