@@ -2,7 +2,7 @@
  * 课程大纲管理
  */
 import request from '../request';
-import base from '../base';
+import base from './base';
 const baseUrl = base.chapter;
 
 const chapter = {

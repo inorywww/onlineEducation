@@ -3,19 +3,23 @@
         <index-swiper/>
         <div class="container">
             <index-popular-course/>
+            <index-popular-teacher/>
         </div>
     </div>
 </template>
 
 <script>
-import IndexPopularCourse from '../components/index/IndexPopularCourse.vue'
-import IndexSwiper from '../components/index/IndexSwiper'
+import IndexPopularCourse from './components/IndexPopularCourse'
+import IndexPopularTeacher from './components/IndexPopularTeacher';
+import IndexSwiper from './components/IndexSwiper'
 export default {
     name:'index',
     components:{
         IndexSwiper,
-        IndexPopularCourse
+        IndexPopularCourse,
+        IndexPopularTeacher,
     },
+       
     async created(){
         await this.$store.dispatch('getIndexData');
     },
@@ -30,7 +34,7 @@ export default {
 <style lang="scss" scoped>
     .home{
         .container{
-            width: 60%;
+            max-width: $max-w;
             margin: 0 auto;
         }
     }

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+import { getToken } from "@/utils/userAuth";
 Vue.use(Vuex);
 const store = new Vuex.Store({
     state:{
@@ -8,6 +9,7 @@ const store = new Vuex.Store({
         allTeacher:[],
         allCareer:[], //所有头衔
         allSubject:[], //所有课程分类
+        isLogin:false,
         // 前台相关数据
         headerStyle:{
             name:'header-black',
@@ -53,6 +55,9 @@ const store = new Vuex.Store({
         },
         setIndexData(state,list){
             state.indexData = list;
+        },
+        setIsLogin(state){
+            state.isLogin = getToken() ? true : false;
         },
         // 管理系统方法
         setCurrentView(state,cv){

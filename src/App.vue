@@ -13,11 +13,12 @@ export default {
         await this.$store.dispatch('getCareer');
         await this.$store.dispatch('getSubject');
         // await this.$store.dispatch('getIndexData');
-    }
+    },
 };
 </script>
 
 <style lang="scss">
+#a
 .el-form--label-top .el-form-item__label{
     padding: 0 !important;
 }

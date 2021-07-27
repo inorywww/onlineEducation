@@ -1,5 +1,5 @@
 <template>
-    <div class="footer">
+    <footer class="footer">
         <div class="footer-container">
             <div class="top-list">
                 <div
@@ -53,7 +53,7 @@
             <a href="https://www.gulixueyuan.com/page/yyzz" class="hv-font-green">营业执照</a>
             <a href="https://www.gulixueyuan.com/page/chengnuo" class="hv-font-green">依法合规经营承诺</a>
         </div>
-    </div>
+    </footer>
 </template>
 
 <script>
@@ -153,16 +153,17 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/style/global.scss";
 .footer {
+    margin-top: 20px;
     bottom: 64px;
     width: 100%;
-    height: 320px;
+    height: 424px;
     background-color: $cs-black;
     @media (max-width: 999px) {
         display: none;
     }
     .footer-container {
         max-width: 1000px;
-        height: 100%;
+        height: 360px;
         margin: 0 auto;
         .top-list {
             @include center;

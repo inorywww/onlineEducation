@@ -7,13 +7,16 @@
             <el-form-item label="用户名" prop="nickname">
                 <el-input v-model="registerForm.nickname" placeholder="中英文均可，最长18个英文或者9个汉字"></el-input>
             </el-form-item>
-             <el-form-item label="密码" prop="password">
+            <el-form-item label="密码" prop="password">
                 <el-input v-model="registerForm.password" type="password" placeholder="8-20位英文、数字、符号，至少包含两种，区分大小写"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="rePassword">
+                <el-input v-model="registerForm.rePassword" type="password" placeholder="8-20位英文、数字、符号，至少包含两种，区分大小写"></el-input>
             </el-form-item>
              <el-form-item label="短信验证码" prop="code">
                 <div class="authBox">
                     <el-input v-model="registerForm.code" placeholder="填写短信验证码"></el-input>
-                    <el-button type="info" class="auth" :disabled="isAuth">获取验证码</el-button>
+                    <el-button type="info" class="auth" :disabled="isAuth" @click="getMSM">获取验证码</el-button>
                 </div>
             </el-form-item>
         </el-form>
@@ -31,8 +34,7 @@
 
 <script>
 import {authPassword, authTel, alert} from '@/utils/index';
-
-export default {
+export default { 
     name:'register',
     data(){
         return {
@@ -40,9 +42,9 @@ export default {
                 nickname:'',
                 mobile:'',
                 password:'',
+                rePassword:'',
                 code:'',
             },
-            isAuth:true,
             isRead:false,
             rules: {
                 nickname: [
@@ -55,34 +57,63 @@ export default {
                 password: [
                     { required: true, validator: authPassword, trigger: 'blur' },
                 ],
+                rePassword:[
+                    { required: true, validator: this.passwordIsEqual, trigger: 'change' },
+                ],
                 code: [
                     { required: true, message: '请填写短信验证码', trigger: 'blur' },
-                    {min: 6, max: 6, message: '请正确填写短信验证码', trigger: 'blur' },
+                    {min: 4, max: 4, message: '请正确填写短信验证码', trigger: 'blur' },
                 ],
             }
         }
     },
-    watch:{
-        deep:true,
-        'registerForm.tel'(val){ // 验证手机号，如果正确就开放验证按钮
-            if(/^1[3456789]\d{9}$/.test(val)){
-                this.isAuth = false;
-            }else{
-                this.isAuth = true;
+    computed:{
+        isAuth(){
+            if(/^1[3456789]\d{9}$/.test(this.registerForm.mobile)){
+                return false
             }
+            return true;
         },
-        
     },
     methods:{
         register(){
             this.$refs['registerForm'].validate((valid) => {
                 if (valid) {
                     alert('submit!','success');
+                    this.$api.user.register(this.registerForm).then(res => {
+                        console.log(res);
+                        if(res.data.code === 20000){
+                            alert('注册成功！即将跳到登录页面');
+                            setTimeout(() => {
+                                this.$router.push('login');
+                            },1000)
+                        }else{
+                            alert('注册失败！请稍后重试！')
+                        }
+                    })
                 } else {
                     alert('请正确输入字段！','error');
                     return false;
                 }
             });
+        },
+        getMSM(){
+            this.$api.msm.send(this.registerForm.mobile).then(res => {
+                if(res.data.code === 20000){
+                    alert('发送验证码成功！');
+                }else{
+                    alert('发送验证码失败！请稍后重试！')
+                }
+            })
+        },
+        passwordIsEqual(rule, value, callback) {
+            if (value === '') {
+                callback(new Error('请再次输入密码'))
+            } else if (value !== this.registerForm.password) {
+                callback(new Error('两次输入密码不一致!'))
+            } else {
+                callback()
+            }
         }
     }
 }

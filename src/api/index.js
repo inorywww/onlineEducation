@@ -9,7 +9,10 @@ import subject from  './admin/subject';
 import course from  './admin/course';
 import chapter from  './admin/chapter'; 
 import video from  './admin/video';
+// 前台相关接口
 import indexFront from './home/indexFront';
+import user from './home/user';
+import msm from './home/msm';
 export default{
     teacher,
     oss,
@@ -19,4 +22,6 @@ export default{
     chapter,
     video,
     indexFront,
+    user,
+    msm,
 }

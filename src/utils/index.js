@@ -10,6 +10,7 @@ export function authPassword(rule, value, callback) {
     }
     callback()
 }
+
 export function authTel(rule, value, callback) {
     if (value === '') {
         callback(new Error('请输入手机号'));
@@ -20,11 +21,13 @@ export function authTel(rule, value, callback) {
     }
     callback();
 }
-export function alert(message, type) {
+
+export function alert(message, type, duration = 2000) {
     Message({
         showClose: true,
         message,
         type,
+        duration
     });
 }
 

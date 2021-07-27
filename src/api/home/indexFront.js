@@ -2,7 +2,7 @@
  * 首页相关接口
  */
 import request from '../request';
-import base from '../base';
+import base from './base';
 const baseUrl = base.index;
 
 const indexFront = {
