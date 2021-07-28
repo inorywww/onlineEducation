@@ -3,7 +3,6 @@
 // 默认颜色
 $c-black:#000; 
 $cs-black:#333;
-$cs-black1:#333;
 $c-gray:#919191; 
 $cs-gray:rgba(145, 145, 145, .5); 
 $bd-gray:rgba(145, 145, 145, .2);
@@ -24,6 +23,7 @@ $text-tiny: px2rem(25);
 
 $max-w:1260px;
 
+$border:1px solid $bd-gray;
 .t-green{
     font-size: $text-small;
     color: $c-green;

@@ -145,7 +145,7 @@ export default {
         };
     },
     computed: {
-        showTeachers: {
+        showTeachers: { 
             get(){
                 return this.allTeachers.slice(
                 (this.currentPageIndex - 1) * this.pageSize,

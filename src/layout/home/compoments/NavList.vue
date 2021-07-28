@@ -2,7 +2,7 @@
     <div class="nav-list">
         <template v-for="(item, index) in navList">
             <template v-if="item.subs">
-                <el-dropdown class="nav-item" :key="index">
+                <el-dropdown :class="`nav-item ${index === 0?'active':''}`" :key="index">
                     <span class="hv-font-green">
                         {{ item.title }}
                     </span>
@@ -20,7 +20,7 @@
                 </el-dropdown>
             </template>
             <template v-else>
-                <div class="nav-item" :key="index">
+                <div :class="`nav-item ${index === 0?'active':''}`" :key="index">
                     <router-link :to="item.path">
                         {{ item.title }}
                     </router-link>
@@ -42,7 +42,11 @@ export default {
                 },
                 {
                     title: "全部课程",
-                    path: "/course/explore",
+                    path: "/course",
+                },
+                {
+                    title: "名师",
+                    path: "/teacher",
                 },
                 {
                     title: "学习路线图",
@@ -94,12 +98,19 @@ export default {
         cursor: pointer;
         font-size: $text-small;
     }
-    .nav-item:first-child {
+    .active{
         background-color: $c-green;
         color: $c-white;
         & > a:hover {
             color: $c-black !important;
         }
     }
+    // .nav-item:first-child {
+    //     background-color: $c-green;
+    //     color: $c-white;
+    //     & > a:hover {
+    //         color: $c-black !important;
+    //     }
+    // }
 }
 </style>

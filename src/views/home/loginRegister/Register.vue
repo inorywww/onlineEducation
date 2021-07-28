@@ -16,7 +16,7 @@
              <el-form-item label="短信验证码" prop="code">
                 <div class="authBox">
                     <el-input v-model="registerForm.code" placeholder="填写短信验证码"></el-input>
-                    <el-button type="info" class="auth" :disabled="isAuth" @click="getMSM">获取验证码</el-button>
+                    <el-button type="primary" class="auth" :disabled="isAuth || code.canClick" @click="getMSM">{{code.content}}</el-button>
                 </div>
             </el-form-item>
         </el-form>
@@ -44,6 +44,11 @@ export default {
                 password:'',
                 rePassword:'',
                 code:'',
+            },
+            code:{
+                content:'发送验证码',
+                totalTime:120,
+                canClick:false,
             },
             isRead:false,
             rules: {
@@ -98,9 +103,22 @@ export default {
             });
         },
         getMSM(){
+            if (this.code.canClick) return
             this.$api.msm.send(this.registerForm.mobile).then(res => {
                 if(res.data.code === 20000){
-                    alert('发送验证码成功！');
+                    alert('发送验证码成功！','success');
+                    this.code.canClick = true;
+                    this.code.content = `${this.code.totalTime}s后重新发送`;
+                    let clock = setInterval(() => {
+                        this.code.totalTime --;
+                        this.code.content = `${this.code.totalTime}s后重新发送`;
+                        if(this.code.totalTime < 0){
+                            window.clearInterval(clock);
+                            this.code.totalTime  = 120;
+                            this.code.content = `重新发送验证码`;
+                            this.code.canClick = false;
+                        }
+                    },1000);
                 }else{
                     alert('发送验证码失败！请稍后重试！')
                 }

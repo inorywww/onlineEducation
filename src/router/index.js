@@ -25,7 +25,7 @@ const routes = [
                 meta:{
                     title:'登录'
                 },
-                component: () => import('@/views/home/loginRegister/Index')
+                component: () => import('@/views/home/loginRegister')
             },
             {
                 path: '/register',
@@ -33,8 +33,16 @@ const routes = [
                 meta:{
                     title:'注册'
                 },
-                component: () => import('@/views/home/loginRegister/Index')
+                component: () => import('@/views/home/loginRegister')
             },
+            {
+                path: '/teacher',
+                name:'allTeacher',
+                meta:{
+                    title:'全部讲师'
+                },
+                component: () => import('@/views/home/teacher')
+            }
           
         ]
     },

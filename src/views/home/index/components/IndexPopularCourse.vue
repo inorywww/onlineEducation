@@ -27,7 +27,7 @@
                 </router-link>
             </el-col>
         </el-row>
-        <router-link class="all-course hvr-float-shadow" to="course">
+        <router-link class="all-course hvr-float-shadow" to="/course">
             查看更多
         </router-link>
     </div>

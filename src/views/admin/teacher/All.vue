@@ -89,11 +89,9 @@
 import moment from 'moment';
 import { alert } from "@/utils/index";
 import EditDialog from "./components/EditDialog.vue"
-// import { listMixin } from "@/utils/mixin";
 export default {
     name: "teacherAll",
     components: { EditDialog},
-    // mixins: [listMixin],
     async created() {
         await this.pagefilter();
     },
@@ -205,7 +203,7 @@ export default {
                     }else{
                         alert('网络错误，请稍后重试！','error')
                     }
-                });
+            });
         },
         conditionFilter(){
             const data = {

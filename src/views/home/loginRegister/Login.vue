@@ -39,7 +39,6 @@ import {
 export default {
     name:'login',
     created(){
-        console.log( this.$store.commit);
         this.$store.commit('setIsLogin');
         const rememberTel = getRememberTel();
         const rememberPasword = getRememberPassword();
