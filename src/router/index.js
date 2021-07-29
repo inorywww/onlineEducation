@@ -42,7 +42,15 @@ const routes = [
                     title:'全部讲师'
                 },
                 component: () => import('@/views/home/teacher')
-            }
+            },
+            {
+                path: '/course',
+                name:'allCourse',
+                meta:{
+                    title:'全部课程'
+                },
+                component: () => import('@/views/home/course')
+            },
           
         ]
     },

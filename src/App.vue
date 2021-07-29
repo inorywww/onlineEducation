@@ -37,4 +37,14 @@ export default {
 .el-upload-list__item {
     transition: none !important;
 }
+.tabs-bread{
+    .el-breadcrumb__item:not(:last-child){
+        .el-breadcrumb__inner{
+            cursor: pointer !important;
+            &:hover{
+                color: $c-green !important;
+            }
+        }
+    }
+}
 </style>

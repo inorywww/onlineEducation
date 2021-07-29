@@ -13,6 +13,7 @@ import video from  './admin/video';
 import indexFront from './home/indexFront';
 import user from './home/user';
 import msm from './home/msm';
+import courseFront from './home/courseFront';
 export default{
     teacher,
     oss,
@@ -24,4 +25,5 @@ export default{
     indexFront,
     user,
     msm,
+    courseFront,
 }

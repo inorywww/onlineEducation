@@ -193,9 +193,6 @@ export default {
             info:{}
         };
     },
-    computed:{
-       
-    },
     methods:{
         filter(){
             if(this.filterData.status!=='' || this.filterData.title !== '' || this.filterData.time.length !== 0){

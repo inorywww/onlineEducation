@@ -20,13 +20,13 @@
                 >
                     <span class="subTitle">{{ item.title }}</span>
                     <div class="item-list">
-                        <router-link
+                        <a
                             v-for="(subItem, index1) in item.subs"
                             :key="index1"
-                            :to="subItem.path"
+                            :href="subItem.path"
                         >
                             {{ subItem.content }}
-                        </router-link>
+                        </a>
                     </div>
                 </div>
                 <div class="bottom-right">

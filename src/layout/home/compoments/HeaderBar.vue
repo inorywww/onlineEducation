@@ -61,7 +61,9 @@ export default {
     components:{
         NavList 
     },
-    created() {},
+    created() {
+        
+    },
     computed: {
         headerStyle(){
             return this.$store.state.headerStyle;

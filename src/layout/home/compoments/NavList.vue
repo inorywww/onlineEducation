@@ -2,7 +2,11 @@
     <div class="nav-list">
         <template v-for="(item, index) in navList">
             <template v-if="item.subs">
-                <el-dropdown :class="`nav-item ${index === 0?'active':''}`" :key="index">
+                <el-dropdown 
+                :class="`nav-item ${index === active?'active':''}`" 
+                :key="index"
+                @click="changeActive(index)"
+                >
                     <span class="hv-font-green">
                         {{ item.title }}
                     </span>
@@ -12,7 +16,7 @@
                             :key="index1"
                             class="hv-bg-green"
                         >
-                            <router-link :to="subItem.path">
+                            <router-link :to="subItem.path" class="link">
                                 {{ subItem.title }}
                             </router-link>
                         </el-dropdown-item>
@@ -20,8 +24,12 @@
                 </el-dropdown>
             </template>
             <template v-else>
-                <div :class="`nav-item ${index === 0?'active':''}`" :key="index">
-                    <router-link :to="item.path">
+                <div 
+                :class="`nav-item ${index === active?'active':''}`" 
+                :key="index"
+                @click="changeActive(index)"
+                >
+                    <router-link :to="item.path" class="link">
                         {{ item.title }}
                     </router-link>
                 </div>
@@ -33,6 +41,9 @@
 <script>
 export default {
     name: "navList",
+    created(){
+        this.active = this.navList.findIndex(item => item.path === this.$route.path)
+    },
     data() {
         return {
             navList: [
@@ -79,8 +90,14 @@ export default {
                     path: "http://www.atguigu.com/",
                 },
             ],
+            active: 0,
         };
     },
+    methods:{
+        changeActive(index){
+            this.active = index;
+        }
+    }
 };
 </script>
 
@@ -97,6 +114,11 @@ export default {
         color: $c-black;
         cursor: pointer;
         font-size: $text-small;
+        .link{
+            @include center;
+            width: 100%;
+            height: 100%;
+        }
     }
     .active{
         background-color: $c-green;
@@ -105,12 +127,5 @@ export default {
             color: $c-black !important;
         }
     }
-    // .nav-item:first-child {
-    //     background-color: $c-green;
-    //     color: $c-white;
-    //     & > a:hover {
-    //         color: $c-black !important;
-    //     }
-    // }
 }
 </style>

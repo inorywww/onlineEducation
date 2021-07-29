@@ -84,11 +84,13 @@ $border:1px solid $bd-gray;
     @include ellipsis2(1);
 }
 .hv-font-green{
+    cursor: pointer !important;
     &:hover{
         color: $c-green !important;
     }
 }
 .hv-bg-green{
+    cursor: pointer;
     &:hover{
         background-color: $c-green !important;
     }
@@ -97,6 +99,7 @@ $border:1px solid $bd-gray;
     }
 }
 .hv-font-red{
+    cursor: pointer;
     &:hover span{
         color: $c-red !important;
     }

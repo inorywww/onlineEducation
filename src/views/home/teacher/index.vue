@@ -42,17 +42,12 @@ export default {
         const temp = this.allTeacher.concat();
         temp.forEach(item => this.allTeacher.push(item));
         temp.forEach(item => this.allTeacher.push(item));
-        // temp.forEach(item => this.allTeacher.push(item));
-        console.log('this.allTeacher', this.allTeacher);
     },
     data(){
         return {
             pageSize: 8,
             currentPageIndex: 1,
         }
-    },
-    updated(){
-        // console.log(this.showData);
     },
     computed:{
         showData(){
@@ -78,7 +73,8 @@ export default {
     max-width: $max-w;
     margin: 0 auto;
     .title-box{
-        margin: 16px auto;;
+        margin: 16px auto;
+        padding-bottom: 12px;
         display: flex;
         border-bottom:$border;
         h1{
