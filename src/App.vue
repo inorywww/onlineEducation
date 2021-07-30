@@ -12,12 +12,12 @@ export default {
         await this.$store.dispatch('getTeacher');
         await this.$store.dispatch('getCareer');
         await this.$store.dispatch('getSubject');
-        // await this.$store.dispatch('getIndexData');
     },
 };
 </script>
 
 <style lang="scss">
+
 .el-form--label-top .el-form-item__label{
     padding: 0 !important;
 }
@@ -36,6 +36,16 @@ export default {
 .el-upload-list__item {
     transition: none !important;
 }
+.el-table__row{
+    .cell{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}
+
 .tabs-bread{
     .el-breadcrumb__item:not(:last-child){
         .el-breadcrumb__inner{
@@ -52,4 +62,10 @@ export default {
     border-color: transparent !important;
     background-color: transparent !important;
 }
+.search{
+    .keyword{
+        color:$c-red !important;
+    }
+}
+
 </style>

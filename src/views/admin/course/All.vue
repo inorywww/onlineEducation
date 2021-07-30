@@ -1,6 +1,5 @@
 <template>
     <div class="course-all">
-        
         <div class="action-box">
             <div class="filter-box">
                 <div class="asTitle">
@@ -337,14 +336,11 @@ export default {
             text-align: right;
         }
     }
-   
     .page{
         text-align: center;
         margin: 12px 0;
     }
 }
-
-
 
 .demo-table-expand {
     font-size: 0;

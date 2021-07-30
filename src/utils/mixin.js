@@ -246,7 +246,7 @@ export const indexMixin = {
 } 
 export const searchMixin = {
     computed:{
-        searchContent:{
+        keyword:{
             get(){
                  return this.$store.state.searchContent;
             },
@@ -257,13 +257,39 @@ export const searchMixin = {
     },
     methods:{
         search(){
-            if(this.searchContent !== '' && this.searchContent !== this.$route.params.title){
-                if(this.$route.name === 'search' || this.$route.name === 'searchDetail'){
-                    this.$router.replace(`/search/${this.searchContent}`);
-                }else{
-                    this.$router.push(`/search/${this.searchContent}`);
+            if(this.keyword !== '' && this.keyword !== this.$route.params.keyword){
+                //如果当前在搜索页面，就根据当前所在的tab进行课程或者讲师检索
+                if(this.$route.name === 'searchDetail'){
+                    this.$router.replace(`/search/${this.searchTabs[this.tabActive].name}/${this.keyword}`);
+                }else{//不在搜索页面的话就默认进行课程搜索
+                    this.$router.push(`/search/course/${this.keyword}`);
                 }
             }
         },
-    }
+    },
+    
+}
+
+export const pageMixin = {
+    created(){
+        this.pagefilter();
+    },
+    data(){
+        return {
+            showData:[],
+            pageSize:3,
+            currentPageIndex:1,
+        }
+    },
+    methods:{
+        changeSize(val) {
+            this.pageSize = val;
+            this.pagefilter();
+        },
+        changePage(index) {
+            this.currentPageIndex = index;
+            this.pagefilter();
+        },
+    },
+    
 }

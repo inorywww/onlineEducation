@@ -62,7 +62,9 @@ const store = new Vuex.Store({
             state.isLogin = getToken() ? true : false;
         },
         setSearchContent(state,val){
-            state.searchContent = val;
+            if(val !== undefined){
+                state.searchContent = val;
+            }
         },
         // 管理系统方法
         setCurrentView(state,cv){

@@ -52,22 +52,13 @@ const routes = [
                 component: () => import('@/views/home/course')
             },
             {
-                path:'/search',
-                name:'search',
-                meta:{
-                    title: '搜索'
-                },
-                component: () => import('@/views/home/search'),
-            },
-            {
-                path:'/search/:title',
+                path:'/search/:category/:keyword',
                 name:'searchDetail',
                 meta:{
                     title: '搜索'
                 },
                 component: () => import('@/views/home/search')
             }
-          
         ]
     },
     {

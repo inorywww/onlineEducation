@@ -4,12 +4,13 @@
             <input type="text" placeholder="可搜索课程、教师、分类" 
             class="search-input"
             @keyup.enter="search"
+            v-model="keyword"
             >
-            <span class="search-btn">搜索</span>
+            <span class="search-btn" @click="search">搜索</span>
         </div>
         <div class="container">
-            <el-row>
-                <el-col :span="16" class="search-container">
+            <el-row :gutter="20">
+                <el-col :span="15" class="search-container">
                     <div class="tab-list">
                         <span
                         :class="`tab ${tabActive === index?'tab-active':''}`" 
@@ -20,11 +21,12 @@
                         {{item.title}}
                         </span>
                     </div>
-                    <search-teacher-list v-if="tabActive === 0"/>
-                    <search-course-list v-if="tabActive === 1"/>
+                    <search-course-list v-if="tabActive === 0"/>
+                    <search-teacher-list v-if="tabActive === 1"/>
                 </el-col>
                 <el-col :span="8" class="recommend-container">
-                    <search-recommend/>
+                   <recommend-course-list v-if="tabActive === 0"/>
+                   <recommend-teacher-list v-if="tabActive === 1"/>
                 </el-col>
             </el-row>
         </div>
@@ -32,14 +34,20 @@
 </template>
 
 <script>
-import SearchCourseList from './components/SearchCourseList';
-import SearchRecommend from './components/SearchRecommend';
-import SearchTeacherList from './components/SearchTeacherList';
+import SearchCourseList from './SearchCourseList';
+import SearchTeacherList from './SearchTeacherList';
+import RecommendCourseList from './components/RecommendCourseList';
+import RecommendTeacherList from './components/RecommendTeacherList';
 import {searchMixin} from '@/utils/mixin';
 export default {
     name:'search',
     mixins:[searchMixin],
-    components: { SearchCourseList, SearchRecommend, SearchTeacherList },
+    components: { 
+        SearchCourseList, 
+        SearchTeacherList,
+        RecommendCourseList,
+        RecommendTeacherList,
+        },
     data(){
         return {
             searchList:[],
@@ -56,9 +64,28 @@ export default {
             tabActive:0
         }
     },
+    mounted(){
+        // this.$store.dispatch('getIndexData');
+        const to = this.$route;
+        if(to.params.category !== this.searchTabs[this.tabActive].name){
+            this.tabActive = this.searchTabs.findIndex(item => item.name === to.params.category)
+        }
+        this.$store.commit('setSearchContent',to.params.keyword)
+    },
+    watch:{
+        $route(to){
+            if(to.params.category !== this.searchTabs[this.tabActive].name){
+                this.tabActive = this.searchTabs.findIndex(item => item.name === to.params.category)
+            }
+            this.$store.commit('setSearchContent',to.params.keyword)
+        }
+    },
     methods:{
         changeTab(index){
             this.tabActive = index;
+            if(this.$route.path !== `/search/${this.searchTabs[this.tabActive].name}/${this.keyword}`){
+                this.$router.replace(`/search/${this.searchTabs[this.tabActive].name}/${this.keyword}`);
+            }
         }
     }
 }
@@ -98,7 +125,11 @@ export default {
     .container{
         max-width: $max-w;
         margin: 24px auto 0 ;
-        height: 200px;
+        .el-row{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
         .el-col{
             background-color: $c-white;
             border-radius: 4px;
@@ -123,7 +154,6 @@ export default {
             }
         }
         .recommend-container{
-
         }
     }
 }

@@ -38,11 +38,6 @@ import { indexMixin } from '@/utils/mixin';
 export default {
     name:'popularCourse',
     mixins:[indexMixin],
-    // mounted(){
-    //     setTimeout(() => {
-    //         console.log(this.indexData);
-    //     },1000)
-    // },
     computed:{
         courseList(){
             return this.indexData.courseList;
@@ -75,6 +70,8 @@ export default {
                 position: relative;
                 img{
                     transition: all .8s ease;
+                    width: 100%;
+                    height: 100%;
                 }
                 .mask{
                     @include center;

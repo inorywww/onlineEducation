@@ -14,7 +14,7 @@
                 <div class="nav-search">
                     <el-input 
                     placeholder="搜索课程" size="small" 
-                    v-model="searchContent"
+                    v-model="keyword"
                     @keyup.enter.native="search"
                     >
                         <el-button

@@ -26,20 +26,14 @@
 
 <script>
 import CourseItem from './CourseItem.vue';
+import {pageMixin} from '@/utils/mixin';
 export default {
     name:'courseList',
     props:{
         filterCondition:Object,
     },
+    mixins:[pageMixin],
     components: { CourseItem },
-    created(){
-        this.pagefilter();
-        setTimeout(() => {
-            console.log(this.showData);
-            console.log('filterCondition',this.filterCondition);
-            console.log('filterData',this.filterData);
-        },500)
-    },
     computed:{
         filterData(){
             let data = {
@@ -53,14 +47,6 @@ export default {
             data[this.filterCondition.filterWay] = this.filterCondition.sortWay === 'desc'?'1':'';
             return data
         },
-        
-    },
-    data(){
-        return {
-            showData:[],
-            pageSize:3,
-            currentPageIndex:1,
-        }
     },
     methods:{
         pagefilter(){
@@ -68,24 +54,11 @@ export default {
                 .then(res => {
                     if(res.data.code === 20000){
                         this.showData = res.data.data;
-                        // console.log(res.data);
                     }else{
                         alert('网络错误，请稍后重试！','error')
                     }
             });
         },
-        conditionFilter(){
-            
-        },
-        changeSize(val) {
-            this.pageSize = val;
-            this.pagefilter();
-        },
-        changePage(index) {
-            this.currentPageIndex = index;
-            this.pagefilter();
-        },
-
     }
 }
 </script>
