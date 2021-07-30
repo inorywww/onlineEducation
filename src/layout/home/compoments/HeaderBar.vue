@@ -4,7 +4,7 @@
             <div class="nav-left">
                 <div class="logo">
                     <router-link to="/">
-                        <img :src="headerStyle.logo" alt="logo" />
+                        <img :src="headerStyle.logo" alt="logo"/>
                     </router-link>
                 </div>
                 <div class="slogan">
@@ -12,10 +12,15 @@
                     <span class="slogan-b">尚硅谷旗下线上平台</span>
                 </div>
                 <div class="nav-search">
-                    <el-input placeholder="搜索课程" size="small">
+                    <el-input 
+                    placeholder="搜索课程" size="small" 
+                    v-model="searchContent"
+                    @keyup.enter.native="search"
+                    >
                         <el-button
                             slot="append"
                             class="iconfont icon-seach"
+                            @click="search"
                         ></el-button>
                     </el-input>
                 </div>
@@ -56,14 +61,13 @@
 import { removeToken } from "@/utils/userAuth";
 import { alert } from '@/utils/index';
 import NavList from './NavList';
+import {searchMixin} from '@/utils/mixin';
 export default {
     name: "headerBar",
     components:{
         NavList 
     },
-    created() {
-        
-    },
+    mixins:[searchMixin],
     computed: {
         headerStyle(){
             return this.$store.state.headerStyle;
@@ -76,18 +80,18 @@ export default {
         return {
             userNav:[
                 {
-                title:'我的学习',
-                path:'/'
-            },
+                    title:'我的学习',
+                    path:'/'
+                },
                 {
-                title:'账户中心',
-                path:'/'
-            },
+                    title:'账户中心',
+                    path:'/'
+                },
                 {
-                title:'退出登录',
-                path:'/'
-            },
-            ]
+                    title:'退出登录',
+                    path:'/'
+                },
+            ],
         };
     },
     methods:{

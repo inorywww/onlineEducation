@@ -16,6 +16,8 @@ const store = new Vuex.Store({
             logo:'/images/logo-green.png'
         },
         indexData:{}, //热门课程和4位老师
+        searchContent:'', //搜索内容
+        
         // 管理系统相关数据
         currentView:'index',  //当前tab
         isCollapse:false, //是否展开
@@ -58,6 +60,9 @@ const store = new Vuex.Store({
         },
         setIsLogin(state){
             state.isLogin = getToken() ? true : false;
+        },
+        setSearchContent(state,val){
+            state.searchContent = val;
         },
         // 管理系统方法
         setCurrentView(state,cv){

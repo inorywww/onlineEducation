@@ -46,7 +46,8 @@ export default {
                 pageNo:this.currentPageIndex,
                 pageSize:this.pageSize,
                 subjectId:this.filterCondition.subjectId,
-                subjectParentId:this.filterCondition.subjectParentId
+                subjectParentId:this.filterCondition.subjectParentId,
+                price:this.filterCondition.price
             }
             //升序为空 降序为'1' 默认为降序
             data[this.filterCondition.filterWay] = this.filterCondition.sortWay === 'desc'?'1':'';
@@ -63,15 +64,6 @@ export default {
     },
     methods:{
         pagefilter(){
-            // this.$api.course.pageCourse(this.currentPageIndex, this.pageSize)
-            //     .then(res => {
-            //         if(res.data.code === 20000){
-            //             this.showData = res.data.data;
-            //             // const temp = res.data.data.rows.concat();
-            //         }else{
-            //             alert('网络错误，请稍后重试！','error')
-            //         }
-            // });
              this.$api.courseFront.getFilterCourse(this.filterData, this.currentPageIndex, this.pageSize)
                 .then(res => {
                     if(res.data.code === 20000){

@@ -283,10 +283,6 @@ export default {
                     color: $c-white;
                 }
             }
-            .isFree-filter{
-
-            }
-            
         }
     }
 }

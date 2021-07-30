@@ -41,8 +41,10 @@
 <script>
 export default {
     name: "navList",
-    created(){
-        this.active = this.navList.findIndex(item => item.path === this.$route.path)
+    watch:{
+        $route(to){
+            this.active = this.navList.findIndex(item => item.path === to.path)
+        }
     },
     data() {
         return {
@@ -124,7 +126,7 @@ export default {
         background-color: $c-green;
         color: $c-white;
         & > a:hover {
-            color: $c-black !important;
+            color:$c-white !important;
         }
     }
 }

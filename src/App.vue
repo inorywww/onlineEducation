@@ -18,7 +18,6 @@ export default {
 </script>
 
 <style lang="scss">
-#a
 .el-form--label-top .el-form-item__label{
     padding: 0 !important;
 }
@@ -46,5 +45,11 @@ export default {
             }
         }
     }
+}
+.home-container .el-button:hover, 
+.home-container .el-button:focus {
+    color: inherit !important;
+    border-color: transparent !important;
+    background-color: transparent !important;
 }
 </style>

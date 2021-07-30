@@ -244,3 +244,26 @@ export const indexMixin = {
         ...mapGetters(['indexData'])
     }
 } 
+export const searchMixin = {
+    computed:{
+        searchContent:{
+            get(){
+                 return this.$store.state.searchContent;
+            },
+            set(val){
+                this.$store.commit('setSearchContent',val)
+            }
+        }
+    },
+    methods:{
+        search(){
+            if(this.searchContent !== '' && this.searchContent !== this.$route.params.title){
+                if(this.$route.name === 'search' || this.$route.name === 'searchDetail'){
+                    this.$router.replace(`/search/${this.searchContent}`);
+                }else{
+                    this.$router.push(`/search/${this.searchContent}`);
+                }
+            }
+        },
+    }
+}
