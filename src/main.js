@@ -4,6 +4,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui';
+
+import VideoPlayer from 'vue-video-player';
+require('video.js/dist/video-js.css');
+require('vue-video-player/src/custom-theme.css');
+Vue.use(VideoPlayer);
+
+import VueQriously from 'vue-qriously';
+Vue.use(VueQriously);
+
 import 'hover.css';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/style/reset.scss';

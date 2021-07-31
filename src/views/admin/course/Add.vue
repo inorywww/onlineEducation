@@ -124,7 +124,6 @@ export default {
                 }
                 else if(this.active === 1){
                     this.active ++;
-                    // console.log(this.$store.state.tableData);
                 }
             }
         },

@@ -14,6 +14,8 @@ import indexFront from './home/indexFront';
 import user from './home/user';
 import msm from './home/msm';
 import courseFront from './home/courseFront';
+import order from './home/order';
+import payLog from './home/payLog';
 export default{
     teacher,
     oss,
@@ -26,4 +28,6 @@ export default{
     user,
     msm,
     courseFront,
+    order,
+    payLog,
 }

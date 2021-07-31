@@ -24,5 +24,12 @@
             method: 'delete',
         })
     },
+    // 获取视频链接
+    getPlayUrl(id){
+        return request({
+            url:`${baseUrl}/getPlayUrl/${id}`,
+            method: 'get',
+        })
+    }
  }
  export default vod

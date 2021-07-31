@@ -3,7 +3,7 @@
  */
  import request from '../request';
  import base from './base';
-import {  getToken } from "@/utils/userAuth";
+import { getToken } from "@/utils/userAuth";
 
 const baseUrl = base.member;
 const user = {

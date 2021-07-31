@@ -45,6 +45,7 @@ export default {
         if(rememberTel && rememberPasword){
             this.loginForm.mobile = rememberTel;
             this.loginForm.password = rememberPasword;
+            this.login();
         }
     },
     data(){

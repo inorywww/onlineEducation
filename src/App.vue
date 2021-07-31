@@ -12,6 +12,7 @@ export default {
         await this.$store.dispatch('getTeacher');
         await this.$store.dispatch('getCareer');
         await this.$store.dispatch('getSubject');
+        this.$store.commit('setIsLogin')
     },
 };
 </script>
@@ -67,5 +68,18 @@ export default {
         color:$c-red !important;
     }
 }
-
+.chapter-list{
+    .el-collapse-item{
+        margin: 8px 0;
+        
+        .el-collapse-item__header{
+            background-color:$bg-color;
+            padding: 0 12px;
+            font-size: $text-small !important;
+        }
+        .el-collapse-item__wrap{
+            background-color:$c-card;
+        }
+    }
+}
 </style>

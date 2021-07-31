@@ -13,7 +13,9 @@
                         <video v-if="showVideoPath !='' && !videoFlag"
                             v-bind:src="showVideoPath"
                             class="avatar video-avatar"
-                            controls="controls">
+                            controls="controls"
+                            style="width:100%"
+                            >
                             您的浏览器不支持视频播放
                         </video>
                         <i v-else-if="showVideoPath =='' && !videoFlag"
@@ -35,10 +37,10 @@
 
 <script>
 import { alert } from "@/utils/index";
-import base from '@/api/base';
+import base from '@/api/admin/base';
 export default {
     name:'videoUpload',
-    data(){
+    data(){ 
         return {
             videoFlag: false,
             //是否显示进度条
@@ -82,17 +84,19 @@ export default {
             this.isShowUploadVideo = true;
             this.videoFlag = false;
             this.videoUploadPercent = 0;
-            console.log(res);
             //后台上传地址
             if (res.code == 20000) {
                 alert('上传成功！','success');
-                this.showVideoPath = 'https://outin-71814502ea8111eb821700163e1c955c.oss-cn-shanghai.aliyuncs.com/sv/5f848655-17ad64ca4b6/5f848655-17ad64ca4b6.mp4?Expires=1627096778&OSSAccessKeyId=LTAIwkKSLcUfI2u4&Signature=lBUbUzDWlohkX0MpIy66RIvupjQ%3D';
-                // 返回给父组件相关信息
-                this.$emit('videoData',{
-                    size: file.size,
-                    videoOriginalName: file.name,
-                    videoSourceId:res.data.videoId,
-                });
+                this.$api.vod.getPlayUrl(res.data.videoId).then(res1 => {
+                    this.showVideoPath = res1.data.data.playUrl[0];
+                    // 返回给父组件相关信息
+                    this.$emit('videoData',{
+                        size: file.size,
+                        videoOriginalName: file.name,
+                        videoSourceId:res.data.videoId,
+                    });
+                })
+                
             } else {
                 alert('上传失败，请重新上传','error');
             }

@@ -114,7 +114,7 @@
     </div>
 </template>
 
-<script>
+<script> 
 import VideoUpload from '@/components/VideoUpload';
 import { chapterMixin } from '@/utils/mixin'
 export default {

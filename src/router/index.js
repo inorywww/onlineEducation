@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import layoutHome from '@/layout/home/index';
 import layoutAdmin from '@/layout/admin/index';
 import store from '../store';
+import { alert } from "@/utils/index";
 Vue.use(VueRouter);
 
 const routes = [
@@ -52,13 +53,46 @@ const routes = [
                 component: () => import('@/views/home/course')
             },
             {
-                path:'/search/:category/:keyword',
-                name:'searchDetail',
+                path:'/course/:id',
+                name:'courseDetail',
+                meta:{
+                    title: '搜索'
+                },
+                component: () => import('@/views/home/courseDetail')
+            },
+            {
+                path:'/search',
+                name:'search',
                 meta:{
                     title: '搜索'
                 },
                 component: () => import('@/views/home/search')
-            }
+            },
+            {
+                path:'/search/:category/:keyword',
+                name:'searchDetail',
+                meta:{
+                    title: '课程详情'
+                },
+                component: () => import('@/views/home/search')
+            },
+            {
+                path:'/order/:id',
+                name:'order',
+                meta:{
+                    title: '订单确认'
+                },
+                component: () => import('@/views/home/order')
+            },
+            {
+                path:'/pay/:id',
+                name:'pay',
+                meta:{
+                    title: '支付'
+                },
+                component: () => import('@/views/home/order/Pay')
+            },
+            
         ]
     },
     {
@@ -176,7 +210,7 @@ const router = new VueRouter({
 });
 
 // 路由发生变化修改页面title
-router.beforeEach( (to, from, next) => {
+router.beforeEach( async (to, from, next) => {
     if (!to.meta.requireAuth) {
         store.commit('delAllTab');
         if (to.meta.title === '首页') {
@@ -191,7 +225,17 @@ router.beforeEach( (to, from, next) => {
     else{
         document.title = to.meta.title;
     }
-    
+    if(to.name !== 'search' || to.name !== 'searchDetail'){
+        store.commit('setSearchContent','')
+    }
+    // 判断是不是从支付界面跳转的，如果是，清除定时器
+    if(from.name === 'pay' && to.name !== 'courseDetail'){
+        await window.clearInterval(store.state.payTimer);
+        store.commit('setPayTimer', null);
+        store.commit('setIsLeavePay', store.state.payInfo.out_trade_no);
+        store.commit('setPayInfo',{});
+        alert('已取消支付！','warning');
+    }
     next();
 });
 export default router;

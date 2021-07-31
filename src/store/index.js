@@ -17,7 +17,9 @@ const store = new Vuex.Store({
         },
         indexData:{}, //热门课程和4位老师
         searchContent:'', //搜索内容
-        
+        payInfo:{}, //订单支付信息
+        payTimer:null, // 查询支付状态的定时器
+        isLeavePay:'', //判断是否离开了支付界面，离开后需要重新提交订单
         // 管理系统相关数据
         currentView:'index',  //当前tab
         isCollapse:false, //是否展开
@@ -65,6 +67,15 @@ const store = new Vuex.Store({
             if(val !== undefined){
                 state.searchContent = val;
             }
+        },
+        setPayInfo(state, data){
+            state.payInfo = data;
+        },
+        setPayTimer(state, data){
+            state.payTimer = data;
+        },
+        setIsLeavePay(state, val){
+            state.isLeavePay = val;
         },
         // 管理系统方法
         setCurrentView(state,cv){
@@ -208,6 +219,7 @@ const store = new Vuex.Store({
                   allCareer:val.allCareer,
                   allSubject:val.allSubject,
                   allTeacher:val.allTeacher,
+                  payInfo:val.payInfo,
                 }
               }
         })

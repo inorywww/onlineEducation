@@ -208,6 +208,7 @@ export const chapterMixin = {
                 this.temp.parent = row.value;
                 this.temp.location = '2';
                 this.parentName = row.label;
+                this.$store.commit('setShowVideoPath','');
             }
         },
         // 根据sort重新排序
@@ -239,7 +240,7 @@ export const chapterMixin = {
         }
     },
 }
-export const indexMixin = {
+export const indexMixin = { 
     computed:{
         ...mapGetters(['indexData'])
     }

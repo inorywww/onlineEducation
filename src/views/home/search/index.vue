@@ -65,8 +65,8 @@ export default {
         }
     },
     mounted(){
-        // this.$store.dispatch('getIndexData');
         const to = this.$route;
+        document.title = `搜索 - ${to.params.keyword} - 谷粒学苑 - Java培训|大数据培训|前端培训|HTML5培训|Linux运维培训_程序员一站式IT在线学习平台`;
         if(to.params.category !== this.searchTabs[this.tabActive].name){
             this.tabActive = this.searchTabs.findIndex(item => item.name === to.params.category)
         }
@@ -74,10 +74,12 @@ export default {
     },
     watch:{
         $route(to){
-            if(to.params.category !== this.searchTabs[this.tabActive].name){
-                this.tabActive = this.searchTabs.findIndex(item => item.name === to.params.category)
+            if(to.name === 'search' || to.name === 'searchDetail'){
+                if(to.params.category !== this.searchTabs[this.tabActive].name){
+                    this.tabActive = this.searchTabs.findIndex(item => item.name === to.params.category)
+                }
+                this.$store.commit('setSearchContent',to.params.keyword)
             }
-            this.$store.commit('setSearchContent',to.params.keyword)
         }
     },
     methods:{
@@ -152,8 +154,6 @@ export default {
                     color: $c-green;
                 }
             }
-        }
-        .recommend-container{
         }
     }
 }

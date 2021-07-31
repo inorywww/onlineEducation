@@ -14,7 +14,7 @@
     </el-upload>
 </template>
 
-<script>
+<script> 
 export default {
     name:'upload',
     mounted(){

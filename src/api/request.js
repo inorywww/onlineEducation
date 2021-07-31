@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {Loading} from 'element-ui';
+import router from '@/router'
 let loading = null;
 const service = axios.create({
     baseURL:'/api',
@@ -22,7 +23,10 @@ function endLoading(){
 // 请求拦截
 service.interceptors.request.use(config => {
     // 请求前加载动画
-    startLoading();
+    console.log();
+    if(router.currentRoute.name !== 'pay'){
+        startLoading();
+    }
     return config;
 }, error => {
     return Promise.reject(error);
