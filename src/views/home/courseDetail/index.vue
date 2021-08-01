@@ -1,11 +1,14 @@
 <template>
     <div class="course-detail" v-if="isData">
         <div class="header">
-            <base-info :item="courseInfo"/>
+            <div class="bread">
+
+            </div>
+            <base-info :item="courseInfo" :isBuy="isBuy"/>
         </div>
         <div class="content">
             <div class="courseInfo">
-                <course-info :course="courseInfo" :chapters="chapters"/>
+                <course-info :course="courseInfo" :chapters="chapters" :isBuy="isBuy"/>
             </div>
             <div class="teacherInfo">
                 <teacher-info :course="courseInfo"/>

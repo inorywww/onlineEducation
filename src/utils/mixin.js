@@ -98,6 +98,7 @@ export const chapterMixin = {
         },
         // 打开更新
         handleUpdate(row) {
+            this.$store.commit('setShowVideoPath','');
             row.value.length !== 1 ? (this.sonStatus = true) : (this.sonStatus = false);
             this.temp = Object.assign({}, row); // copy obj
             if (this.sonStatus) {
@@ -110,8 +111,6 @@ export const chapterMixin = {
             } else {
                 this.idx = this.tableData.findIndex(item => item.value === row.value);
             }
-            // return
-            // console.log(row);
             if(row.location === '2'){
                 this.parentName = this.tableData.find(item  => item.value === row.parent).label
             }

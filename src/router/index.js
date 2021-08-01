@@ -45,6 +45,14 @@ const routes = [
                 component: () => import('@/views/home/teacher')
             },
             {
+                path: '/teacher/:id',
+                name:'teacherDetail',
+                meta:{
+                    title:'讲师详情'
+                },
+                component: () => import('@/views/home/teacherDetail')
+            },
+            {
                 path: '/course',
                 name:'allCourse',
                 meta:{
@@ -56,7 +64,7 @@ const routes = [
                 path:'/course/:id',
                 name:'courseDetail',
                 meta:{
-                    title: '搜索'
+                    title: '课程详情'
                 },
                 component: () => import('@/views/home/courseDetail')
             },
@@ -229,12 +237,14 @@ router.beforeEach( async (to, from, next) => {
         store.commit('setSearchContent','')
     }
     // 判断是不是从支付界面跳转的，如果是，清除定时器
-    if(from.name === 'pay' && to.name !== 'courseDetail'){
+    if(from.name === 'pay'){
         await window.clearInterval(store.state.payTimer);
         store.commit('setPayTimer', null);
         store.commit('setIsLeavePay', store.state.payInfo.out_trade_no);
         store.commit('setPayInfo',{});
-        alert('已取消支付！','warning');
+        if(to.name !== 'courseDetail'){
+            alert('已取消支付！','warning');
+        }
     }
     next();
 });

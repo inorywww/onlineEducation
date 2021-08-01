@@ -10,7 +10,7 @@
                 <h1 class="title">课程介绍</h1>
                 <p>{{course.description}}</p>
             </div>
-            <div class="chapter">
+            <div class="chapter" id="chapter">
                 <h1 class="title">课程大纲</h1>
                 <div class="chapter-list">
                     <el-collapse v-model="showChapterIndex">
@@ -30,12 +30,15 @@
                                         <span class="free" v-if="v.isFree">
                                             免费
                                         </span>
+                                        <span class="free" v-if="!v.isFree && isBuy">
+                                            已购
+                                        </span>
                                         <span>
                                             {{v.title}}
                                         </span>
                                     </div>
-                                    <span class="see hv" v-if="v.isFree">
-                                        预览
+                                    <span class="see hv" v-if="v.isFree || isBuy">
+                                        观看
                                     </span>
                                     <span class="buy hv" v-else>
                                         购买
@@ -58,8 +61,6 @@
             class="video-player vjs-custom-skin"
             :playsinline="true"
             :options="playerOptions"
-            @play="onPlayerPlay($event)"
-            @pause="onPlayerPause($event)"
             />
         </el-dialog>
     </div>
@@ -72,6 +73,7 @@ export default {
     props:{
         course:Object,
         chapters:Array,
+        isBuy:Boolean,
     },
     data(){
         return {
@@ -106,9 +108,18 @@ export default {
             },
         }
     },
+    watch:{
+        //监听弹窗，关闭的话暂停。
+        dialogVisible(val){
+            if(!val){
+                let myPlayer = this.$refs.videoPlayer.player;
+                myPlayer.pause();
+            }
+        }
+    },
     methods:{
         playVideo(item){
-            if(item.isFree){
+            if(item.isFree || this.isBuy){
                 this.$api.vod.getPlayUrl(item.videoSourceId).then(res => {
                     if(res.data.data.playUrl){
                         this.playerOptions.sources[0].src = res.data.data.playUrl[0];
@@ -120,14 +131,25 @@ export default {
                 })
             }else{
                 //购买
+                this.$confirm('暂未购买，是否现在购买?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'info'
+                }).then(() => {
+                    this.$api.order.createOrder(this.course.id).then(res => {
+                        if(res.data.code === 20000){
+                            alert('创建订单成功！','success',1000);
+                            setTimeout(() => {
+                                this.$router.push(`/order/${res.data.data.orderId}`)
+                            },1000)
+                        }
+                        else{
+                            alert('创建订单失败，网络错误！','error')
+                        }
+                    })
+                }).catch(() => alert('已取消购买','info'))
             }
         },
-        onPlayerPlay(e){
-            console.log(e);
-        },
-        onPlayerPause(e){
-            console.log(e);
-        }
     }
 }
 </script>

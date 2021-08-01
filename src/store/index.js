@@ -37,7 +37,7 @@ const store = new Vuex.Store({
         },
         showVideoPath:'', //播放视频
         tableData:[], //添加课程 添加大纲的表格信息,
-        isSubmit: false,//添加课程的时候是否同时发布课程
+        isSubmit: false, //添加课程的时候是否同时发布课程
         courseEditVisible:false, // 课程列表中编辑视频是否显示
         courseEditForm:{}, // 编辑课程信息
         chapterEditForm:[], // 编辑章节信息

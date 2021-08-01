@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import CourseItem from './CourseItem.vue';
+import CourseItem from '@/views/home/components/CourseItem';
 import {pageMixin} from '@/utils/mixin';
 export default {
     name:'courseList',

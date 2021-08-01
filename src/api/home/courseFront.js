@@ -7,7 +7,7 @@ import request from '../request';
 import { getToken } from "@/utils/userAuth";
  
  const courseFront = {
-     // 根据token获取课程详情
+    // 根据token获取课程详情
     getCourseDetail(id){
         return request({
             url: `${baseUrl}/getFrontCourseInfo/${id}`,

@@ -21,9 +21,9 @@
                         <i v-else-if="showVideoPath =='' && !videoFlag"
                         class="el-icon-plus avatar-uploader-icon"></i>
                         <el-progress v-if="videoFlag == true"
-                                    type="circle"
-                                    v-bind:percentage="videoUploadPercent"
-                                    style="margin-top:7px;"></el-progress>
+                            type="circle"
+                            v-bind:percentage="videoUploadPercent"
+                            style="margin-top:7px;"></el-progress>
                     </el-upload>
                 </div>
             </div>

@@ -50,14 +50,10 @@ export default {
                 this.$router.replace(`/order/${this.$store.state.isLeavePay}`)
             }
             else{
-                setTimeout(() => {
-                    console.log(this.payInfo);
-                },1000)
                 this.$store.commit('setIsLeavePay','');
                 this.$store.commit('setPayTimer',
                     setInterval(() => {
                         this.$api.payLog.getPayStatus(this.payInfo.out_trade_no).then(res => {
-                            console.log(res.data);
                             if(res.data.code === 20000){
                                 window.clearInterval(this.$store.state.payTimer);
                                 alert('支付成功！','success',1000);

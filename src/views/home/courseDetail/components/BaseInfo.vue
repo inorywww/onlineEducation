@@ -23,8 +23,9 @@
                     <h1 class="title">{{item.title}}</h1>
                     <p class="price">
                         价格：
-                        <span v-if="item.price !==0" class="paid">￥{{item.price}}</span>
-                        <span v-else class="free">免费</span>
+                        <span v-if="item.price !==0 && !isBuy" class="paid">￥{{item.price}}</span>
+                        <span v-if="item.price === 0" class="free">免费</span>
+                        <span v-if="isBuy" class="free">已购</span>
                     </p>
                 </div>
                 <div class="teacher">
@@ -32,11 +33,14 @@
                         主讲：
                         <span>{{item.teacherName}}</span>
                     </p>
-                    <span class="buy hvr-shadow" v-if="item.price !== 0" @click="buyCourse(item)">
+                    <span class="buy hvr-shadow" v-if="item.price !== 0 && !isBuy" @click="buyCourse(item)">
                         立即购买
                     </span>
-                    <span class="free hvr-shadow" v-else>
-                        免费加入
+                    <span class="free hvr-shadow" v-if="item.price === 0">
+                        免费观看
+                    </span>
+                    <span class="free hvr-shadow" v-if="isBuy">
+                        立即观看
                     </span>
                 </div>
 
@@ -51,13 +55,12 @@ export default {
     name:'baseInfo',
     props:{
         item:Object,
+        isBuy:Boolean,
     },
     methods:{
         buyCourse(item){
-            console.log(item);
             this.$api.order.createOrder(item.id).then(res => {
                 if(res.data.code === 20000){
-                    console.log(res.data.data.orderId);
                     alert('创建订单成功！','success',1000);
                     setTimeout(() => {
                         this.$router.push(`/order/${res.data.data.orderId}`)
@@ -67,7 +70,7 @@ export default {
                     alert('创建订单失败，网络错误！','error')
                 }
             })
-        }
+        },
     }
 }
 </script>

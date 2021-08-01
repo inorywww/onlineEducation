@@ -219,8 +219,6 @@ export default {
                     originChapters.push(item);
                 }
             })
-            // console.log('oldChapters',oldChapters);
-            // console.log('originChapters',originChapters);
             // 找出不同的，然后对不同的chapter进行修改
             oldChapters.forEach((item,index) => {
                     if(oldChapters[index].title !== originChapters[index].title || 
@@ -228,7 +226,6 @@ export default {
                         needEdit.push(item)
                     }
             })
-            console.log('needEdit',needEdit);
             this.updateOld(needEdit);
 
             //获取新增的chapter并增加
@@ -270,7 +267,6 @@ export default {
         async setVideoUpdate(arr){
             const newArr = arr.concat();
             const videos = []
-            console.log('newArr',newArr);
             newArr.forEach(chapter => {
                 chapter.children.forEach(item => {
                     videos.push({
@@ -288,7 +284,8 @@ export default {
                     })
                 })
             });
-              // 获取提交表单后的所有video （不包含新增的和删除的
+            console.log('videos',videos);
+            // 获取提交表单后的所有video （不包含新增的和删除的
             const oldVideos = videos.filter(item => item.id);
             // 获取原始的所有chapter
             const originData = JSON.parse(this.$store.state.editOriginData.chapter);
@@ -307,13 +304,11 @@ export default {
             });
             // 找出不同的，然后对不同的chapter进行修改
             const needEdit = [];
-            // console.log('oldVideos',oldVideos);
-            // console.log('originVideos',originVideos);
             oldVideos.forEach((i,index) => {
                 if(oldVideos[index].title !== originVideos[index].title || 
                 oldVideos[index].sort !== originVideos[index].sort || 
-                oldVideos[index].isFree !== originVideos[index].isFree
-                // oldVideos[index].videoSourceId !== originVideos[index].videoSourceId || 
+                oldVideos[index].isFree !== originVideos[index].isFree ||
+                oldVideos[index].videoSourceId !== originVideos[index].videoSourceId
                 ){
                     needEdit.push(i);
                 }

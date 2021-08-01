@@ -63,6 +63,12 @@ const teacher = {
             method: 'post',
             data
         })
+    },
+    getTeacherCourse(id){
+        return request({
+            url:`${baseUrl}/getTeacherCourse/${id}`,
+            method: 'get',
+        })
     }
 }
 

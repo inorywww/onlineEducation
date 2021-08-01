@@ -25,6 +25,7 @@ const order = {
             method:'get',
         })
     },
+    
     // 根据订单id和用户id查询是否购买了该课程
     isBuyCourse(courseId, userId){
         return request({

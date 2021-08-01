@@ -12,7 +12,7 @@
                 :data="tableData"
                 style="width: 100%; margin-bottom: 20px"
                 border
-                row-key="value"
+                row-key="value" 
                 stripe
                 size="medium"
                 :tree-props="{ children: 'children' }"
