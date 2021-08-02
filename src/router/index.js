@@ -186,15 +186,7 @@ const routes = [
                     }
                 ]
             },
-            {
-                path:'subject',
-                name:'subject',
-                meta:{
-                    title:'课程分类管理',
-                    requireAuth:true,
-                },
-                component: () => import('@/views/admin/subject'),
-            },
+            
             {
                 path:'course',
                 name:'course',
@@ -225,9 +217,38 @@ const routes = [
                     },
                 ]
             },
+            {
+                path:'subject',
+                name:'subject',
+                meta:{
+                    title:'课程分类管理',
+                    requireAuth:true,
+                },
+                component: () => import('@/views/admin/subject'),
+            },
+            {
+                path:'analyze',
+                name:'analyze',
+                meta:{
+                    title:'数据统计',
+                    requireAuth:true,
+                },
+                component: () => import('@/views/admin/analyze'),
+            },
         ]
     },
-   
+    {
+        path: '/404',
+        name: '404 Not Found',
+        component: () => import('@/views/404'),
+        meta: { title: '你走丢了' },
+        hidden: true
+    },
+    {
+        path: '*',
+        redirect: '/404',
+        hidden: true
+    }
    
 ]
 
@@ -250,6 +271,7 @@ const router = new VueRouter({
 // 路由发生变化修改页面title
 router.beforeEach( async (to, from, next) => {
     if (!to.meta.requireAuth) {
+        store.commit('setAdminIsLogin',false)
         store.commit('delAllTab');
         if (to.meta.title === '首页') {
             store.commit('setHeader',{name:'header-white',logo:'/images/logo.png'})
@@ -262,6 +284,11 @@ router.beforeEach( async (to, from, next) => {
     }
     else{
         document.title = to.meta.title;
+        // 判断有没有登录
+        if(!store.state.adminIsLogin){
+            alert('尚未授权！','error');
+            next('/')
+        }
     }
     if(to.name !== 'search' || to.name !== 'searchDetail'){
         store.commit('setSearchContent','')

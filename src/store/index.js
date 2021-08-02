@@ -21,6 +21,7 @@ const store = new Vuex.Store({
         payTimer:null, // 查询支付状态的定时器
         isLeavePay:'', //判断是否离开了支付界面，离开后需要重新提交订单
         // 管理系统相关数据
+        adminIsLogin:false,
         currentView:'index',  //当前tab
         isCollapse:false, //是否展开
         allTabs:[ //所有tab
@@ -78,6 +79,9 @@ const store = new Vuex.Store({
             state.isLeavePay = val;
         },
         // 管理系统方法
+        setAdminIsLogin(state,val){
+            state.adminIsLogin = val;
+        },
         setCurrentView(state,cv){
             state.currentView = cv;
         },

@@ -5,8 +5,8 @@
  import base from './base';
  import moment from 'moment';
  const baseUrl = base.analyze;
- const defaultBegin = '2021-01-01 00:00:00'
- const defaultEnd = moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss')
+ const defaultBegin = '2000-01-01'
+ const defaultEnd = moment().locale('zh-cn').format('YYYY-MM-DD')
 
  const analyze = {
      // 统计某一天注册人数

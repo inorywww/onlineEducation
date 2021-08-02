@@ -103,12 +103,7 @@ export default {
                         },
                     ],
                 },
-                {
-                    icon: "icon-kechengfenlei",
-                    title: "课程分类管理",
-                    name: "subject",
-                    path: "/dashboard/subject",
-                },
+                
                 {
                     icon:'icon-kecheng',
                     title:'课程管理',
@@ -128,7 +123,19 @@ export default {
                             path:'/dashboard/course/add',
                         }
                     ]
-                }
+                },
+                {
+                    icon: "icon-kechengfenlei",
+                    title: "课程分类管理",
+                    name: "subject",
+                    path: "/dashboard/subject",
+                },
+                {
+                    icon: "icon-tongji",
+                    title: "数据统计",
+                    name: "analyze",
+                    path: "/dashboard/analyze",
+                },
             ],
         }
     },

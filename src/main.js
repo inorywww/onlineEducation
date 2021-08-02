@@ -13,10 +13,6 @@ Vue.use(VideoPlayer);
 import VueQriously from 'vue-qriously';
 Vue.use(VueQriously);
 
-import Echarts from 'vue-echarts'
-import 'echarts/lib/chart/line'
-Vue.component('v-chart',Echarts)
-
 import 'hover.css';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/style/reset.scss';

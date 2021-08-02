@@ -19,7 +19,6 @@
     "sortablejs": "^1.14.0",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
-    "vue-echarts": "^6.0.0-rc.6",
     "vue-qriously": "^1.1.1",
     "vue-router": "^3.5.2",
     "vue-video-player": "^5.0.2",

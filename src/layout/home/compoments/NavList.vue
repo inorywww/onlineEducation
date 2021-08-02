@@ -61,36 +61,36 @@ export default {
                     title: "名师",
                     path: "/teacher",
                 },
-                {
-                    title: "学习路线图",
-                    path: "",
-                    subs: [
-                        {
-                            title: "Java开发",
-                            path: "/path/java",
-                        },
-                        {
-                            title: "大数据",
-                            path: "/path/bigdata",
-                        },
-                        {
-                            title: "前端开发",
-                            path: "/path/front",
-                        },
-                        {
-                            title: "Linux运维",
-                            path: "/path/linux",
-                        },
-                        {
-                            title: "Android",
-                            path: "/path/android",
-                        },
-                    ],
-                },
-                {
-                    title: "名师面授班",
-                    path: "http://www.atguigu.com/",
-                },
+                // {
+                //     title: "学习路线图",
+                //     path: "",
+                //     subs: [
+                //         {
+                //             title: "Java开发",
+                //             path: "/path/java",
+                //         },
+                //         {
+                //             title: "大数据",
+                //             path: "/path/bigdata",
+                //         },
+                //         {
+                //             title: "前端开发",
+                //             path: "/path/front",
+                //         },
+                //         {
+                //             title: "Linux运维",
+                //             path: "/path/linux",
+                //         },
+                //         {
+                //             title: "Android",
+                //             path: "/path/android",
+                //         },
+                //     ],
+                // },
+                // {
+                //     title: "名师面授班",
+                //     path: "http://www.atguigu.com/",
+                // },
             ],
             active: 0,
         };
