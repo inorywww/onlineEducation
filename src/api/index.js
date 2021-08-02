@@ -9,6 +9,8 @@ import subject from  './admin/subject';
 import course from  './admin/course';
 import chapter from  './admin/chapter'; 
 import video from  './admin/video';
+import analyze from  './admin/analyze';
+import banner from  './admin/banner';
 // 前台相关接口
 import indexFront from './home/indexFront';
 import user from './home/user';
@@ -24,6 +26,9 @@ export default{
     course,
     chapter,
     video,
+    analyze,
+    banner,
+    
     indexFront,
     user,
     msm,

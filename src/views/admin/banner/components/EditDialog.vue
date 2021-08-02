@@ -34,66 +34,22 @@
                     ></el-input>
                 </el-form-item>
 
-                <el-form-item label="姓名" label-width="120px" prop="name">
+                <el-form-item label="标题" label-width="120px" prop="name">
                     <el-input
-                        v-model="editForm.name"
-                        autocomplete="off"
-                    ></el-input>
-                </el-form-item>
-
-                <el-form-item label="介绍" label-width="120px" prop="intro">
-                    <el-input
-                        v-model="editForm.intro"
+                        v-model="editForm.title"
                         autocomplete="off"
                     ></el-input>
                 </el-form-item>
 
                 <el-form-item
-                    label="讲师头像"
+                    label="图片"
                     label-width="120px"
                     prop="avatar"
                     class="upload-container"
                 >
-                    <div class="input-box">
-                        <el-input
-                            v-model="editForm.avatar"
-                            autocomplete="off"
-                            disabled
-                        ></el-input>
-                    </div>
-
                     <div class="upload-box">
-                        <el-upload
-                            :class="{hide:isUpload}"
-                            action=""
-                            :multiple="true"
-                            :on-change="beforeUpload"
-                            :auto-upload="false"
-                            :on-remove="removeFile"
-                            ref="upload"
-                        >
-                            <el-button type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">
-                                只能上传jpg/png文件
-                            </div>
-                        </el-upload>
+                        <my-upload @uploadData="getUploadData" :defalutCover="[{name:'cover',url:editForm.imageUrl}]"/>
                     </div>
-                </el-form-item>
-
-                <el-form-item label="头衔" label-width="120px" prop="career">
-                    <el-select
-                        v-model="editForm.career"
-                        placeholder="请选择头衔"
-                        clearable
-                    >
-                        <el-option
-                            v-for="(item, index) in allCareer"
-                            :key="index"
-                            :label="item"
-                            :value="item"
-                        >
-                        </el-option>
-                    </el-select>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -104,7 +60,7 @@
                     icon="el-icon-info"
                     icon-color="red"
                     title="确定修改吗？"
-                    @confirm="editTeacher"
+                    @confirm="edit"
                 >
                     <el-button type="primary" slot="reference">确 定</el-button>
                 </el-popconfirm>
@@ -115,6 +71,7 @@
 
 <script>
 import { alert, equalObj } from "@/utils/index";
+import MyUpload from '@/components/MyUpload';
 
 export default {
     name: "editDialog",
@@ -123,7 +80,7 @@ export default {
         editIsShow: Boolean,
         originForm: Object,
     },
-    mounted() {},
+    components:{MyUpload},
     computed: {
         isShow: {
             get() {
@@ -132,23 +89,16 @@ export default {
             set(val) {
                 // 给父组件传值，更改显示状态
                 this.file = '';
-                this.$refs.upload.clearFiles();
                 this.uploadData = new FormData();
                 this.$emit("childByValue", val);
             },
         },
-        allCareer(){
-            return this.$store.state.allCareer;
-        }
     },
     data() {
         return {
             formRules: {
-                name: [
-                    { required: true, message: "请输入姓名", trigger: "blur" },
-                ],
-                intro: [
-                    { required: true, message: "请输入简介", trigger: "blur" },
+                title: [
+                    { required: true, message: "请输入标题", trigger: "blur" },
                 ],
             },
             uploadData: new FormData(),
@@ -156,50 +106,22 @@ export default {
         };
     },
     methods: {
-        beforeUpload(file) {
-            const isJPG =
-                file.raw.type === "image/jpeg" || file.raw.type === "image/png";
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            
-            if (!isJPG) {
-                alert("图片只能是jpg/png格式!", "error");
-                this.$refs.upload.clearFiles();
-                return isJPG;
-            }
-            if (!isLt2M) {
-                alert("上传头像图片大小不能超过 2MB!", "error");
-                this.$refs.upload.clearFiles();
-                return isLt2M;
-            }
-            if(this.isUpload){
-                alert('只允许上传一张！','warning');
-                return false;
-            }
-            this.uploadData.append("file", file.raw);
-            this.isUpload = true;
-        },
-        removeFile() {
-            this.uploadData = new FormData();
-            this.isUpload = false;
-        },
-        editTeacher() {
+        edit() {
             // 当改变了的时候才发请求
             if (!equalObj(this.editForm, this.originForm) || this.isUpload) {
                 this.$refs["editForm"].validate(async (valid) => {
                     if (valid) {
                         if (this.isUpload) {
-                            await this.$api.oss.upload(this.uploadData)
-                                .then((res) => {
-                                    this.editForm.avatar = res.data.data.url;
-                                });
+                            await this.$api.oss.upload(this.uploadData).then(res => {
+                                this.editForm.imageUrl = res.data.data.url;
+                            });
                         }
-                        this.$api.teacher.updateTeacher(this.editForm)
+                        this.$api.banner.updateBanner(this.editForm)
                             .then((res) => {
                                 if (res.status === 200) {
                                     alert("修改成功", "success");
                                     this.uploadData = new FormData();
                                     this.isUpload = false;
-                                    this.$refs.upload.clearFiles();
                                     this.$emit("childByValue", false);//关闭dialog
                                 } else {
                                     alert("修改失败，请稍后重试", "error");
@@ -217,6 +139,12 @@ export default {
                 this.$emit("childByValue", false);
             }
         },
+        // 从myupload组件传递回来的文件
+        getUploadData(file){
+            console.log(file);
+            this.uploadData.append("file", file.raw);
+            this.isUpload = true;
+        }
     },
 };
 </script>

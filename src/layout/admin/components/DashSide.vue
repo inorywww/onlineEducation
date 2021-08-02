@@ -64,6 +64,26 @@ export default {
                     path:'/dashboard/index'
                 },
                 {
+                    icon: "icon-lunbotu",
+                    title: "轮播管理",
+                    name: "banner",
+                    path: "/dashboard/banner/list",
+                    subs: [
+                        {
+                            icon:'icon-liebiao',
+                            title: "轮播列表",
+                            name: "banner-list",
+                            path: "/dashboard/banner/list",
+                        },
+                        {
+                            icon:'icon-icon-test',
+                            title: "添加轮播图",
+                            name: "banner-add",
+                            path: "/dashboard/banner/add",
+                        },
+                    ],
+                },
+                {
                     icon: "icon-jiaolian1",
                     title: "讲师管理",
                     name: "teacher",

@@ -1,6 +1,6 @@
 <template>
     <div class="edit-course">
-        <el-form
+        <el-form 
             :model="editInfo"
             ref="editCourseInfo"
             label-width="100px"

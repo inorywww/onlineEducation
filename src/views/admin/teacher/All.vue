@@ -80,7 +80,6 @@
         :editForm="editForm" 
         :editIsShow="editIsShow"
         v-on:childByValue="childByValue"
-        v-on:childRow="childRow"
         />
     </div>
 </template>
@@ -239,10 +238,9 @@ export default {
         },
         childByValue(childValue){
             this.editIsShow = childValue;
-        },
-        childRow(){
             this.pagefilter();
-        }
+        },
+        
     },
 };
 </script>

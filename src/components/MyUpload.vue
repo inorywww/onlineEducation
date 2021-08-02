@@ -26,6 +26,7 @@ export default {
         }
     },
     props:{
+        //[{name:'cover',url:''}]
         defalutCover:Array,
     },
     computed:{

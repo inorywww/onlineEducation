@@ -127,6 +127,36 @@ const routes = [
                 component: () => import('@/views/admin/index'),
             },
             {
+                path:'banner',
+                name:'banner',
+                redirect: 'banner/list',
+                meta:{
+                    title:'轮播管理',
+                    requireAuth:true,
+                },
+                component: () => import('@/views/admin/banner'),
+                children:[
+                    {
+                        path:'list',
+                        name:'banner-list',
+                        meta:{
+                            title:'轮播列表',
+                            requireAuth:true,
+                        },
+                        component: () => import('@/views/admin/banner/All'),
+                    },
+                    {
+                        path:'add',
+                        name:'banner-add',
+                        meta:{
+                            title:'添加轮播',
+                            requireAuth:true,
+                        },
+                        component: () => import('@/views/admin/banner/Add'),
+                    }
+                ]
+            },
+            {
                 path:'teacher',
                 name:'teacher',
                 redirect: 'teacher/list',

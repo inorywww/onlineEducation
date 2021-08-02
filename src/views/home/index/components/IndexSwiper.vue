@@ -6,7 +6,7 @@
                 v-for="(item, index) in swiperList"
                 :key="index"
             >
-                <img :src="item.imgSrc" alt="image" />
+                <img :src="item.imageUrl" alt="image" />
             </el-carousel-item>
         </el-carousel>
         <div class="category-container">
@@ -78,31 +78,18 @@
 </template>
 
 <script>
+import {listMixin} from '@/utils/mixin';
 export default {
     name: "indexSwiper",
-    created() {},
+    created() {
+        this.getBanners(); 
+    },
+    mixins:[listMixin],
     data() {
         return {
             subShowIndex:-1,
             swiperList: [
-                {
-                    imgSrc: "https://www.gulixueyuan.com/files/system/2021/07-13/090532c39cfa550000.png?version=20.4.6",
-                },
-                {
-                    imgSrc: "https://www.gulixueyuan.com/files/system/2021/07-08/0950560e1bd8204496.png?version=20.4.6",
-                },
-                {
-                    imgSrc: "https://www.gulixueyuan.com/files/system/2021/06-30/093821de3bad128663.jpg?version=20.4.6",
-                },
-                {
-                    imgSrc: "https://www.gulixueyuan.com/files/system/2021/06-17/093745a004ba853050.jpg?version=20.4.6",
-                },
-                {
-                    imgSrc: "https://www.gulixueyuan.com/files/system/2021/05-10/093618276115930412.jpg?version=20.4.6",
-                },
-                {
-                    imgSrc: "https://www.gulixueyuan.com/files/system/2021/04-26/0850411933bc931410.jpg?version=20.4.6",
-                },
+                
             ],
             categroyList: [
                 {
@@ -796,11 +783,15 @@ export default {
                     ]
                 },
             ],
+            bannerList:[]
         };
     },
     methods:{
         showSub(index){
             this.subShowIndex = index;
+        },
+        getBanners(){
+            this.$api.banner.pageBanner(1, 10).then(res =>this.swiperList = res.data.data.items);
         }
     }
 
