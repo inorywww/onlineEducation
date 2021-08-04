@@ -1,11 +1,11 @@
 <template>
     <div class="course-item">
         <div class="cover">
-            <el-image :src="item.cover">
-                <div slot="error" class="image-slot">
+            <img :src="item.cover" alt="image">
+                <!-- <div slot="error" class="image-slot">
                     <i class="el-icon-picture-outline"></i>
                 </div>
-            </el-image>
+            </img> -->
             <div class="mask">
                 <span class="start">开始学习</span>
             </div>
@@ -52,6 +52,10 @@ export default {
     .cover{
         overflow: hidden;
         position: relative;
+        img{
+            width: 100%;
+            height: 175px !important;
+        }
         .mask{
             @include center;
             transition: all .5s ease;

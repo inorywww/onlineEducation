@@ -152,7 +152,6 @@ export default {
             }
             this.$api.analyze.showData(data.type, data.begin, data.end)
                 .then((res) => {
-                    console.log(res.data.data);
                     this.title = `课程数量随着时间分布折线图（${data.begin}~${data.end}）`
                     this.xData = res.data.data.dateList;
                     this.yData = res.data.data.numList;

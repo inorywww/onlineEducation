@@ -71,7 +71,7 @@ export default {
                 img{
                     transition: all .8s ease;
                     width: 100%;
-                    height: 100%;
+                    height: 175px;
                 }
                 .mask{
                     @include center;

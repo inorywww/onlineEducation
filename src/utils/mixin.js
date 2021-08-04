@@ -277,7 +277,7 @@ export const pageMixin = {
     data(){
         return {
             showData:[],
-            pageSize:3,
+            pageSize:4,
             currentPageIndex:1,
         }
     },

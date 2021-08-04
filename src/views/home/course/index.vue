@@ -144,9 +144,6 @@ export default {
             }
         },
     },
-    updated(){
-        console.log(this.isFree);
-    },
     methods:{
         changeBread(item){
             if(item.children){

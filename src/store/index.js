@@ -224,6 +224,7 @@ const store = new Vuex.Store({
                   allSubject:val.allSubject,
                   allTeacher:val.allTeacher,
                   payInfo:val.payInfo,
+                  adminIsLogin:val.adminIsLogin,
                 }
               }
         })

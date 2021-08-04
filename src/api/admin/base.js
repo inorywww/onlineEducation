@@ -1,12 +1,11 @@
 /*
  * 接口域名的管理
  */
-const http = "http://localhost:9001"
-const baseHttp = http + "/eduservice";
-const ossHttp = http
-const vodHttp = http + "/eduvod";
-const bannerHttp = http + "/educms";
-const analyzeHttp = http + '/staservice';
+const baseHttp = "/eduservice";
+const ossHttp = baseHttp
+const vodHttp = "/eduvod";
+const bannerHttp = "/educms";
+const analyzeHttp = '/staservice';
 const base = {    
     user: baseHttp + '/user',
     teacher: baseHttp + '/teacher',     
