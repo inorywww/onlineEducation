@@ -268,7 +268,6 @@ export default {
                 alert('当前未选中','info');
                 return 
             }
-            console.log(this.selectItems);
         },
         setCourseData(){
             this.coursesInfo.rows.forEach(item => {
@@ -280,7 +279,6 @@ export default {
                 const subject = subjectParent?subjectParent.children.find(t => item.subjectId === t.id):'';
                 item.subjectName = subject?subject.label:'null';
             })
-            // console.log(this.coursesInfo);
         },
         setUpdateCourseData(data){
             let subjectParent = null;

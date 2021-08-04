@@ -157,7 +157,6 @@ export default {
                     }
                 });
                 let chapterIds = [];
-                console.log(chapters);
                 chapters.forEach(chapter => this.$api.chapter.addChapter(chapter));
                 setTimeout(async () =>{
                         await this.$api.chapter.getChapterVideo(courseId).then(res => {
