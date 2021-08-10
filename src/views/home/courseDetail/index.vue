@@ -49,9 +49,10 @@ export default {
     },
     methods:{
         getCourseInfo(){
+            console.log(this.$route.params.id);
             this.$api.courseFront.getCourseDetail(this.$route.params.id).then(res => {
+                console.log(res.data.data);
                 if(res.data.code === 20000){
-                    console.log(res.data.data);
                     this.courseInfo = res.data.data.courseWebVo;
                     this.chapters = res.data.data.chapterVideoList;
                     this.isBuy = res.data.data.isBuy;
